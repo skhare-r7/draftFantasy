@@ -9,13 +9,13 @@ class interface:
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         myBotToken='184819989:AAHAXw47XxOQlYMQbe6TtFuSqdSVhCLKM70'
         self.telegramIds = {}
-        self.telegramIds['draftFantasyGroup'] = '-65624170'
-        self.telegramIds['Shreyas'] = '21851479'
-        self.telegramIds['Akshay'] = ''
-        self.telegramIds['Yenan'] =' 89001170' 
-        self.telegramIds['Sri'] = ''
-        self.telegramIds['Ripu'] = ''
-        self.telegramIds['Ali'] = ''
+        self.telegramIds['draftFantasyGroup'] = -65624170
+        self.telegramIds['Shreyas'] = 21851479
+        self.telegramIds['Akshay'] = -1
+        self.telegramIds['Yenan'] =89001170
+        self.telegramIds['Sri'] = -1
+        self.telegramIds['Ripu'] = -1
+        self.telegramIds['Ali'] = -1
 
 
         self.updater = Updater(token=myBotToken)
@@ -36,7 +36,7 @@ class interface:
         self.processCommand('help',update)
 
     def list(self,bot, update):
-        processCommand('list',update)
+        self.processCommand('list',update)
 
     def processCommand(self,command, update):
         if update.message.chat.type == 'group':
@@ -52,11 +52,9 @@ class interface:
         
     def get_user_from_id(self,id):
         for key,value in self.telegramIds.items():
-            if value == id:
-                return key
-            else:
-                print "error, couldn't find user!"
-                return None
+            if value == id: return key
+        print "ERROR: couldn't find user!"
+        return None
 
                                  
                                  

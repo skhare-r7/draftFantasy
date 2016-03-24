@@ -3,13 +3,12 @@ from database import dbInterface
 class draftGame:
     def __init__(self):
         self.db = dbInterface()
-    
 
     def handleCommand(self, user, command, args):
         if command == 'help':
             return self.getHelpText()
         elif command == 'list':
-            pass
+            return self.getListQuery(args)
  
     def getHelpText(self):
         helpText = "You can use the following commands:\n"
@@ -28,3 +27,9 @@ class draftGame:
         #helpText += "/deadline: view auction deadline and bids"
  
         return helpText
+
+    def getListQuery(self,args):
+        arg = args.split(" ")[0]
+        query = "SELECT * FROM playerInfo WHERE team like ?"
+#        self.db.simpleQuery(query)
+        return self.db.sendPretty(query,["%"+arg+"%"])

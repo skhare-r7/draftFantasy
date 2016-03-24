@@ -1,7 +1,7 @@
 import pickle
 import sqlite3
 import datetime
-
+from prettytable import PrettyTable
 
 #Create a table that has details of human players
 # game initializes with everyone having equal bank value of 100M?
@@ -134,14 +134,29 @@ if __name__=='__main__':
 
 
 class dbInterface:
-
     def __init__(self):
-        self.conn = sqlite3.connect('draftGame.db')
+        self.conn = sqlite3.connect('draftGame.db',check_same_thread=False)
         self.c = self.conn.cursor()
+
 
     def simpleQuery(self,query):
         self.c.execute(query)
         print(self.c.fetchall())
+    
+    def send(self,query, args):
+        self.c.execute(query, args)
+        return c.fetchall()
+
+    def sendPretty(self,query,args):
+        self.c.execute(query,args)
+        header = [description[0] for description in self.c.description]
+        
+        table = PrettyTable(header)
+        for row in self.c:
+            table.add_row(row)
+        result =  table.get_string()
+        print result
+        return result
 
     def close(self):
         self.conn.commit()
