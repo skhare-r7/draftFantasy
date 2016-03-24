@@ -155,7 +155,7 @@ class dbInterface:
         for row in self.c:
             table.add_row(row)
         result =  table.get_string()
-        print result
+        #print result
         return result
 
     def close(self):
