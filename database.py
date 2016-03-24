@@ -11,16 +11,19 @@ import datetime
 #| teamId | teamName | name     | bank |
 #|    1   |  n_emoo  | Shreyas  | 100M |
 
+#TODO
 def create_humanplayers(c):
     c.execute('''CREATE TABLE humanPlayers
               (teamId integer, teamName text, name text, bank real)''')
     humanPlayers = {}
-    humanPlayers[0] = ['n_emoo, Shreyas']
-    humanPlayers[1] = [', Akshay']
-    humanPlayers[2] = ['Dozer, Sri']
-    humanPlayers[3] = ['n_emoo, Ripu']
-    humanPlayers[4] = ['n_emoo, Yenan']
-    humanPlayers[5] = ['n_emoo, Ali']
+    humanPlayers[0] = ['n_emoo', 'Shreyas']
+    humanPlayers[1] = ['team1', 'Akshay']
+    humanPlayers[2] = ['Dozer', 'Sri']
+    humanPlayers[3] = ['team2', 'Ripu']
+    humanPlayers[4] = ['team3', 'Yenan']
+    humanPlayers[5] = ['team4', 'Ali']
+    for teamId, info in humanPlayers.items():
+        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'100.0')",[teamId,info[0],info[1]])
 
 
 #Create a player Status table
@@ -131,6 +134,7 @@ if __name__=='__main__':
 
 
 class dbInterface:
+
     def __init__(self):
         self.conn = sqlite3.connect('draftGame.db')
         self.c = self.conn.cursor()
