@@ -23,6 +23,16 @@ class interface:
         dispatcher = self.updater.dispatcher
         dispatcher.addTelegramCommandHandler('help', self.help)
         dispatcher.addTelegramCommandHandler('list', self.list)
+        dispatcher.addTelegramCommandHandler('find', self.find)
+        dispatcher.addTelegramCommandHandler('ban', self.ban)
+        dispatcher.addTelegramCommandHandler('pick', self.pick)
+        dispatcher.addTelegramCommandHandler('auction', self.auction)
+        dispatcher.addTelegramCommandHandler('forcesell', self.viewteam)
+        dispatcher.addTelegramCommandHandler('setcap', self.setcap)
+        dispatcher.addTelegramCommandHandler('swap', self.swap)
+        dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
+        dispatcher.addTelegramCommandHandler('deadline', self.deadline)
+
 
         self.game = draftGame()
 
@@ -32,11 +42,39 @@ class interface:
         self.bot.sendMessage(chat_id = self.telegramIds[to], text=message)
 
 
-    def help(self,bot, update):
+    def help(self,bot,update):
         self.processCommand('help',update)
 
-    def list(self,bot, update):
+    def list(self,bot,update):
         self.processCommand('list',update)
+
+    def find(self,bot,update):
+        self.processCommand('find',update)
+
+    def ban(self,bot,update):
+        self.processCommand('ban',update)
+
+    def pick(self,bot,update):
+        self.processCommand('pick',update)
+
+    def auction(self,bot,update):
+        self.processCommand('auction',update)
+
+    def forcesell(self,bot,update):
+        self.processCommand('forcesell',update)
+
+    def setcap(self,bot,update):
+        self.processCommand('setcap',update)
+
+    def swap(self,bot,update):
+        self.processCommand('swap',update)
+
+    def viewmarket(self,bot,update):
+        self.processCommand('viewmarket',update)
+
+    def deadline(self,bot,update):
+        self.processCommand('deadline',update)
+
 
     def processCommand(self,command, update):
         if update.message.chat.type == 'group':

@@ -105,17 +105,17 @@ def create_playerinfo(c):
 # complete [0|1]: mark all (bid / auction) transactions as complete after auction finishes
 
 #example:
-#__________________________________________________
-#|type     | playerId | value | humanId | complete |
-#|Ban      | 12       |  0    |    1    |    1     | 
-#|Pick     | 16       |  0    |    2    |    1     |
-#|Auction  | 76       |  7.5  |    5    |    0     |  <- playerId 76 is up for bidding, starting bid is 7.5
-#|ForceSell| 100      |  5    |    6    |    1     |  
-#|Bid      | 65       |  5    |    2    |    1     |  <- 5M bid was made on playerid 65, auction is now closed
+#_______________________________________________________________
+#|type     | playerId | value | humanId | complete | timestamp |
+#|Ban      | 12       |  0    |    1    |    1     |           |
+#|Pick     | 16       |  0    |    2    |    1     |           |
+#|Auction  | 76       |  7.5  |    5    |    0     |           |  <- playerId 76 is up for bidding, starting bid is 7.5
+#|ForceSell| 100      |  5    |    6    |    1     |           |
+#|Bid      | 65       |  5    |    2    |    1     |           |  <- 5M bid was made on playerid 65, auction is now closed
 
 def create_transaction(c):
     c.execute('''CREATE TABLE transactions
-              (type text, playerId integer, value real, humanId integer, complete integer)''')
+              (type text, playerId integer, value real, humanId integer, complete integer, timestamp ts)''')
 
 
 def init_database():
