@@ -16,7 +16,7 @@ class draftGame:
         self.rounds.append(['ban_r', 'pick'])
         self.rounds.append(['pick_r'])
         
-        self.currentPhase = 'draft' #we start at drafting
+        self.currentPhase = 'waiting' #we start at drafting
 
         self.currentRound = 0
         self.currentStage = 0 
@@ -62,6 +62,14 @@ class draftGame:
             self.currentPlayer = 0
         
 
+    def startGame(self,user):
+        if user == 'Shreyas':
+            self.currentPhase = 'draft'
+            tg.broadcast("Game is on! Good luck")
+            tg.broadcast(game.gameStage())
+            return "Done"
+
+
     def getCurrentStage(self):
         if 'ban' in self.rounds[self.currentRound][self.currentStage]: return 'ban'
         elif 'pick' in self.rounds[self.currentRound][self.currentStage]: return 'pick'
@@ -71,7 +79,7 @@ class draftGame:
         query = "select count(*) from playerStatus where playerId=?"
         return self.db.send(query,[id])[0][0] == 1
 
-    def isNotBanned(self, id):
+    def isNotBanned(self, id): #player is not banned or picked
         query = "select status from playerStatus where playerId=?"
         return self.db.send(query,[id])[0][0] == 'Auction'
     
@@ -176,6 +184,8 @@ class draftGame:
         elif command == 'deadline':
             #??
             pass
+        elif command == 'start':
+            return self.startGame(user)
  
     def getHelpText(self):
         helpText = "You can use the following commands:\n"
@@ -244,8 +254,6 @@ if __name__=="__main__":
     game = draftGame()
     tg = interface(game)
     game.setTg(tg)
-    tg.broadcast("Game is on!")
-    tg.broadcast(game.gameStage())
 
     while(game.currentPhase != 'game_on'):
         tg.start()

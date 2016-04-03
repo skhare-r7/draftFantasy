@@ -11,11 +11,11 @@ class interface:
         self.telegramIds = {}
         self.telegramIds['draftFantasyGroup'] = -65624170
         self.telegramIds['Shreyas'] = 21851479
-        self.telegramIds['Akshay'] = -1
+        self.telegramIds['Akshay'] = 74058426
         self.telegramIds['Yenan'] =89001170
-        self.telegramIds['Sri'] = -1
+        self.telegramIds['Sri'] = 58583921
         self.telegramIds['Ripu'] = -1
-        self.telegramIds['Ali'] = -1
+        self.telegramIds['Ali'] = 120943853
 
 
         self.updater = Updater(token=myBotToken)
@@ -36,6 +36,7 @@ class interface:
         dispatcher.addTelegramCommandHandler('swap', self.swap)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
         dispatcher.addTelegramCommandHandler('deadline', self.deadline)
+        dispatcher.addTelegramCommandHandler('start', self.startGame)
 
 
         self.game = game
@@ -88,6 +89,9 @@ class interface:
 
     def deadline(self,bot,update):
         self.processCommand('deadline',update)
+
+    def startGame(self,bot,update):
+        self.processCommand('start',update)
 
 
     def processCommand(self,command, update):
