@@ -26,7 +26,7 @@ class draftGame:
         self.numberOfPlayers = self.db.send("select count(*) from humanPlayers",[])[0][0]
         #print self.numberOfPlayers
         self.order = [i for i in range(0,self.numberOfPlayers)]
-#        shuffle(self.order)
+        shuffle(self.order)
         
 
     def setTg(self,tg):
@@ -83,10 +83,16 @@ class draftGame:
     def pickId(self,user, id):
         teamId = self.getTeamIdFromUser(user)
         playersQuery = "select count(*) from playerStatus where status=?"
+        valueQuery = "select price from playerInfo where playerId =?"
+        value = self.db.send(valueQuery,[id])[0][0]
+        bank = self.getBankValue(teamId)
+        newBank = bank - value
         numPlayers = self.db.send(playersQuery,[teamId])[0][0]
         teamPos = numPlayers + 1 #this guy's position 
-        query = "update playerStatus set status=?,teamPos=? where playerId=?"
-        self.db.send(query,[teamId,teamPos,id])
+        playerUpdate = "update playerStatus set status=?,teamPos=? where playerId=?"
+        self.db.send(playerUpdate,[teamId,teamPos,id])
+        bankUpdate = "update humanPlayers set bank=? where teamId=?"
+        self.db.send(bankUpdate,[newBank,teamId])
         self.db.commit()
 
     def getTeamIdFromUser(self,user):
@@ -194,7 +200,13 @@ class draftGame:
     def viewTeamQuery(self,user):
         teamId = self.getTeamIdFromUser(user)
         query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.skill2 from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
-        return self.db.sendPretty(query,[teamId])
+        teamTable = self.db.sendPretty(query,[teamId])
+        teamTable += "\nBank Value:" + self.getBankValue(teamId).__str__()
+        return teamTable
+
+    def getBankValue(self,teamId):
+        bankQuery = "select bank from humanPlayers where teamId=?"
+        return self.db.send(bankQuery,[teamId])[0][0]
 
     def getListQuery(self,args):
         argsList = args.split(" ")
