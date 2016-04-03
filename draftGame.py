@@ -200,13 +200,19 @@ class draftGame:
     def viewTeamQuery(self,user):
         teamId = self.getTeamIdFromUser(user)
         query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.skill2 from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
-        teamTable = self.db.sendPretty(query,[teamId])
-        teamTable += "\nBank Value:" + self.getBankValue(teamId).__str__()
-        return teamTable
+        teamStr = "Team name: " + self.getTeamName(teamId) + "\n"
+        teamStr += self.db.sendPretty(query,[teamId])
+        teamStr += "\nBank Value:" + self.getBankValue(teamId).__str__()
+        return teamStr
 
     def getBankValue(self,teamId):
         bankQuery = "select bank from humanPlayers where teamId=?"
         return self.db.send(bankQuery,[teamId])[0][0]
+
+    def getTeamName(self,teamId):
+        nameQuery = "select teamName from humanPlayers where teamId=?"
+        return self.db.send(nameQuery,[teamId])[0][0]
+
 
     def getListQuery(self,args):
         argsList = args.split(" ")
