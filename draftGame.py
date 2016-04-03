@@ -181,15 +181,14 @@ class draftGame:
         helpText = "You can use the following commands:\n"
         helpText += "/help : display this page\n"
         helpText += "/stage : show current game stage\n"
-        helpText += "/list [team] [category]: list all players from this team/category\n"
-        helpText += "/find <name>: get player ids by name\n"
+        helpText += "/list [team] [category]: list all players from this team/category\n" #need to show status
+        helpText += "/find <name>: get player ids by name\n" #need to show status
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from draft (draft stage only)\n"
         helpText += "/pick <id>: pick player from draft (draft stage only)\n"
-        helpText += "/viewteam : see your team\n"
         #helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
         #helpText += "/forcesell <id>: immediate sale for 75% price\n"
-        #helpText += "/viewteam: see your team. your top 11 will play\n"
+        helpText += "/viewteam: see your team. your top 11 will play\n"
         #helpText += "/setcap <id>: set your captain. default player at position 1 is captain\n"
         #helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         #helpText += "/viewmarket: see team owned players for sale\n"
@@ -237,7 +236,7 @@ class draftGame:
         return self.db.send(query,[id])[0][0]
 
     def findPlayerById(self,args):
-        query = "select * from playerInfo where playerId = ?"
+        query = "select playerInfo.playerId,playerInfo.team,playerInfo.playerName,playerInfo.price,playerInfo.skill1,playerInfo.skill2,playerStatus.status from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.playerId = ?"
         return self.db.sendPretty(query,[args.strip()])
 
 
