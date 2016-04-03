@@ -1,10 +1,10 @@
 import telegram
 from telegram.ext import Updater
 import logging
-from draftGame import draftGame
+#from draftGame import draftGame
 
 class interface:
-    def __init__(self):
+    def __init__(self,game):
         logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         myBotToken='184819989:AAHAXw47XxOQlYMQbe6TtFuSqdSVhCLKM70'
@@ -22,34 +22,45 @@ class interface:
         self.bot = telegram.Bot(token=myBotToken)
         dispatcher = self.updater.dispatcher
         dispatcher.addTelegramCommandHandler('help', self.help)
+        dispatcher.addTelegramCommandHandler('stage', self.stage)
         dispatcher.addTelegramCommandHandler('list', self.list)
         dispatcher.addTelegramCommandHandler('find', self.find)
+        dispatcher.addTelegramCommandHandler('player', self.player)
         dispatcher.addTelegramCommandHandler('ban', self.ban)
+        
         dispatcher.addTelegramCommandHandler('pick', self.pick)
         dispatcher.addTelegramCommandHandler('auction', self.auction)
-        dispatcher.addTelegramCommandHandler('forcesell', self.viewteam)
+        dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
+        dispatcher.addTelegramCommandHandler('viewteam', self.viewteam)
         dispatcher.addTelegramCommandHandler('setcap', self.setcap)
         dispatcher.addTelegramCommandHandler('swap', self.swap)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
         dispatcher.addTelegramCommandHandler('deadline', self.deadline)
 
 
-        self.game = draftGame()
+        self.game = game
 
 
+    def broadcast(self, message):
+        self.bot.sendMessage(chat_id = self.telegramIds['draftFantasyGroup'], text=message)
 
     def sendMessage(self, to, message):
         self.bot.sendMessage(chat_id = self.telegramIds[to], text=message)
 
-
     def help(self,bot,update):
         self.processCommand('help',update)
+    
+    def stage(self,bot,update):
+        self.processCommand('stage',update)
 
     def list(self,bot,update):
         self.processCommand('list',update)
 
     def find(self,bot,update):
         self.processCommand('find',update)
+
+    def player(self,bot,update):
+        self.processCommand('player',update)
 
     def ban(self,bot,update):
         self.processCommand('ban',update)
@@ -62,6 +73,9 @@ class interface:
 
     def forcesell(self,bot,update):
         self.processCommand('forcesell',update)
+
+    def viewteam(self,bot,update):
+        self.processCommand('viewteam',update)
 
     def setcap(self,bot,update):
         self.processCommand('setcap',update)
@@ -101,6 +115,6 @@ class interface:
 
 
 
-if __name__=='__main__':
-    draft = interface()
-    draft.start()
+#if __name__=='__main__':
+#    draft = interface()
+#    draft.start()

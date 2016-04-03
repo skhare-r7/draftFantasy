@@ -133,6 +133,7 @@ if __name__=='__main__':
 
 
 
+
 class dbInterface:
     def __init__(self):
         self.conn = sqlite3.connect('draftGame.db',check_same_thread=False)
@@ -145,21 +146,38 @@ class dbInterface:
     
     def send(self,query, args):
         self.c.execute(query, args)
-        return c.fetchall()
+        return self.c.fetchall()
 
     def sendPretty(self,query,args):
+        print query
         self.c.execute(query,args)
         header = [description[0] for description in self.c.description]
         
         table = PrettyTable(header)
+        rows = 0
         for row in self.c:
+            if rows > 20: break
+            rows += 1
             table.add_row(row)
         result =  table.get_string()
-        #print result
+        print result
         return result
+
+    def commit(self):
+        self.conn.commit()
 
     def close(self):
         self.conn.commit()
         self.conn.close()
+
+    def getSkill(self,val):
+        skills = ["Allrounder","Batsman", "Wicketkeeper", "Bowler"]
+        for skill in skills:
+            try:
+                if skill.lower().index(val.lower()) >= 0: return skill
+            except:
+                pass
+        return None
+
 
 
