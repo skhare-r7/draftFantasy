@@ -27,16 +27,17 @@ class interface:
         dispatcher.addTelegramCommandHandler('find', self.find)
         dispatcher.addTelegramCommandHandler('player', self.player)
         dispatcher.addTelegramCommandHandler('ban', self.ban)
-        
         dispatcher.addTelegramCommandHandler('pick', self.pick)
-        dispatcher.addTelegramCommandHandler('auction', self.auction)
-        dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
         dispatcher.addTelegramCommandHandler('viewteam', self.viewteam)
+        
         dispatcher.addTelegramCommandHandler('setcap', self.setcap)
         dispatcher.addTelegramCommandHandler('swap', self.swap)
+        dispatcher.addTelegramCommandHandler('start', self.startGame)
+
+        dispatcher.addTelegramCommandHandler('auction', self.auction)
+        dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
         dispatcher.addTelegramCommandHandler('deadline', self.deadline)
-        dispatcher.addTelegramCommandHandler('start', self.startGame)
 
 
         self.game = game

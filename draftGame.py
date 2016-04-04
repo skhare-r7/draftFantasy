@@ -1,7 +1,7 @@
 from database import dbInterface
 from random import shuffle
 from interface import interface
-
+from datetime import datetime as dt
 
 class draftGame:
     def __init__(self):
@@ -30,7 +30,7 @@ class draftGame:
         
 
     def setTg(self,tg):
-        self.tg = tg
+        self.tg = tg #used to broadcast messages
 
     def nextStage(self):
         totalRounds = len(self.rounds)
@@ -83,9 +83,12 @@ class draftGame:
         query = "select status from playerStatus where playerId=?"
         return self.db.send(query,[id])[0][0] == 'Auction'
     
-    def banId(self,id):
-        query = "update playerStatus set status='Open' where playerId=?"
-        self.db.send(query,[id])
+    def banId(self,user, id):
+        query = "update playerStatus set status='Open',lastModified=? where playerId=?"
+        self.db.send(query,[dt.now(),id])
+        teamId = self.getTeamIdFromUser(user)
+        transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
+        self.db.send(transactionQuery,["Ban",id,0,teamId,1,dt.now()])
         self.db.commit()
         
     def pickId(self,user, id):
@@ -97,10 +100,13 @@ class draftGame:
         newBank = bank - value
         numPlayers = self.db.send(playersQuery,[teamId])[0][0]
         teamPos = numPlayers + 1 #this guy's position 
-        playerUpdate = "update playerStatus set status=?,teamPos=? where playerId=?"
-        self.db.send(playerUpdate,[teamId,teamPos,id])
+        playerUpdate = "update playerStatus set status=?,teamPos=?,lastModified=? where playerId=?"
+        self.db.send(playerUpdate,[teamId,teamPos,dt.now(),id])
+        #ok to get negative bank
         bankUpdate = "update humanPlayers set bank=? where teamId=?"
         self.db.send(bankUpdate,[newBank,teamId])
+        transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
+        self.db.send(transactionQuery,["Pick",id,0,teamId,1,dt.now()])        
         self.db.commit()
 
     def getTeamIdFromUser(self,user):
@@ -123,42 +129,9 @@ class draftGame:
         elif command == 'player':
             return self.findPlayerById(args)
         elif command == 'ban':
-            currentUser = self.getUserById(self.order[self.currentPlayer])
-            if self.getCurrentStage() == 'ban' and user == currentUser:
-                #validate user & stage
-                #process request
-                #move to next player
-                if self.isValidId(args):
-                    if self.isNotBanned(args):
-                        self.banId(args)
-                        self.nextPlayer()
-                        self.tg.broadcast("User:" + user + " banned " + self.getPlayerNameById(args))
-                        #TODO: transaction table?
-                        self.tg.broadcast(self.gameStage())
-                        return "Done"
-                    else:
-                        return args + " is already banned. Please retry"
-                else:
-                    return "Invalid playerId"
-            else:
-                return "You cannot ban anyone at the moment. Check game stage"
+            return self.processBan(user)
         elif command == 'pick':
-            currentUser = self.getUserById(self.order[self.currentPlayer])
-            if self.getCurrentStage() == 'pick' and user == currentUser:
-                if self.isValidId(args):
-                    if self.isNotBanned(args):
-                        self.pickId(user,args)
-                        self.tg.broadcast("User:" + user + " picked " + self.getPlayerNameById(args))
-                        #TODO: transaction table?
-                        self.nextPlayer()
-                        self.tg.broadcast(self.gameStage())
-                        return "Done"
-                    else:
-                        return args + " is banned. Pick someone else."
-                else:
-                    return "Invalid playerId"
-            else:
-                return "You cannot pick anyone at the moment. Check game stage"
+            return self.processPick(user)
         elif command == 'auction':
             #validate stage
             #process request
@@ -169,11 +142,6 @@ class draftGame:
             pass
         elif command == 'viewteam':
             return self.viewTeamQuery(user)
-
-        elif command == 'setcap':
-            #validate stage
-            #process request
-            pass
         elif command == 'swap':
             #validate stage
             #process 
@@ -187,6 +155,47 @@ class draftGame:
         elif command == 'start':
             return self.startGame(user)
  
+    def processBan(self,user):
+        currentUser = self.getUserById(self.order[self.currentPlayer])
+        #validate user & stage
+        if self.getCurrentStage() == 'ban' and user == currentUser:
+            #is playerId valid?
+            if self.isValidId(args):
+                #cannot ban players not in auction
+                if self.isNotBanned(args):
+                    self.banId(user,args)
+                    self.nextPlayer()
+                    self.tg.broadcast("User:" + user + " banned " + self.getPlayerNameById(args))                
+                    self.tg.broadcast(self.gameStage())
+                    return "Done"
+                else:
+                    return args + " is already banned. Please retry"
+            else:
+                return "Invalid playerId"
+        else:
+            return "You cannot ban anyone at the moment. Check game stage"
+    
+    def processPick(self,user):
+        currentUser = self.getUserById(self.order[self.currentPlayer])
+        #validate user and stage
+        if self.getCurrentStage() == 'pick' and user == currentUser:
+            #is valid playerId?
+            if self.isValidId(args):
+                #can only pick directly from auction
+                if self.isNotBanned(args):
+                    self.pickId(user,args)
+                    self.tg.broadcast("User:" + user + " picked " + self.getPlayerNameById(args))
+                    self.nextPlayer()
+                    self.tg.broadcast(self.gameStage())
+                    return "Done"
+                else:
+                    return args + " is banned. Pick someone else."
+            else:
+                return "Invalid playerId"
+            else:
+                return "You cannot pick anyone at the moment. Check game stage"
+
+
     def getHelpText(self):
         helpText = "You can use the following commands:\n"
         helpText += "/help : display this page\n"
@@ -203,6 +212,7 @@ class draftGame:
         #helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         #helpText += "/viewmarket: see team owned players for sale\n"
         #helpText += "/deadline: view auction deadline and bids"
+        #TODOs: rabbitMq for snapshot, auction resolution and spoilage
  
         return helpText
 
