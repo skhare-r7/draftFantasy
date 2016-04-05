@@ -4,7 +4,7 @@ from interface import interface
 from datetime import datetime as dt
 from threading import Thread 
 from futureWorker import futureWorker
-
+from time import sleep
 
 class draftGame:
     def __init__(self):
@@ -12,7 +12,8 @@ class draftGame:
         #game initialization
         self.tg = None
         self.rounds = []
-        self.rounds.append(['ban', 'ban', 'ban'])
+#        self.rounds.append(['ban', 'ban', 'ban'])
+        self.rounds.append(['ban'])
         self.rounds.append(['pick'])
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
@@ -52,6 +53,12 @@ class draftGame:
 
         if self.rounds[self.currentRound][self.currentStage][-2:] == '_r': self.order.reverse()
 
+
+    def getCurrentStage(self):
+        stage= self.rounds[self.currentRound][self.currentStage]
+        if 'ban' in stage: return 'ban'
+        elif 'pick' in stage: return 'pick'
+        else: return 'none'
 
     def gameStage(self):
         toRet = "Current Phase:" + self.currentPhase + "\n"
@@ -134,9 +141,9 @@ class draftGame:
         elif command == 'player':
             return self.findPlayerById(args)
         elif command == 'ban':
-            return self.processBan(user)
+            return self.processBan(user,args)
         elif command == 'pick':
-            return self.processPick(user)
+            return self.processPick(user,args)
         elif command == 'auction':
             #validate stage
             #process request
@@ -152,7 +159,7 @@ class draftGame:
         elif command == 'viewteam':
             return self.viewTeamQuery(user)
         elif command == 'swap':
-            return self.processSwap(args,user)
+            return self.processSwap(user,args)
         elif command == 'viewmarket':
             #process
             pass
@@ -165,7 +172,7 @@ class draftGame:
     def processForcedSale(self,user,args):
         pass
         
-    def processSwap(self,args,user):
+    def processSwap(self,user,args):
         try:
             pos1 = args.split(" ")[0]
             pos2 = args.split(" ")[1]
@@ -185,7 +192,8 @@ class draftGame:
         except:
             return "Invalid positions, cannot swap"
 
-    def processBan(self,user):
+    
+    def processBan(self,user,args):
         currentUser = self.getUserById(self.order[self.currentPlayer])
         #validate user & stage
         if self.getCurrentStage() == 'ban' and user == currentUser:
@@ -205,7 +213,7 @@ class draftGame:
         else:
             return "You cannot ban anyone at the moment. Check game stage"
     
-    def processPick(self,user):
+    def processPick(self,user,args):
         currentUser = self.getUserById(self.order[self.currentPlayer])
         #validate user and stage
         if self.getCurrentStage() == 'pick' and user == currentUser:
@@ -286,12 +294,38 @@ class draftGame:
         return self.db.sendPretty(query,[args.strip()])
 
 
+def finalizeAuction():
+    pass
+def lockTeams():
+    pass
+
+def futureWorker(tg):
+    db = dbInterface()
+    while True:
+        print 'monitoring future queue'
+        checkFutureQuery = "select * from futures where timestamp <= datetime('now','localtime')"
+        futures = db.send(checkFutureQuery,[])
+        for future in futures:
+            if future[0] == 'auction':
+                message = finalizeAuction()
+                tg.broadcast(message)
+            elif future[1] == 'lock':
+                message = lockTeams()
+                tg.broadcast(message)
+            else:
+                pass
+            #tg.sendMessage('Shreyas',future[0]+' works!')
+        sleep(120) #sleep 60 seconds?
+
+
+
 if __name__=="__main__":
     game = draftGame()
     tg = interface(game)
     game.setTg(tg)
-    fw = futureWorker(tg)
-    fw.start()
+
+    t = Thread(target=futureWorker, args=(tg,))
+    #t.start()
 
     while(game.currentPhase != 'game_on'):
         tg.start()

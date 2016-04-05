@@ -18,10 +18,10 @@ def create_humanplayers(c):
               (teamId integer, teamName text, name text, bank real)''')
     humanPlayers = {}
     humanPlayers[0] = ['n_emoo', 'Shreyas']
-    humanPlayers[1] = ['team1', 'Akshay']
+    humanPlayers[1] = ['Swingers', 'Akshay']
     humanPlayers[2] = ['Dozer', 'Sri']
-    humanPlayers[3] = ['team3', 'Yenan']
-    humanPlayers[4] = ['team4', 'Ali']
+#    humanPlayers[3] = ['team3', 'Yenan']
+#    humanPlayers[4] = ['team4', 'Ali']
 #    humanPlayers[5] = ['team2', 'Ripu']
     for teamId, info in humanPlayers.items():
         c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'100.0')",[teamId,info[0],info[1]])
@@ -209,7 +209,7 @@ class dbInterface:
         table = PrettyTable(header)
         rows = 0
         for row in self.c:
-            if rows > 20: break
+            if rows > 25: break
             rows += 1
             table.add_row(row)
         result =  table.get_string()
