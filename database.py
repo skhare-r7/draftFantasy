@@ -2,6 +2,7 @@ import pickle
 import sqlite3
 import datetime
 from prettytable import PrettyTable
+import json
 
 #Create a table that has details of human players
 # game initializes with everyone having equal bank value of 100M?
@@ -55,44 +56,78 @@ def create_playerStatus(c):
         c.execute("INSERT INTO playerStatus VALUES (?,'Auction', NULL, '0',?, NULL)",[id,datetime.datetime.now()])
     
 
+
+def getSkillFromCategory(value):
+    if value == 1: return "Batsman"
+    elif value == 2: return "Wicketkeeper"
+    elif value == 3: return "Allrounder"
+    elif value == 4: return "Bowler"
+    else: return None
+
+def getFullTeamNameFromSideId(value):
+    if value == 1: return "Delhi Daredevils"
+    elif value == 2: return "Gujarat Lions"
+    elif value == 3: return "Kings XI Punjab"
+    elif value == 4: return "Kolkata Knight Riders"
+    elif value == 5: return "Mumbai Indians"
+    elif value == 6: return "Rising Pune Supergiants"
+    elif value == 7: return "Royal Challengers Bangalore"
+    elif value == 8: return "Sunrisers Hyderabad"
+    else: return None
+
+
+def getTeamNameFromSideId(value):
+    if value == 1: return "DD"
+    elif value == 2: return "GL"
+    elif value == 3: return "KXIP"
+    elif value == 4: return "KKR"
+    elif value == 5: return "MI"
+    elif value == 6: return "RPS"
+    elif value == 7: return "RCB"
+    elif value == 8: return "SRH"
+    else: return None
+
+
     
 #Create player info table
 # This is extracted from  http://fantasy.icc-cricket.com/fantasydata/playerlist/game_playerlist_tour_350.json
 # Price is intialized from ICC, but is allowed to fluctuate once game commences
 
 # example:
-#___________________________________________________________________
-#|playerId | team     | playerName       | price | skill1 | skill2 |
-#| 220     | Zimbabwe | Tawanda Mupariwa |  6.0  | Bowler |        |
+#____________________________________________________________________
+#|playerId | team     | playerName       | price | skill1 | overseas|
+#| 220     | Zimbabwe | Tawanda Mupariwa |  6.0  | Bowler |  1      |
 
 
 
 def create_playerinfo(c):
-    f = open("playerListJson.dump","rb") #downloaded offline from ICC
-    playerList = pickle.load(f)
-    f.close() 
+#    f = open("playerListJson.dump","rb") #downloaded offline from ICC
+#    playerList = pickle.load(f)
+#    f.close() 
+    json_data = open('iplPlayerList.json')
+    data = json.load(json_data)
 
     c.execute('''CREATE TABLE playerInfo
-              (playerId integer, team text, playerName text, price real, skill1 text, skill2 text)''')
-    for player in playerList:
+              (playerId integer, team text, playerName text, price real, skill1 text, overseas integer)''')
+    for player in data['players']:
         playerId = None
         teamName = None
         name = None
         value = None
         skill1 = None
-        skill2 = None
+        overseas = 0
         for key,value in  player.items():
-            if key == 'No': playerId = value
-            elif key == 'Name' : name = value
-            elif key == 'TeamName' : teamName = value
-            elif key == 'Value' : price = value
-            elif key == 'SkillDesc' : skill1 = value
-            elif key == 'SecondarySkillDesc' : skill2 = value
+            if key == 'code': playerId = value
+            elif key == 'info1' : name = value
+            elif key == 'sideId' : teamName = getTeamNameFromSideId(value)
+            elif key == 'value' : price = value
+            elif key == 'categoryId' : skill1 = getSkillFromCategory(value)
+            elif key == 'info4' : overseas = 1
             else: pass
 
         if (playerId and name and teamName and price):
             insertQuery = "INSERT INTO playerInfo VALUES (?,?,?,?,?,?)"
-            c.execute(insertQuery,[playerId,teamName,name,price,skill1,skill2])
+            c.execute(insertQuery,[playerId,teamName,name,price,skill1,overseas])
 
 #Create transaction table
 # type:
@@ -118,6 +153,23 @@ def create_transaction(c):
               (type text, playerId integer, value real, humanId integer, complete integer, timestamp ts)''')
 
 
+#Create futures table
+#type:
+# auction : Execute and resolve auction 
+# lock : Freeze teams before match time
+#timestamp: future timestamp when activity should occur
+#info: playerId for type auction, gameId for gameLock
+#
+#example:
+#_______________________________
+# type      | timestamp | info |
+# auction   |           | 125  |
+# lock      |           | 4    |<-- game number (optional)
+def create_futures(c):
+    c.execute('''CREATE TABLE futures
+              (type text, timestamp ts, info integer)''')
+
+
 def init_database():
     conn = sqlite3.connect('draftGame.db')
     c = conn.cursor()
@@ -125,6 +177,7 @@ def init_database():
     create_humanplayers(c)
     create_playerStatus(c)
     create_transaction(c)
+    create_futures(c)
     conn.commit()
     conn.close()
 

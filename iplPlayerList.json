@@ -1,0 +1,1884 @@
+{
+  "players" : [ {
+    "categoryId" : 1,
+    "code" : "163",
+    "fullName" : "S Tiwary",
+    "info1" : "Saurabh Tiwary",
+    "name" : "S Tiwary",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 3,
+    "value" : 7.0
+  }, {
+    "categoryId" : 3,
+    "code" : "395",
+    "fullName" : "J Singh",
+    "info1" : "Jaskaran Singh",
+    "name" : "J Singh",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 4.5
+  }, {
+    "categoryId" : 4,
+    "code" : "94",
+    "fullName" : "M Shami",
+    "info1" : "Mohammed Shami",
+    "name" : "M Shami",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 5,
+    "value" : 7.0
+  }, {
+    "categoryId" : 2,
+    "code" : "834",
+    "fullName" : "Q de Kock",
+    "info1" : "Quinton de Kock",
+    "info4" : "Y",
+    "name" : "Q de Kock",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 11,
+    "value" : 9.0
+  }, {
+    "categoryId" : 1,
+    "code" : "158",
+    "fullName" : "M Agarwal",
+    "info1" : "Mayank Agarwal",
+    "name" : "M Agarwal",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 4,
+    "value" : 7.0
+  }, {
+    "categoryId" : 2,
+    "code" : "16",
+    "fullName" : "W Saha",
+    "info1" : "Wriddhiman Saha",
+    "name" : "W Saha",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 3,
+    "value" : 6.5
+  }, {
+    "categoryId" : 3,
+    "code" : "221",
+    "fullName" : "M Marsh",
+    "info1" : "Mitchell Marsh",
+    "info4" : "Y",
+    "name" : "M Marsh",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 6,
+    "value" : 8.0
+  }, {
+    "categoryId" : 3,
+    "code" : "282",
+    "fullName" : "G Maxwell",
+    "info1" : "Glenn Maxwell",
+    "info4" : "Y",
+    "name" : "G Maxwell",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 9,
+    "value" : 10.0
+  }, {
+    "categoryId" : 4,
+    "code" : "61",
+    "fullName" : "V Aaron",
+    "info1" : "Varun Aaron",
+    "name" : "V Aaron",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 1,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "140",
+    "fullName" : "D Chahar",
+    "info1" : "Deepak Chahar",
+    "name" : "D Chahar",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 3.0
+  }, {
+    "categoryId" : 3,
+    "code" : "1748",
+    "fullName" : "S Gopal",
+    "info1" : "Shreyas Gopal",
+    "name" : "S Gopal",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 4.0
+  }, {
+    "categoryId" : 3,
+    "code" : "215",
+    "fullName" : "T Perera",
+    "info1" : "Thisara Perera",
+    "info4" : "Y",
+    "name" : "T Perera",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 2,
+    "value" : 7.0
+  }, {
+    "categoryId" : 1,
+    "code" : "172",
+    "fullName" : "K Pietersen",
+    "info1" : "Kevin Pietersen",
+    "info4" : "Y",
+    "name" : "K Pietersen",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 17,
+    "value" : 10.0
+  }, {
+    "categoryId" : 1,
+    "code" : "113",
+    "fullName" : "Y Singh",
+    "info1" : "Yuvraj Singh",
+    "name" : "Y Singh",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 8,
+    "value" : 9.0
+  }, {
+    "categoryId" : 3,
+    "code" : "1114",
+    "fullName" : "P Tambe",
+    "info1" : "Pravin Tambe",
+    "name" : "P Tambe",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 4,
+    "value" : 6.0
+  }, {
+    "categoryId" : 3,
+    "code" : "388",
+    "fullName" : "M Henriques",
+    "info1" : "Moises Henriques",
+    "info4" : "Y",
+    "name" : "M Henriques",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 8.5
+  }, {
+    "categoryId" : 4,
+    "code" : "53",
+    "fullName" : "P Negi",
+    "info1" : "Pawan Negi",
+    "name" : "P Negi",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 12,
+    "value" : 7.0
+  }, {
+    "categoryId" : 1,
+    "code" : "135",
+    "fullName" : "A Rahane",
+    "info1" : "Ajinkya Rahane",
+    "name" : "A Rahane",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 48,
+    "value" : 9.5
+  }, {
+    "categoryId" : 4,
+    "code" : "1093",
+    "fullName" : "P Rasool",
+    "info1" : "Parveez Rasool",
+    "name" : "P Rasool",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1288",
+    "fullName" : "J Paris",
+    "info1" : "Joel Paris",
+    "info4" : "Y",
+    "name" : "J Paris",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 6.5
+  }, {
+    "categoryId" : 3,
+    "code" : "3183",
+    "fullName" : "K Pandya",
+    "info1" : "Krunal Pandya",
+    "name" : "K Pandya",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 1,
+    "value" : 4.0
+  }, {
+    "categoryId" : 1,
+    "code" : "2975",
+    "fullName" : "I Kishan",
+    "info1" : "Ishan Kishan",
+    "name" : "I Kishan",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 1,
+    "value" : 3.5
+  }, {
+    "categoryId" : 1,
+    "code" : "3177",
+    "fullName" : "A Nath",
+    "info1" : "Akshdeep Nath",
+    "name" : "A Nath",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 2.0
+  }, {
+    "categoryId" : 3,
+    "code" : "201",
+    "fullName" : "S Al Hasan",
+    "info1" : "Shakib Al Hasan",
+    "info4" : "Y",
+    "name" : "S Al Hasan",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 12,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "2746",
+    "fullName" : "B Sran",
+    "info1" : "Barinder Sran",
+    "name" : "B Sran",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "2737",
+    "fullName" : "A Wakhare",
+    "info1" : "Akshay Wakhare",
+    "name" : "A Wakhare",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "86",
+    "fullName" : "J Unadkat",
+    "info1" : "Jaydev Unadkat",
+    "name" : "J Unadkat",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 1,
+    "value" : 5.0
+  }, {
+    "categoryId" : 3,
+    "code" : "69",
+    "fullName" : "B Sharma",
+    "info1" : "Bipul Sharma",
+    "name" : "B Sharma",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 5.0
+  }, {
+    "categoryId" : 1,
+    "code" : "41",
+    "fullName" : "S Dhawan",
+    "info1" : "Shikhar Dhawan",
+    "name" : "S Dhawan",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 7,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1107",
+    "fullName" : "Mo Sharma",
+    "info1" : "Mohit Sharma",
+    "name" : "Mo Sharma",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 4,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "48",
+    "fullName" : "A Dinda",
+    "info1" : "Ashok Dinda",
+    "name" : "A Dinda",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 1,
+    "value" : 6.0
+  }, {
+    "categoryId" : 4,
+    "code" : "434",
+    "fullName" : "A Milne",
+    "info1" : "Adam Milne",
+    "info4" : "Y",
+    "name" : "A Milne",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 7.5
+  }, {
+    "categoryId" : 3,
+    "code" : "3182",
+    "fullName" : "K Kamath",
+    "info1" : "Kishore Kamath",
+    "name" : "K Kamath",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 3.0
+  }, {
+    "categoryId" : 1,
+    "code" : "1563",
+    "fullName" : "S Iyer",
+    "info1" : "Shreyas Iyer",
+    "name" : "S Iyer",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 23,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "151",
+    "fullName" : "A Mithun",
+    "info1" : "Abhimanyu Mithun",
+    "name" : "A Mithun",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 2.5
+  }, {
+    "categoryId" : 3,
+    "code" : "26",
+    "fullName" : "A Morkel",
+    "info1" : "Albie Morkel",
+    "info4" : "Y",
+    "name" : "A Morkel",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 3,
+    "value" : 6.5
+  }, {
+    "categoryId" : 3,
+    "code" : "964",
+    "fullName" : "M Stoinis",
+    "info1" : "Marcus Stoinis",
+    "info4" : "Y",
+    "name" : "M Stoinis",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 6.0
+  }, {
+    "categoryId" : 4,
+    "code" : "91",
+    "fullName" : "P Sangwan",
+    "info1" : "Pradeep Sangwan",
+    "name" : "P Sangwan",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 2.0
+  }, {
+    "categoryId" : 1,
+    "code" : "595",
+    "fullName" : "L Simmons",
+    "info1" : "Lendl Simmons",
+    "info4" : "Y",
+    "name" : "L Simmons",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 29,
+    "value" : 10.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1112",
+    "fullName" : "S Sharma",
+    "info1" : "Sandeep Sharma",
+    "name" : "S Sharma",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 10,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "307",
+    "fullName" : "T Southee",
+    "info1" : "Tim Southee",
+    "info4" : "Y",
+    "name" : "T Southee",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 1,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "1105",
+    "fullName" : "K Abbott",
+    "info1" : "Kyle Abbott",
+    "info4" : "Y",
+    "name" : "K Abbott",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 7.5
+  }, {
+    "categoryId" : 1,
+    "code" : "1555",
+    "fullName" : "R Bhui",
+    "info1" : "Ricky Bhui",
+    "name" : "R Bhui",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 2.0
+  }, {
+    "categoryId" : 3,
+    "code" : "1088",
+    "fullName" : "R Dhawan",
+    "info1" : "Rishi Dhawan",
+    "name" : "R Dhawan",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 1,
+    "value" : 6.5
+  }, {
+    "categoryId" : 1,
+    "code" : "107",
+    "fullName" : "R Sharma",
+    "info1" : "Rohit Sharma",
+    "name" : "R Sharma",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 57,
+    "value" : 11.0
+  }, {
+    "categoryId" : 1,
+    "code" : "191",
+    "fullName" : "S Marsh",
+    "info1" : "Shaun Marsh",
+    "info4" : "Y",
+    "name" : "S Marsh",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 8.5
+  }, {
+    "categoryId" : 4,
+    "code" : "1086",
+    "fullName" : "S Kaul",
+    "info1" : "Siddarth Kaul",
+    "name" : "S Kaul",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1740",
+    "fullName" : "J Yadav",
+    "info1" : "Jayant Yadav",
+    "name" : "J Yadav",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 2.5
+  }, {
+    "categoryId" : 4,
+    "code" : "3187",
+    "fullName" : "M Ashwin",
+    "info1" : "Murugan Ashwin",
+    "name" : "M Ashwin",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 2,
+    "value" : 3.5
+  }, {
+    "categoryId" : 1,
+    "code" : "271",
+    "fullName" : "S Smith",
+    "info1" : "Steve Smith",
+    "info4" : "Y",
+    "name" : "S Smith",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 15,
+    "value" : 9.0
+  }, {
+    "categoryId" : 1,
+    "code" : "72",
+    "fullName" : "M Singh",
+    "info1" : "Mandeep Singh",
+    "name" : "M Singh",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 1,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "92",
+    "fullName" : "R Bhatia",
+    "info1" : "Rajat Bhatia",
+    "name" : "R Bhatia",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 3,
+    "value" : 5.0
+  }, {
+    "categoryId" : 2,
+    "code" : "44",
+    "fullName" : "P Patel",
+    "info1" : "Parthiv Patel",
+    "name" : "P Patel",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 5,
+    "value" : 7.5
+  }, {
+    "categoryId" : 2,
+    "code" : "1558",
+    "fullName" : "A Bains",
+    "info1" : "Ankush Bains",
+    "name" : "A Bains",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 2.0
+  }, {
+    "categoryId" : 4,
+    "code" : "38",
+    "fullName" : "I Sharma",
+    "info1" : "Ishant Sharma",
+    "name" : "I Sharma",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 5,
+    "value" : 7.5
+  }, {
+    "categoryId" : 3,
+    "code" : "2740",
+    "fullName" : "H Pandya",
+    "info1" : "Hardik Pandya",
+    "name" : "H Pandya",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 30,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1751",
+    "fullName" : "C Milind",
+    "info1" : "Chama Milind",
+    "name" : "C Milind",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 3.0
+  }, {
+    "categoryId" : 3,
+    "code" : "49",
+    "fullName" : "I Pathan",
+    "info1" : "Irfan Pathan",
+    "name" : "I Pathan",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 10,
+    "value" : 8.0
+  }, {
+    "categoryId" : 1,
+    "code" : "3185",
+    "fullName" : "J Sharma",
+    "info1" : "Jitesh Sharma",
+    "name" : "J Sharma",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 5.5
+  }, {
+    "categoryId" : 1,
+    "code" : "84",
+    "fullName" : "G Gambhir",
+    "info1" : "Gautam Gambhir",
+    "name" : "G Gambhir",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 13,
+    "value" : 8.5
+  }, {
+    "categoryId" : 1,
+    "code" : "265",
+    "fullName" : "J Shah",
+    "info1" : "Jaydev Shah",
+    "name" : "J Shah",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 2.5
+  }, {
+    "categoryId" : 1,
+    "code" : "167",
+    "fullName" : "A Finch",
+    "info1" : "Aaron Finch",
+    "info4" : "Y",
+    "name" : "A Finch",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 2,
+    "value" : 9.0
+  }, {
+    "categoryId" : 2,
+    "code" : "2732",
+    "fullName" : "N Naik",
+    "info1" : "Nikhil Naik",
+    "name" : "N Naik",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 3.0
+  }, {
+    "categoryId" : 1,
+    "code" : "7",
+    "fullName" : "M Vijay",
+    "info1" : "Murali Vijay",
+    "name" : "M Vijay",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 5,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "231",
+    "fullName" : "B Hogg",
+    "info1" : "Brad Hogg",
+    "info4" : "Y",
+    "name" : "B Hogg",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 7.0
+  }, {
+    "categoryId" : 1,
+    "code" : "2756",
+    "fullName" : "S Billings",
+    "info1" : "Sam Billings",
+    "info4" : "Y",
+    "name" : "S Billings",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 4.5
+  }, {
+    "categoryId" : 2,
+    "code" : "102",
+    "fullName" : "D Karthik",
+    "info1" : "Dinesh Karthik",
+    "name" : "D Karthik",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 4,
+    "value" : 7.5
+  }, {
+    "categoryId" : 3,
+    "code" : "1083",
+    "fullName" : "V Shankar",
+    "info1" : "Vijay Shankar",
+    "name" : "V Shankar",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 2.0
+  }, {
+    "categoryId" : 1,
+    "code" : "3179",
+    "fullName" : "U Sharma",
+    "info1" : "Umang Sharma",
+    "name" : "U Sharma",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "2964",
+    "fullName" : "K Ahmed",
+    "info1" : "Khaleel Ahmed",
+    "name" : "K Ahmed",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 2.0
+  }, {
+    "categoryId" : 2,
+    "code" : "509",
+    "fullName" : "J Buttler",
+    "info1" : "Jos Buttler",
+    "info4" : "Y",
+    "name" : "J Buttler",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 15,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "10",
+    "fullName" : "S Jakati",
+    "info1" : "Shadab Jakati",
+    "name" : "S Jakati",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 4.0
+  }, {
+    "categoryId" : 1,
+    "code" : "1564",
+    "fullName" : "S Khan",
+    "info1" : "Sarfaraz Khan",
+    "name" : "S Khan",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 3,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "180",
+    "fullName" : "D Steyn",
+    "info1" : "Dale Steyn",
+    "info4" : "Y",
+    "name" : "D Steyn",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 2,
+    "value" : 8.5
+  }, {
+    "categoryId" : 1,
+    "code" : "2731",
+    "fullName" : "P Singh",
+    "info1" : "Pratyush Singh",
+    "name" : "P Singh",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "157",
+    "fullName" : "H Patel",
+    "info1" : "Harshal Patel",
+    "name" : "H Patel",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 2,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1106",
+    "fullName" : "A Rajpoot",
+    "info1" : "Ankit Rajpoot",
+    "name" : "A Rajpoot",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 2.5
+  }, {
+    "categoryId" : 4,
+    "code" : "32",
+    "fullName" : "A Sharma",
+    "info1" : "Ankit Sharma",
+    "name" : "A Sharma",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 3.5
+  }, {
+    "categoryId" : 3,
+    "code" : "457",
+    "fullName" : "F Behardien",
+    "info1" : "Farhaan Behardien",
+    "info4" : "Y",
+    "name" : "F Behardien",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 6.5
+  }, {
+    "categoryId" : 3,
+    "code" : "148",
+    "fullName" : "S Binny",
+    "info1" : "Stuart Binny",
+    "name" : "S Binny",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 2,
+    "value" : 6.0
+  }, {
+    "categoryId" : 4,
+    "code" : "112",
+    "fullName" : "RP Singh",
+    "info1" : "RP Singh",
+    "name" : "RP Singh",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 3,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "2743",
+    "fullName" : "KC Cariappa",
+    "info1" : "KC Cariappa",
+    "name" : "KC Cariappa",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 4.5
+  }, {
+    "categoryId" : 4,
+    "code" : "412",
+    "fullName" : "A Singh",
+    "info1" : "Anureet Singh",
+    "name" : "A Singh",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 3,
+    "value" : 7.5
+  }, {
+    "categoryId" : 1,
+    "code" : "233",
+    "fullName" : "AB de Villiers",
+    "info1" : "AB de Villiers",
+    "info4" : "Y",
+    "name" : "AB de Villiers",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 13,
+    "value" : 12.0
+  }, {
+    "categoryId" : 1,
+    "code" : "197",
+    "fullName" : "E Morgan",
+    "info1" : "Eoin Morgan",
+    "info4" : "Y",
+    "name" : "E Morgan",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "166",
+    "fullName" : "V Kumar",
+    "info1" : "Vinay Kumar",
+    "name" : "V Kumar",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 2,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "3189",
+    "fullName" : "A Karnewar",
+    "info1" : "Akshay Karnewar",
+    "name" : "A Karnewar",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 2.5
+  }, {
+    "categoryId" : 4,
+    "code" : "169",
+    "fullName" : "M Morkel",
+    "info1" : "Morne Morkel",
+    "info4" : "Y",
+    "name" : "M Morkel",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 2,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "98",
+    "fullName" : "A Nechim",
+    "info1" : "Abu Nechim",
+    "name" : "A Nechim",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 4.5
+  }, {
+    "categoryId" : 3,
+    "code" : "2722",
+    "fullName" : "C Brathwaite",
+    "info1" : "Carlos Brathwaite",
+    "info4" : "Y",
+    "name" : "C Brathwaite",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 13,
+    "value" : 7.0
+  }, {
+    "categoryId" : 3,
+    "code" : "177",
+    "fullName" : "A Russell",
+    "info1" : "Andre Russell",
+    "info4" : "Y",
+    "name" : "A Russell",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 33,
+    "value" : 11.5
+  }, {
+    "categoryId" : 4,
+    "code" : "3190",
+    "fullName" : "V Tokas",
+    "info1" : "Vikas Tokas",
+    "name" : "V Tokas",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 2.5
+  }, {
+    "categoryId" : 3,
+    "code" : "1084",
+    "fullName" : "B Aparajith",
+    "info1" : "Baba Aparajith",
+    "name" : "B Aparajith",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 4.0
+  }, {
+    "categoryId" : 4,
+    "code" : "103",
+    "fullName" : "H Singh",
+    "info1" : "Harbhajan Singh",
+    "name" : "H Singh",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 20,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "59",
+    "fullName" : "U Yadav",
+    "info1" : "Umesh Yadav",
+    "name" : "U Yadav",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 6,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "3178",
+    "fullName" : "S Kaushik",
+    "info1" : "Shivil Kaushik",
+    "name" : "S Kaushik",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 2.5
+  }, {
+    "categoryId" : 1,
+    "code" : "2739",
+    "fullName" : "S Lad",
+    "info1" : "Siddhesh Lad",
+    "name" : "S Lad",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "203",
+    "fullName" : "S Narine",
+    "info1" : "Sunil Narine",
+    "info4" : "Y",
+    "name" : "S Narine",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 10,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "76",
+    "fullName" : "P Chawla",
+    "info1" : "Piyush Chawla",
+    "name" : "P Chawla",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 7,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "82",
+    "fullName" : "V Malik",
+    "info1" : "Vikramjeet Malik",
+    "name" : "V Malik",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 3.0
+  }, {
+    "categoryId" : 3,
+    "code" : "261",
+    "fullName" : "K Yadav",
+    "info1" : "Kuldeep Yadav",
+    "name" : "K Yadav",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 5.0
+  }, {
+    "categoryId" : 4,
+    "code" : "969",
+    "fullName" : "T Boult",
+    "info1" : "Trent Boult",
+    "info4" : "Y",
+    "name" : "T Boult",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "34",
+    "fullName" : "A Reddy",
+    "info1" : "Ashish Reddy",
+    "name" : "A Reddy",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 6.0
+  }, {
+    "categoryId" : 4,
+    "code" : "85",
+    "fullName" : "I Abdulla",
+    "info1" : "Iqbal Abdulla",
+    "name" : "I Abdulla",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 3.5
+  }, {
+    "categoryId" : 1,
+    "code" : "100",
+    "fullName" : "A Rayudu",
+    "info1" : "Ambati Rayudu",
+    "name" : "A Rayudu",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 12,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "490",
+    "fullName" : "M Starc",
+    "info1" : "Mitchell Starc",
+    "info4" : "Y",
+    "name" : "M Starc",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 7,
+    "value" : 10.0
+  }, {
+    "categoryId" : 4,
+    "code" : "30",
+    "fullName" : "A Mishra",
+    "info1" : "Amit Mishra",
+    "name" : "A Mishra",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 11,
+    "value" : 8.0
+  }, {
+    "categoryId" : 2,
+    "code" : "127",
+    "fullName" : "R Uthappa",
+    "info1" : "Robin Uthappa",
+    "name" : "R Uthappa",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 19,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1075",
+    "fullName" : "J Holder",
+    "info1" : "Jason Holder",
+    "info4" : "Y",
+    "name" : "J Holder",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 6.5
+  }, {
+    "categoryId" : 4,
+    "code" : "898",
+    "fullName" : "I Tahir",
+    "info1" : "Imran Tahir",
+    "info4" : "Y",
+    "name" : "I Tahir",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 10,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "101",
+    "fullName" : "D Kulkarni",
+    "info1" : "Dhawal Kulkarni",
+    "name" : "D Kulkarni",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 2,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "204",
+    "fullName" : "M de Lange",
+    "info1" : "Marchant de Lange",
+    "info4" : "Y",
+    "name" : "M de Lange",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 6.5
+  }, {
+    "categoryId" : 1,
+    "code" : "179",
+    "fullName" : "C Lynn",
+    "info1" : "Chris Lynn",
+    "info4" : "Y",
+    "name" : "C Lynn",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 7.5
+  }, {
+    "categoryId" : 3,
+    "code" : "1113",
+    "fullName" : "A Patel",
+    "info1" : "Axar Patel",
+    "name" : "A Patel",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 11,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "958",
+    "fullName" : "A Zampa",
+    "info1" : "Adam Zampa",
+    "info4" : "Y",
+    "name" : "A Zampa",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 1,
+    "value" : 6.0
+  }, {
+    "categoryId" : 2,
+    "code" : "1125",
+    "fullName" : "L Rahul",
+    "info1" : "Lokesh Rahul",
+    "name" : "L Rahul",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 5.0
+  }, {
+    "categoryId" : 4,
+    "code" : "590",
+    "fullName" : "S Badree",
+    "info1" : "Samuel Badree",
+    "info4" : "Y",
+    "name" : "S Badree",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 4,
+    "value" : 8.0
+  }, {
+    "categoryId" : 1,
+    "code" : "1085",
+    "fullName" : "M Vohra",
+    "info1" : "Manan Vohra",
+    "name" : "M Vohra",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 6,
+    "value" : 6.0
+  }, {
+    "categoryId" : 4,
+    "code" : "2741",
+    "fullName" : "J Suchith",
+    "info1" : "Jagadeesha Suchith",
+    "name" : "J Suchith",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 2,
+    "value" : 6.0
+  }, {
+    "categoryId" : 1,
+    "code" : "110",
+    "fullName" : "T Suman",
+    "info1" : "Tirumalasetti Suman",
+    "name" : "T Suman",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 4.5
+  }, {
+    "categoryId" : 1,
+    "code" : "170",
+    "fullName" : "D Warner",
+    "info1" : "David Warner",
+    "info4" : "Y",
+    "name" : "D Warner",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 5,
+    "value" : 11.5
+  }, {
+    "categoryId" : 4,
+    "code" : "840",
+    "fullName" : "N Coulter-Nile",
+    "info1" : "Nathan Coulter-Nile",
+    "info4" : "Y",
+    "name" : "N Coulter-Nile",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 1,
+    "value" : 8.0
+  }, {
+    "categoryId" : 2,
+    "code" : "258",
+    "fullName" : "S Samson",
+    "info1" : "Sanju Samson",
+    "name" : "S Samson",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 5,
+    "value" : 7.0
+  }, {
+    "categoryId" : 1,
+    "code" : "1562",
+    "fullName" : "A Herwadkar",
+    "info1" : "Akhil Herwadkar",
+    "name" : "A Herwadkar",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 2.0
+  }, {
+    "categoryId" : 1,
+    "code" : "236",
+    "fullName" : "C Gayle",
+    "info1" : "Chris Gayle",
+    "info4" : "Y",
+    "name" : "C Gayle",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 12,
+    "value" : 12.0
+  }, {
+    "categoryId" : 4,
+    "code" : "116",
+    "fullName" : "B Kumar",
+    "info1" : "Bhuvneshwar Kumar",
+    "name" : "B Kumar",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 8,
+    "value" : 8.5
+  }, {
+    "categoryId" : 3,
+    "code" : "9",
+    "fullName" : "R Jadeja",
+    "info1" : "Ravindra Jadeja",
+    "name" : "R Jadeja",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 13,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "57",
+    "fullName" : "S Nadeem",
+    "info1" : "Shahbaz Nadeem",
+    "name" : "S Nadeem",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 1,
+    "value" : 5.0
+  }, {
+    "categoryId" : 3,
+    "code" : "968",
+    "fullName" : "C Anderson",
+    "info1" : "Corey Anderson",
+    "info4" : "Y",
+    "name" : "C Anderson",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 14,
+    "value" : 9.5
+  }, {
+    "categoryId" : 1,
+    "code" : "2972",
+    "fullName" : "R Pant",
+    "info1" : "Rishabh Pant",
+    "name" : "R Pant",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 1,
+    "value" : 2.0
+  }, {
+    "categoryId" : 4,
+    "code" : "798",
+    "fullName" : "K Richardson",
+    "info1" : "Kane Richardson",
+    "info4" : "Y",
+    "name" : "K Richardson",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 6.0
+  }, {
+    "categoryId" : 3,
+    "code" : "25",
+    "fullName" : "D Bravo",
+    "info1" : "Dwayne Bravo",
+    "info4" : "Y",
+    "name" : "D Bravo",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 14,
+    "value" : 12.0
+  }, {
+    "categoryId" : 4,
+    "code" : "115",
+    "fullName" : "A Nehra",
+    "info1" : "Ashish Nehra",
+    "name" : "A Nehra",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 17,
+    "value" : 9.5
+  }, {
+    "categoryId" : 1,
+    "code" : "413",
+    "fullName" : "D Smith",
+    "info1" : "Dwayne Smith",
+    "info4" : "Y",
+    "name" : "D Smith",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 1,
+    "value" : 8.0
+  }, {
+    "categoryId" : 1,
+    "code" : "932",
+    "fullName" : "P Handscomb",
+    "info1" : "Peter Handscomb",
+    "info4" : "Y",
+    "name" : "P Handscomb",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 6.5
+  }, {
+    "categoryId" : 1,
+    "code" : "14",
+    "fullName" : "S Raina",
+    "info1" : "Suresh Raina",
+    "name" : "S Raina",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 15,
+    "value" : 10.5
+  }, {
+    "categoryId" : 1,
+    "code" : "440",
+    "fullName" : "K Williamson",
+    "info1" : "Kane Williamson",
+    "info4" : "Y",
+    "name" : "K Williamson",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 9.0
+  }, {
+    "categoryId" : 1,
+    "code" : "2966",
+    "fullName" : "A Jaffer",
+    "info1" : "Armaan Jaffer",
+    "name" : "A Jaffer",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 2.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1594",
+    "fullName" : "M Rahman",
+    "info1" : "Mustafizur Rahman",
+    "info4" : "Y",
+    "name" : "M Rahman",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 2,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "111",
+    "fullName" : "Y Chahal",
+    "info1" : "Yuzvendra Chahal",
+    "name" : "Y Chahal",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 8,
+    "value" : 8.5
+  }, {
+    "categoryId" : 1,
+    "code" : "108",
+    "fullName" : "S Yadav",
+    "info1" : "Suryakumar Yadav",
+    "name" : "S Yadav",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 3,
+    "value" : 7.0
+  }, {
+    "categoryId" : 3,
+    "code" : "913",
+    "fullName" : "B Cutting",
+    "info1" : "Ben Cutting",
+    "info4" : "Y",
+    "name" : "B Cutting",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "77",
+    "fullName" : "P Kumar",
+    "info1" : "Praveen Kumar",
+    "name" : "P Kumar",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 2,
+    "value" : 7.0
+  }, {
+    "categoryId" : 3,
+    "code" : "3184",
+    "fullName" : "D Punia",
+    "info1" : "Deepak Punia",
+    "name" : "D Punia",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1480",
+    "fullName" : "A Tye",
+    "info1" : "Andrew Tye",
+    "info4" : "Y",
+    "name" : "A Tye",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "value" : 7.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1111119",
+    "fullName" : "Test Player",
+    "info1" : "Test Player",
+    "name" : "Test Player",
+    "nextFixtureId" : 57,
+    "sideId" : 9,
+    "state" : "E",
+    "value" : 5.0
+  }, {
+    "categoryId" : 1,
+    "code" : "2745",
+    "fullName" : "P Sahu",
+    "info1" : "Pardeep Sahu",
+    "name" : "P Sahu",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 2.0
+  }, {
+    "categoryId" : 1,
+    "code" : "202",
+    "fullName" : "B McCullum",
+    "info1" : "Brendon McCullum",
+    "info4" : "Y",
+    "name" : "B McCullum",
+    "nextFixtureId" : 3,
+    "sideId" : 2,
+    "teams_selected" : 11,
+    "value" : 10.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1090",
+    "fullName" : "I Pandey",
+    "info1" : "Ishwar Pandey",
+    "name" : "I Pandey",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 9,
+    "value" : 6.5
+  }, {
+    "categoryId" : 2,
+    "code" : "52",
+    "fullName" : "N Ojha",
+    "info1" : "Naman Ojha",
+    "name" : "N Ojha",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 6.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1124",
+    "fullName" : "J Bumrah",
+    "info1" : "Jasprit Bumrah",
+    "name" : "J Bumrah",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 48,
+    "value" : 9.0
+  }, {
+    "categoryId" : 4,
+    "code" : "8",
+    "fullName" : "R Ashwin",
+    "info1" : "Ravichandran Ashwin",
+    "name" : "R Ashwin",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 36,
+    "value" : 11.0
+  }, {
+    "categoryId" : 1,
+    "code" : "96",
+    "fullName" : "Y Pathan",
+    "info1" : "Yusuf Pathan",
+    "name" : "Y Pathan",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 6,
+    "value" : 8.5
+  }, {
+    "categoryId" : 3,
+    "code" : "1020",
+    "fullName" : "T Head",
+    "info1" : "Travis Head",
+    "info4" : "Y",
+    "name" : "T Head",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 7.0
+  }, {
+    "categoryId" : 2,
+    "code" : "1116",
+    "fullName" : "S Jackson",
+    "info1" : "Sheldon Jackson",
+    "name" : "S Jackson",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 4.0
+  }, {
+    "categoryId" : 4,
+    "code" : "105",
+    "fullName" : "P Suyal",
+    "info1" : "Pawan Suyal",
+    "name" : "P Suyal",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 2.0
+  }, {
+    "categoryId" : 4,
+    "code" : "1475",
+    "fullName" : "S Boland",
+    "info1" : "Scott Boland",
+    "info4" : "Y",
+    "name" : "S Boland",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "value" : 6.0
+  }, {
+    "categoryId" : 3,
+    "code" : "1118",
+    "fullName" : "K Sharma",
+    "info1" : "Karn Sharma",
+    "name" : "K Sharma",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 1,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "3180",
+    "fullName" : "S Signh",
+    "info1" : "Swapnil Singh",
+    "name" : "S Signh",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 3.0
+  }, {
+    "categoryId" : 4,
+    "code" : "213",
+    "fullName" : "M Johnson",
+    "info1" : "Mitchell Johnson",
+    "info4" : "Y",
+    "name" : "M Johnson",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 2,
+    "value" : 8.5
+  }, {
+    "categoryId" : 1,
+    "code" : "1115",
+    "fullName" : "S Baby",
+    "info1" : "Sachin Baby",
+    "name" : "S Baby",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 2.0
+  }, {
+    "categoryId" : 2,
+    "code" : "1",
+    "fullName" : "MS Dhoni",
+    "info1" : "MS Dhoni",
+    "name" : "MS Dhoni",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 30,
+    "value" : 9.0
+  }, {
+    "categoryId" : 3,
+    "code" : "78",
+    "fullName" : "R Sathish",
+    "info1" : "Rajagopal Sathish",
+    "name" : "R Sathish",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 2.0
+  }, {
+    "categoryId" : 4,
+    "code" : "2970",
+    "fullName" : "M Lomror",
+    "info1" : "Mahipal Lomror",
+    "name" : "M Lomror",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "value" : 3.5
+  }, {
+    "categoryId" : 4,
+    "code" : "1745",
+    "fullName" : "S Thakur",
+    "info1" : "Shardul Thakur",
+    "name" : "S Thakur",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "value" : 5.0
+  }, {
+    "categoryId" : 4,
+    "code" : "3188",
+    "fullName" : "P Dubey",
+    "info1" : "Praveen Dubey",
+    "name" : "P Dubey",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 5.0
+  }, {
+    "categoryId" : 1,
+    "code" : "123",
+    "fullName" : "M Pandey",
+    "info1" : "Manish Pandey",
+    "name" : "M Pandey",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 29,
+    "value" : 7.5
+  }, {
+    "categoryId" : 4,
+    "code" : "211",
+    "fullName" : "L Malinga",
+    "info1" : "Lasith Malinga",
+    "info4" : "Y",
+    "name" : "L Malinga",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 12,
+    "value" : 10.0
+  }, {
+    "categoryId" : 3,
+    "code" : "869",
+    "fullName" : "D Wiese",
+    "info1" : "David Wiese",
+    "info4" : "Y",
+    "name" : "D Wiese",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "value" : 8.0
+  }, {
+    "categoryId" : 3,
+    "code" : "210",
+    "fullName" : "K Pollard",
+    "info1" : "Kieron Pollard",
+    "info4" : "Y",
+    "name" : "K Pollard",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 11,
+    "value" : 11.0
+  }, {
+    "categoryId" : 4,
+    "code" : "165",
+    "fullName" : "Z Khan",
+    "info1" : "Zaheer Khan",
+    "name" : "Z Khan",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 13,
+    "value" : 9.0
+  }, {
+    "categoryId" : 3,
+    "code" : "1556",
+    "fullName" : "D Hooda",
+    "info1" : "Deepak Hooda",
+    "name" : "D Hooda",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "teams_selected" : 4,
+    "value" : 7.5
+  }, {
+    "categoryId" : 1,
+    "code" : "773",
+    "fullName" : "C Munro",
+    "info1" : "Colin Munro",
+    "info4" : "Y",
+    "name" : "C Munro",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "teams_selected" : 1,
+    "value" : 8.0
+  }, {
+    "categoryId" : 4,
+    "code" : "730",
+    "fullName" : "M McClen'an",
+    "info1" : "Mitchell McClenaghan",
+    "info4" : "Y",
+    "name" : "M McClen'an",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 2,
+    "value" : 8.5
+  }, {
+    "categoryId" : 1,
+    "code" : "24",
+    "fullName" : "F du Plessis",
+    "info1" : "Francois du Plessis",
+    "info4" : "Y",
+    "name" : "F du Plessis",
+    "nextFixtureId" : 1,
+    "sideId" : 6,
+    "teams_selected" : 14,
+    "value" : 8.0
+  }, {
+    "categoryId" : 1,
+    "code" : "276",
+    "fullName" : "K Nair",
+    "info1" : "Karun Nair",
+    "name" : "K Nair",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 3,
+    "value" : 6.0
+  }, {
+    "categoryId" : 1,
+    "code" : "2738",
+    "fullName" : "N Rana",
+    "info1" : "Nitish Rana",
+    "name" : "N Rana",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "value" : 3.0
+  }, {
+    "categoryId" : 3,
+    "code" : "182",
+    "fullName" : "JP Duminy",
+    "info1" : "JP Duminy",
+    "info4" : "Y",
+    "name" : "JP Duminy",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 9,
+    "value" : 10.0
+  }, {
+    "categoryId" : 1,
+    "code" : "297",
+    "fullName" : "K Jadhav",
+    "info1" : "Kedar Jadhav",
+    "name" : "K Jadhav",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 1,
+    "value" : 7.0
+  }, {
+    "categoryId" : 1,
+    "code" : "187",
+    "fullName" : "D Miller",
+    "info1" : "David Miller",
+    "info4" : "Y",
+    "name" : "D Miller",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 3,
+    "value" : 9.5
+  }, {
+    "categoryId" : 3,
+    "code" : "836",
+    "fullName" : "C Morris",
+    "info1" : "Chris Morris",
+    "info4" : "Y",
+    "name" : "C Morris",
+    "nextFixtureId" : 2,
+    "sideId" : 1,
+    "teams_selected" : 2,
+    "value" : 8.5
+  }, {
+    "categoryId" : 4,
+    "code" : "162",
+    "fullName" : "S Aravind",
+    "info1" : "Sreenath Aravind",
+    "name" : "S Aravind",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 1,
+    "value" : 5.0
+  }, {
+    "categoryId" : 4,
+    "code" : "3181",
+    "fullName" : "Ma Sharma",
+    "info1" : "Manan Sharma",
+    "name" : "Ma Sharma",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 2.5
+  }, {
+    "categoryId" : 3,
+    "code" : "227",
+    "fullName" : "S Watson",
+    "info1" : "Shane Watson",
+    "info4" : "Y",
+    "name" : "S Watson",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 9,
+    "value" : 11.0
+  }, {
+    "categoryId" : 4,
+    "code" : "748",
+    "fullName" : "J Hastings",
+    "info1" : "John Hastings",
+    "info4" : "Y",
+    "name" : "J Hastings",
+    "nextFixtureId" : 2,
+    "sideId" : 4,
+    "value" : 8.0
+  }, {
+    "categoryId" : 1,
+    "code" : "253",
+    "fullName" : "G Mann Singh",
+    "info1" : "Gurkeerat Mann Singh",
+    "name" : "G Mann Singh",
+    "nextFixtureId" : 3,
+    "sideId" : 3,
+    "teams_selected" : 1,
+    "value" : 5.5
+  }, {
+    "categoryId" : 2,
+    "code" : "99",
+    "fullName" : "A Tare",
+    "info1" : "Aditya Tare",
+    "name" : "A Tare",
+    "nextFixtureId" : 4,
+    "sideId" : 8,
+    "value" : 5.0
+  }, {
+    "categoryId" : 1,
+    "code" : "164",
+    "fullName" : "V Kohli",
+    "info1" : "Virat Kohli",
+    "name" : "V Kohli",
+    "nextFixtureId" : 4,
+    "sideId" : 7,
+    "teams_selected" : 34,
+    "value" : 12.0
+  }, {
+    "categoryId" : 1,
+    "code" : "60",
+    "fullName" : "U Chand",
+    "info1" : "Unmukt Chand",
+    "name" : "U Chand",
+    "nextFixtureId" : 1,
+    "sideId" : 5,
+    "teams_selected" : 2,
+    "value" : 7.0
+  } ]
+}

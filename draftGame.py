@@ -2,6 +2,9 @@ from database import dbInterface
 from random import shuffle
 from interface import interface
 from datetime import datetime as dt
+from threading import Thread 
+from futureWorker import futureWorker
+
 
 class draftGame:
     def __init__(self):
@@ -9,12 +12,16 @@ class draftGame:
         #game initialization
         self.tg = None
         self.rounds = []
-        self.rounds.append(['ban', 'ban', 'pick'])
+        self.rounds.append(['ban', 'ban', 'ban'])
+        self.rounds.append(['pick'])
         self.rounds.append(['pick_r'])
-        self.rounds.append(['ban_r', 'ban', 'pick'])
         self.rounds.append(['pick_r'])
-        self.rounds.append(['ban_r', 'pick'])
         self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+
+
+
         
         self.currentPhase = 'waiting' #we start at drafting
 
@@ -68,9 +75,7 @@ class draftGame:
             tg.broadcast("Game is on! Good luck")
             tg.broadcast(game.gameStage())
             return "Done"
-
-
-    def getCurrentStage(self):
+    def getCurdrentStage(self):
         if 'ban' in self.rounds[self.currentRound][self.currentStage]: return 'ban'
         elif 'pick' in self.rounds[self.currentRound][self.currentStage]: return 'pick'
         else: return None
@@ -137,15 +142,17 @@ class draftGame:
             #process request
             pass
         elif command == 'forcesell':
+            return self.processForcedSale(user,args)
+            #validate stage
+            #process request
+        elif command == 'bid':
             #validate stage
             #process request
             pass
         elif command == 'viewteam':
             return self.viewTeamQuery(user)
         elif command == 'swap':
-            #validate stage
-            #process 
-            pass
+            return self.processSwap(args,user)
         elif command == 'viewmarket':
             #process
             pass
@@ -155,6 +162,29 @@ class draftGame:
         elif command == 'start':
             return self.startGame(user)
  
+    def processForcedSale(self,user,args):
+        pass
+        
+    def processSwap(self,args,user):
+        try:
+            pos1 = args.split(" ")[0]
+            pos2 = args.split(" ")[1]
+            posCheck = "select playerId from status=? and teamPos=?"
+            pos1Exists = self.db.send(posCheck,[teamId,pos1])
+            pos2Exists = self.db.send(posCheck,[teamId,pos2])
+            if len(pos1Exists) and len(pos2Exists):
+                pos1Id = pos1Exists[0][0]
+                pos2Id = pos2Exists[0][0]
+                swapQuery = "update playerStatus set teamPos=? where playerId=?"
+                self.db.send(swapQuery,[pos2,pos1Id])
+                self.db.send(swapQuery,[pos1,pos2Id])
+                self.db.commit()
+                return "Swapped position: " + pos1.__str__() + " with position:" + pos2.__str__()
+            else:
+                return "You do not have players in these positions. Check your team with /viewteam"
+        except:
+            return "Invalid positions, cannot swap"
+
     def processBan(self,user):
         currentUser = self.getUserById(self.order[self.currentPlayer])
         #validate user & stage
@@ -188,12 +218,9 @@ class draftGame:
                     self.nextPlayer()
                     self.tg.broadcast(self.gameStage())
                     return "Done"
-                else:
-                    return args + " is banned. Pick someone else."
-            else:
-                return "Invalid playerId"
-            else:
-                return "You cannot pick anyone at the moment. Check game stage"
+                else: return args + " is banned. Pick someone else."
+            else: return "Invalid playerId"
+        else: return "You cannot pick anyone at the moment. Check game stage"
 
 
     def getHelpText(self):
@@ -206,19 +233,18 @@ class draftGame:
         helpText += "/ban <id>: ban player from draft (draft stage only)\n"
         helpText += "/pick <id>: pick player from draft (draft stage only)\n"
         #helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
+        #helpText += "/bid <id> amount : place bid on player. bidding is blind auction.
         #helpText += "/forcesell <id>: immediate sale for 75% price\n"
         helpText += "/viewteam: see your team. your top 11 will play\n"
         #helpText += "/setcap <id>: set your captain. default player at position 1 is captain\n"
-        #helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
+        helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         #helpText += "/viewmarket: see team owned players for sale\n"
         #helpText += "/deadline: view auction deadline and bids"
-        #TODOs: rabbitMq for snapshot, auction resolution and spoilage
- 
         return helpText
 
     def viewTeamQuery(self,user):
         teamId = self.getTeamIdFromUser(user)
-        query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.skill2 from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
+        query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
         teamStr = "Team name: " + self.getTeamName(teamId) + "\n"
         teamStr += self.db.sendPretty(query,[teamId])
         teamStr += "\nBank Value:" + self.getBankValue(teamId).__str__()
@@ -244,8 +270,8 @@ class draftGame:
             else:
                 team = arg #may be a team?
             
-        query = "select * from playerInfo where team like ? and (skill1 like ? or skill2 like ?)"
-        return self.db.sendPretty(query,["%"+team+"%","%"+skill+"%","%"+skill+"%"])
+        query = "select * from playerInfo where team like ? and (skill1 like ?)"
+        return self.db.sendPretty(query,["%"+team+"%","%"+skill+"%"])
 
     def findPlayer(self,args):
         query = "select * from playerInfo where playerName like ?"
@@ -256,7 +282,7 @@ class draftGame:
         return self.db.send(query,[id])[0][0]
 
     def findPlayerById(self,args):
-        query = "select playerInfo.playerId,playerInfo.team,playerInfo.playerName,playerInfo.price,playerInfo.skill1,playerInfo.skill2,playerStatus.status from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.playerId = ?"
+        query = "select playerInfo.playerId,playerInfo.team,playerInfo.playerName,playerInfo.price,playerInfo.skill1,playerInfo.overseas,playerStatus.status from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.playerId = ?"
         return self.db.sendPretty(query,[args.strip()])
 
 
@@ -264,6 +290,8 @@ if __name__=="__main__":
     game = draftGame()
     tg = interface(game)
     game.setTg(tg)
+    fw = futureWorker(tg)
+    fw.start()
 
     while(game.currentPhase != 'game_on'):
         tg.start()

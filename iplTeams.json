@@ -1,0 +1,163 @@
+{
+  "budget" : 100,
+  "competition" : "IPL Fantasy Championship 2016",
+  "maxPerTeam" : 6,
+  "captainCount" : 1,
+  "name" : "IPL Fantasy Championship 2016",
+  "type" : "Team",
+  "categories" : [ {
+    "abbr" : "BAT",
+    "captain" : "0-1",
+    "id" : 1,
+    "name" : "Batsman",
+    "squad" : "4-5",
+    "tablerows" : 5,
+    "team" : "4-5"
+  }, {
+    "abbr" : "WK",
+    "captain" : "0-1",
+    "id" : 2,
+    "name" : "Wicket-keeper",
+    "squad" : "1-1",
+    "tablerows" : 5,
+    "team" : "1-1"
+  }, {
+    "abbr" : "AR",
+    "captain" : "0-1",
+    "id" : 3,
+    "name" : "All-rounder",
+    "squad" : "1-4",
+    "tablerows" : 5,
+    "team" : "1-4"
+  }, {
+    "abbr" : "BOW",
+    "captain" : "0-1",
+    "id" : 4,
+    "name" : "Bowler",
+    "squad" : "2-5",
+    "tablerows" : 5,
+    "team" : "2-5"
+  } ],
+  "rules" : [ {
+    "abbr" : "R",
+    "desc" : "Run"
+  }, {
+    "abbr" : "6",
+    "desc" : "Six bonus"
+  }, {
+    "abbr" : "25",
+    "desc" : "25-run bonus"
+  }, {
+    "abbr" : "D",
+    "desc" : "Duck"
+  }, {
+    "abbr" : "SR1",
+    "desc" : "0-74.99 SR"
+  }, {
+    "abbr" : "SR2",
+    "desc" : "75-99.99 SR"
+  }, {
+    "abbr" : "SR3",
+    "desc" : "100-149.99 SR"
+  }, {
+    "abbr" : "SR4",
+    "desc" : "150-199.99 SR"
+  }, {
+    "abbr" : "SR5",
+    "desc" : "200+ SR"
+  }, {
+    "abbr" : "W",
+    "desc" : "Wicket"
+  }, {
+    "abbr" : "2W",
+    "desc" : "2-wicket haul"
+  }, {
+    "abbr" : "WB",
+    "desc" : "Wicket bonus"
+  }, {
+    "abbr" : "M",
+    "desc" : "Maiden"
+  }, {
+    "abbr" : "DB",
+    "desc" : "Dot Ball"
+  }, {
+    "abbr" : "ECO1",
+    "desc" : "0-5.00 ER"
+  }, {
+    "abbr" : "ECO2",
+    "desc" : "5.01-8.00 ER"
+  }, {
+    "abbr" : "ECO3",
+    "desc" : "8.01-10.00 ER"
+  }, {
+    "abbr" : "ECO4",
+    "desc" : "10.01-12.00 ER"
+  }, {
+    "abbr" : "ECO5",
+    "desc" : "12.01+ ER"
+  }, {
+    "abbr" : "C",
+    "desc" : "Catch"
+  }, {
+    "abbr" : "ST",
+    "desc" : "Stumping"
+  }, {
+    "abbr" : "RO",
+    "desc" : "Run-out"
+  }, {
+    "abbr" : "MOM",
+    "desc" : "Man of the Match"
+  }, {
+    "abbr" : "TW",
+    "desc" : "Team Win"
+  }, {
+    "abbr" : "TWF",
+    "desc" : "Team Win Finals"
+  } ],
+  "sides" : [ {
+    "abbr" : "DD",
+    "id" : 1,
+    "info1" : "Delhi Daredevils",
+    "name" : "Delhi Daredevils"
+  }, {
+    "abbr" : "GL",
+    "id" : 2,
+    "info1" : "Gujarat Lions",
+    "name" : "Gujarat Lions"
+  }, {
+    "abbr" : "KXIP",
+    "id" : 3,
+    "info1" : "Kings XI Punjab",
+    "name" : "Kings XI Punjab"
+  }, {
+    "abbr" : "KKR",
+    "id" : 4,
+    "info1" : "Kolkata Knight Riders",
+    "name" : "Kolkata Knight Riders"
+  }, {
+    "abbr" : "MI",
+    "id" : 5,
+    "info1" : "Mumbai Indians",
+    "name" : "Mumbai Indians"
+  }, {
+    "abbr" : "RPS",
+    "id" : 6,
+    "info1" : "Rising Pune Supergiants",
+    "name" : "Rising Pune Supergiants"
+  }, {
+    "abbr" : "RCB",
+    "id" : 7,
+    "info1" : "Royal Challengers Bangalore",
+    "name" : "Royal Challengers Bangalore"
+  }, {
+    "abbr" : "SRH",
+    "id" : 8,
+    "info1" : "Sunrisers Hyderabad",
+    "name" : "Sunrisers Hyderabad"
+  }, {
+    "abbr" : "TBC",
+    "id" : 9,
+    "info1" : "TBC",
+    "name" : "TBC"
+  } ]
+}
