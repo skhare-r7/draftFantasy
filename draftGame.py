@@ -2,8 +2,7 @@ from database import dbInterface
 from random import shuffle
 from interface import interface
 from datetime import datetime as dt
-from threading import Thread 
-from futureWorker import futureWorker
+from threading import Thread
 from time import sleep
 from datetime import timedelta
 
@@ -21,10 +20,6 @@ class draftGame:
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
-
-
-
-        
         self.currentPhase = 'waiting' #we start at drafting
 
         self.currentRound = 0
@@ -106,7 +101,15 @@ class draftGame:
         self.db.commit()
 
     def moveAllPlayersToOpenMarket(self):
-        pass
+        #sqlite join and update doesnt work!
+        draftPlayerQuery = "select playerId from playerStatus where status='Draft'"
+        response = self.db.send(draftPlayerQuery,[])
+        for player in response:
+            id = player[0]
+            price = self.getPrice(id)
+            updateQuery = "update playerStatus set status='Open',lastModified=?,teamPos=-1,forSale=? where playerId=?"
+            self.db.send(updateQuery,[dt.now(),price,id])
+        self.db.commit()
         
     def pickId(self,user, id):
         teamId = self.getTeamIdFromUser(user)
@@ -159,21 +162,30 @@ class draftGame:
         elif command == 'swap':
             return self.processSwap(user,args)
         elif command == 'viewmarket':
-            pass
+            return self.processViewMarket()
         elif command == 'deadline':
-            pass
+            return self.processDeadline()
         #hidden commands
         elif command == 'start':
             return self.startGame(user)
         else: pass
  
+    def processDeadline(self):
+        pass
+    def processViewMarket(self):
+        pass
+
     def playerAvailableForBid(self,playerId):
-        pass
+        bidQuery = "select forSale from playerStatus where playerId=?"
+        return self.db.send(bidQuery,[playerId])[0][0] != -1
+
     def existingAuction(self,playerId):
-        pass
+        existingQuery = "select count(*) futures where info=?"
+        return self.db.send(existingQuery,[playerId])[0][0]==1
         
     def processBid(self,user,args):
         playerId = args.split(' ')[0]
+        teamId = self.getTeamIdFromUser(user)
         bid = None
         if self.isValidId(playerId) and self.playerAvailableForBid(playerId):
             try:
@@ -184,11 +196,14 @@ class draftGame:
                 return "Invalid bid"
             if bid is None: 
                 return "Invalid bid. Check bidding syntax"
-            elif self.existingAuction(playerId):
-                #place bid
-                pass
-            else:
+            if not self.existingAuction(playerId):
                 self.prepareNewAuction(auctionCloseTime,playerName,startingPrice,playerId)
+            #place bid
+            bidQuery = "insert into transactions values ('Bid',?,?,?,?,?)"
+            self.db.send(bidQuery,[playerId,bid,teamId,0,dt.now()])
+            self.db.commit()
+            self.tg.broadcast("User:"+user+" placed bid on player:"+self.getName(playerId))
+
 
     def verifyOwnership(self,user,id):
         teamId = self.getTeamIdFromUser(user)
@@ -237,8 +252,16 @@ class draftGame:
         self.tg.broadcast(broadcastMessage)
         futuresQuery = "insert into futures (type,timestamp,info) values ('Auction',?,?)"
         self.db.send(futuresQuery,[auctionCloseTime,playerId])
+        self.db.commit()
  
         
+    def closeAuction(self,id):
+        closeQuery = "delete from futures where info=?"
+        self.db.send(closeQuery,[id])
+        transactionsQuery = "update transactions set complete=1 where playerId=? and (type='Auction' or type='Bid')"
+        self.db.send(transactionsQuery,[id])
+        self.db.commit()
+
     def processForcedSale(self,user,args):
         #verify ownership
         if self.isValidId(args) and self.verifyOwnership(user,args):
@@ -249,9 +272,10 @@ class draftGame:
             forSale = playerDetails[1]
             teamPos = playerDetails[2]
             teamLastPos = self.getLastPos(user) 
-            if forSale == -1:
-                #close auction immediately
-                pass
+            if forSale != -1:
+                tg.broadcast("Auction on player:"+playerName+ " is closed due to forced sale")
+                #close auction immediately (delete from futures)
+                self.closeAuction(id)
             #hack to ensure the force sale is last position
             self.processSwap(user, teamPos.__str__() + " " + teamLastPos.__str__())
             #move player to open market
@@ -400,23 +424,68 @@ class draftGame:
         return self.db.sendPretty(query,[args.strip()])
 
 
-def finalizeAuction(future):
-    pass
+    def getOwnerId(self,id):
+        ownerQuery = "select status from playerStatus where playerId=?"
+        return self.db.send(ownerQuery,[id])
+
+    def isValidOwner(self,id):
+        query = "select count(*) from humanPlayers where teamId=?"
+        return self.db.send(query,[id])[0][0] == 1
+
+
+def finalizeAuction(future,game):
+    futureId = future[0]
+    id = future[3]
+    bidsQuery = "select value, humanId from transactions where playerId=? and complete=0 order by value desc limit 1"
+    highestBid = game.db.send(bidsQuery,[id])[0]
+    value = highestBid[0]
+    newOwner = highestBid[1]
+    startingBidQuery = "select forSale from playerStatus where playerId=?"
+    startingBid = game.db.send(startingBidQuery,[id])[0][0]
+    message = ""
+    if value > startingBid:
+        message= "Congratulations. User:"+game.getUserById(newOwner)+" has won the bid on player:" + game.getPlayerNameById(id) +"\n"
+        message+= "Winning bid:"+value.__str__()
+        #transfer ownership
+        #transfer money
+        oldOwner = game.getOwnerId(id)
+        if game.isValidOwner(oldOwner):
+            oldOwnerBank = game.getBankValue(oldOwner) + value
+            newOwnerBankUpdate = "update humanPlayers set bank=? where teamId=?"
+            game.db.send(newOwnerBankUpdate,[oldOwnerBank,oldOwner])
+        newOwnerBank = game.getBankValue(newOwner) - value
+        newOwnerBankUpdate = "update humanPlayers set bank=? where teamId=?"
+        game.db.send(newOwnerBankUpdate,[newOwnerBank,newOwner])
+        
+        playerTransferQuery = "update playerStatus set status=? where playerId=?"
+        game.db.send(playerTransferQuery,[newOwner,id])
+
+    else:
+        message = "Closing auction on player:" + self.getPlayerNameById(id) + "\n"
+        message += "No bids received were higher than starting bid"
+    game.closeAuction(id)
+    deleteFutureQuery = "delete from futures where id=?"
+    game.db.send(deleteFutureQuery,[futureId])
+    game.db.commit()
+    return mesasge
+
+
 def lockTeams(future):
     pass
 
-def futureWorker(tg):
+
+def futureWorker(tg,game):
     db = dbInterface()
     while True:
         print 'monitoring future queue'
         checkFutureQuery = "select * from futures where timestamp <= datetime('now','localtime')"
         futures = db.send(checkFutureQuery,[])
         for future in futures:
-            if future[0] == 'auction':
-                message = finalizeAuction(future)
+            if future[1] == 'Auction':
+                message = finalizeAuction(future,game)
                 tg.broadcast(message)
-            elif future[1] == 'lock':
-                message = lockTeams(future)
+            elif future[1] == 'Lock':
+                message = lockTeams(future,game)
                 tg.broadcast(message)
             else:
                 pass
@@ -429,9 +498,8 @@ if __name__=="__main__":
     tg = interface(game)
     game.setTg(tg)
 
-    t = Thread(target=futureWorker, args=(tg,))
-#    t.start() #future workers, uncomment once deletion of future starts
+    t = Thread(target=futureWorker, args=(tg,game,))
+    t.start() #future workers, uncomment once deletion of future starts
     tg.start() #telegram worker
     
-    tg.join()
     t.join()

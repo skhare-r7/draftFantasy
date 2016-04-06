@@ -41,7 +41,7 @@ def create_humanplayers(c):
 # example:
 #_______________________________________________________
 #| playerId | status | forSale | lastModified | teamPos|
-#|   12     | Open   |    -1   | 2016-03-28   |  -1    |  <- player is in open market
+#|   12     | Open   |    3.2  | 2016-03-28   |  -1    |  <- player is in open market
 #|   156    |  2     |    -1   | 2016-03-25   |   3    |  <- player is in team 2, position 3
 #|   25     |  1     |    5.0  | 2016-03-26   |   5    |  <- player is in team 1, position 5, and up for sale 
 #
@@ -74,7 +74,6 @@ def getFullTeamNameFromSideId(value):
     elif value == 7: return "Royal Challengers Bangalore"
     elif value == 8: return "Sunrisers Hyderabad"
     else: return None
-
 
 def getTeamNameFromSideId(value):
     if value == 1: return "DD"
