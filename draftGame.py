@@ -382,6 +382,7 @@ class draftGame:
 
     def viewTeamQuery(self,user,args):
         if (len(args) > 1):
+            args = args.capitalize()
             teamId = self.getTeamIdFromUser(args)
         else: teamId = self.getTeamIdFromUser(user)
         query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
