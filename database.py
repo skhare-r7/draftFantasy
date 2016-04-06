@@ -28,32 +28,32 @@ def create_humanplayers(c):
 
 
 #Create a player Status table
-# status: [Auction|Open|TeamId]
-#   Auction : Player is available for pick / ban in auction stage. 
+# status: [Draft|Open|TeamId]
+#   Draft : Player is available for pick / ban in draft stage. 
 #             All players will be moved from Auction after initial setup
 #   Open    : Player is available for bidding in the open market
 #             Stale players lose value in the open market
 #   TeamId  : Player belongs to Team TeamId
-# forSale[0|1]: Indicates if player is privately up for auction  
+# forSale: Indicates opening auction price. -1 means not on auction
 # lastModified: Keep track of time spent in open market
 # teamPos: Indicates playing position in roster (players 1-11 are active)
 
 # example:
 #_______________________________________________________
 #| playerId | status | forSale | lastModified | teamPos|
-#|   12     | Open   |    0    | 2016-03-28   |  -1    |  <- player is in open market
-#|   156    |  2     |    0    | 2016-03-25   |   3    |  <- player is in team 2, position 3
-#|   25     |  1     |    1    | 2016-03-26   |   5    |  <- player is in team 1, position 5, and up for sale 
+#|   12     | Open   |    -1   | 2016-03-28   |  -1    |  <- player is in open market
+#|   156    |  2     |    -1   | 2016-03-25   |   3    |  <- player is in team 2, position 3
+#|   25     |  1     |    5.0  | 2016-03-26   |   5    |  <- player is in team 1, position 5, and up for sale 
 #
 
 def create_playerStatus(c):
     c.execute('''CREATE TABLE playerStatus
-              (playerId integer, status text, teamId integer, forSale int, lastModified ts, teamPos int)''')
+              (playerId integer, status text, forSale real, lastModified ts, teamPos int)''')
 
     c.execute("select playerId from playerInfo")
     for entry in c.fetchall():
         id = entry[0]
-        c.execute("INSERT INTO playerStatus VALUES (?,'Auction', NULL, '0',?, NULL)",[id,datetime.datetime.now()])
+        c.execute("INSERT INTO playerStatus VALUES (?,'Draft',-1,?, -1)",[id,datetime.datetime.now()])
     
 
 
@@ -131,8 +131,8 @@ def create_playerinfo(c):
 
 #Create transaction table
 # type:
-#   Ban: Ban playerId from auction
-#   Pick: Pick playerId from auction
+#   Ban: Ban playerId from draft
+#   Pick: Pick playerId from draft
 #   Auction: Put up player from team for auction, [value] is min. price
 #   Bid: Bid [value] on player
 #   ForceSell: Instantly sell player to open market. [value] is 75%(?) of purchase price
@@ -161,13 +161,13 @@ def create_transaction(c):
 #info: playerId for type auction, gameId for gameLock
 #
 #example:
-#_______________________________
-# type      | timestamp | info |
-# auction   |           | 125  |
-# lock      |           | 4    |<-- game number (optional)
+#__________________________________
+#id | type      | timestamp | info |
+# 1 | Auction   |           | 125  |
+# 2 | Lock      |           | 4    |<-- game number (optional)
 def create_futures(c):
     c.execute('''CREATE TABLE futures
-              (type text, timestamp ts, info integer)''')
+              (id integer primary key, type text, timestamp ts, info integer)''')
 
 
 def init_database():
