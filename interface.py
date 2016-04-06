@@ -35,6 +35,7 @@ class interface:
         dispatcher.addTelegramCommandHandler('start', self.startGame)
 
         dispatcher.addTelegramCommandHandler('auction', self.auction)
+        dispatcher.addTelegramCommandHandler('bid', self.bid)
         dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
         dispatcher.addTelegramCommandHandler('deadline', self.deadline)
@@ -72,6 +73,9 @@ class interface:
 
     def auction(self,bot,update):
         self.processCommand('auction',update)
+
+    def bid(self,bot,update):
+        self.processCommand('bid',update)
 
     def forcesell(self,bot,update):
         self.processCommand('forcesell',update)
