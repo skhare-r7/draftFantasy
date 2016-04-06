@@ -385,9 +385,12 @@ class draftGame:
             teamId = self.getTeamIdFromUser(args)
         else: teamId = self.getTeamIdFromUser(user)
         query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
-        teamStr = "Team name: " + self.getTeamName(teamId) + "\n"
-        teamStr += self.db.sendPretty(query,[teamId])
-        teamStr += "\nBank Value:" + self.getBankValue(teamId).__str__()
+        tmpTeamStr = self.db.sendPretty(query,[teamId])
+        if (len(tmpTeamStr) > 0):
+            teamStr = "Team name: " + self.getTeamName(teamId) + "\n"
+            teamStr += tmpTeamStr
+            teamStr += "\nBank Value:" + self.getBankValue(teamId).__str__()
+        else: teamStr = 'Invalid Query'
         return teamStr
 
     def getBankValue(self,teamId):
