@@ -92,7 +92,7 @@ class draftGame:
     
     def banId(self,user, id):
         price = self.getPrice(id)
-        query = "update playerStatus set status='Open',lastModified=?,forSale=? where playerId=?"
+        query = "update playerStatus set status='Open',lastModified=?,startBid=? where playerId=?"
         self.db.send(query,[dt.now(),price,id])
         teamId = self.getTeamIdFromUser(user)
         transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
@@ -106,7 +106,7 @@ class draftGame:
         for player in response:
             id = player[0]
             price = self.getPrice(id)
-            updateQuery = "update playerStatus set status='Open',lastModified=?,teamPos=-1,forSale=? where playerId=?"
+            updateQuery = "update playerStatus set status='Open',lastModified=?,teamPos=-1,startBid=? where playerId=?"
             self.db.send(updateQuery,[dt.now(),price,id])
         self.db.commit()
         
@@ -170,12 +170,12 @@ class draftGame:
         else: pass
  
     def processViewMarket(self):
-        viewMarketQuery = "select info, playerInfo.playerName, playerStatus.forSale, timestamp from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info order by timestamp"
+        viewMarketQuery = "select info, playerInfo.playerName, playerStatus.startBid, deadline from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info order by deadline"
 /        return self.db.sendPretty(viewMarketQuery,[])
 
 
     def playerAvailableForBid(self,playerId):
-        bidQuery = "select forSale from playerStatus where playerId=?"
+        bidQuery = "select startBid from playerStatus where playerId=?"
         return self.db.send(bidQuery,[playerId])[0][0] != -1
 
     def existingAuction(self,playerId):
@@ -241,7 +241,7 @@ class draftGame:
             teamId = self.getTeamIdFromUser(user)
             broadcastMessage = "User:" + user + " has put player:" + playerName + " for auction."
             self.tg.broadcast(broadcastMessage)            
-            auctionQuery = "update playerStatus set forSale=?,lastModified=? where playerId=?"
+            auctionQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"
             self.db.send(auctionQuery,[startingPrice,dt.now(),playerId])
             transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
             self.db.send(transactionQuery,['Auction',playerId,startingPrice,teamId,0,dt.now()])
@@ -256,7 +256,7 @@ class draftGame:
         auctionCloseTime = dt.now() + timedelta(seconds=15*60)
         broadcastMessage+= "Auction closes: " + auctionCloseTime.__str__() + " EST"
         self.tg.broadcast(broadcastMessage)
-        futuresQuery = "insert into futures (type,timestamp,info) values ('Auction',?,?)"
+        futuresQuery = "insert into futures (type,deadline,info) values ('Auction',?,?)"
         self.db.send(futuresQuery,[auctionCloseTime,playerId])
         self.db.commit()
         return "Done"
@@ -273,10 +273,10 @@ class draftGame:
         #verify ownership
         if self.isValidId(args) and self.verifyOwnership(user,args):
             id = args
-            playerStatusQuery = "select status, forSale, teamPos from playerStatus where playerId=?"
+            playerStatusQuery = "select status, startBid, teamPos from playerStatus where playerId=?"
             playerDetails = self.db.send(playerStatusQuery,[id])[0]
             status = playerDetails[0]
-            forSale = playerDetails[1]
+            startBid = playerDetails[1]
             teamPos = playerDetails[2]
             teamId = self.getTeamIdFromUser(user)
             teamLastPos = self.getLastPos(teamId) 
@@ -290,7 +290,7 @@ class draftGame:
             ret = self.db.send(valueQuery,[id])[0]
             value = ret[0]
             playerName = ret[1]
-            if forSale != -1:
+            if startBid != -1:
                 tg.broadcast("Auction on player:"+playerName+ " is closed due to forced sale")
                 #close auction immediately (delete from futures)
                 self.closeAuction(id)
@@ -457,7 +457,7 @@ def finalizeAuction(future,game):
     highestBid = game.db.send(bidsQuery,[id])[0]
     value = highestBid[0]
     newOwner = highestBid[1]
-    startingBidQuery = "select forSale from playerStatus where playerId=?"
+    startingBidQuery = "select startBid from playerStatus where playerId=?"
     startingBid = game.db.send(startingBidQuery,[id])[0][0]
     message = ""
     if value > startingBid:
@@ -500,7 +500,7 @@ def futureWorker(tg,game):
     db = dbInterface()
     while True:
         print 'monitoring future queue'
-        checkFutureQuery = "select * from futures where timestamp <= datetime('now','localtime')"
+        checkFutureQuery = "select * from futures where deadline <= datetime('now','localtime')"
         futures = db.send(checkFutureQuery,[])
         for future in futures:
             if future[1] == 'Auction':

@@ -40,15 +40,15 @@ def create_humanplayers(c):
 
 # example:
 #_______________________________________________________
-#| playerId | status | forSale | lastModified | teamPos|
-#|   12     | Open   |    3.2  | 2016-03-28   |  -1    |  <- player is in open market
-#|   156    |  2     |    -1   | 2016-03-25   |   3    |  <- player is in team 2, position 3
-#|   25     |  1     |    5.0  | 2016-03-26   |   5    |  <- player is in team 1, position 5, and up for sale 
+#| playerId | status | startBid | lastModified | teamPos|
+#|   12     | Open   |    3.2   | 2016-03-28   |  -1    |  <- player is in open market
+#|   156    |  2     |    -1    | 2016-03-25   |   3    |  <- player is in team 2, position 3
+#|   25     |  1     |    5.0   | 2016-03-26   |   5    |  <- player is in team 1, position 5, and up for sale 
 #
 
 def create_playerStatus(c):
     c.execute('''CREATE TABLE playerStatus
-              (playerId integer, status text, forSale real, lastModified ts, teamPos int)''')
+              (playerId integer, status text, startBid real, lastModified ts, teamPos int)''')
 
     c.execute("select playerId from playerInfo")
     for entry in c.fetchall():
@@ -156,17 +156,17 @@ def create_transaction(c):
 #type:
 # auction : Execute and resolve auction 
 # lock : Freeze teams before match time
-#timestamp: future timestamp when activity should occur
+#deadline: future timestamp when activity should occur
 #info: playerId for type auction, gameId for gameLock
 #
 #example:
 #__________________________________
-#id | type      | timestamp | info |
+#id | type      | deadline  | info |
 # 1 | Auction   |           | 125  |
 # 2 | Lock      |           | 4    |<-- game number (optional)
 def create_futures(c):
     c.execute('''CREATE TABLE futures
-              (id integer primary key, type text, timestamp ts, info integer)''')
+              (id integer primary key, type text, deadline ts, info integer)''')
 
 
 def init_database():
