@@ -386,7 +386,7 @@ class draftGame:
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         #helpText += "/viewmarket: see team owned players for sale\n"
         #helpText += "/deadline: view auction deadline and bids"
-        #"test"
+        #"test
         return helpText
 
     def viewTeamQuery(self,user,args):
