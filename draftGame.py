@@ -171,7 +171,7 @@ class draftGame:
  
     def processViewMarket(self):
         viewMarketQuery = "select info, playerInfo.playerName, playerStatus.startBid, deadline from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info order by deadline"
-/        return self.db.sendPretty(viewMarketQuery,[])
+        return self.db.sendPretty(viewMarketQuery,[])
 
 
     def playerAvailableForBid(self,playerId):
