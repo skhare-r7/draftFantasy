@@ -19,7 +19,7 @@ class draftGame:
 #        self.rounds.append(['pick_r'])
 #        self.rounds.append(['pick_r'])
 #        self.rounds.append(['pick_r'])
-        self.currentPhase = 'waiting' #we start at drafting
+        self.currentPhase = 'Paused' #we start at drafting
 
         self.currentRound = 0
         self.currentStage = 0 
@@ -44,7 +44,7 @@ class draftGame:
             self.currentRound += 1
         elif self.currentStage == len(self.rounds[totalRounds-1])-1 and self.currentRound == totalRounds-1: #next phase
             #drafting is done
-            self.currentPhase = 'game_on'
+            self.currentPhase = 'Live'
             self.moveAllPlayersToOpenMarket()
         if self.rounds[self.currentRound][self.currentStage][-2:] == '_r': self.order.reverse()
 
@@ -57,7 +57,7 @@ class draftGame:
 
     def gameStage(self):
         toRet = "Current Phase:" + self.currentPhase + "\n"
-        if self.currentPhase == 'draft':
+        if self.currentPhase == 'Draft':
             toRet += "Current Round:" + self.currentRound.__str__() + "\n"
             toRet += "Current Stage:" + self.rounds[self.currentRound][self.currentStage] + "\n"
             toRet += "Current Player:" + self.getUserById(self.order[self.currentPlayer])
@@ -72,7 +72,7 @@ class draftGame:
 
     def startGame(self,user):
         if user == 'Shreyas':
-            self.currentPhase = 'draft'
+            self.currentPhase = 'Draft'
             tg.broadcast("Game is on! Good luck")
             tg.broadcast(game.gameStage())
             return "Done"
@@ -140,6 +140,8 @@ class draftGame:
     def handleCommand(self, user, command, args):
         if command == 'help':
             return self.getHelpText()
+        elif command == 'rules':
+            return self.getRulesText()
         elif command == 'stage':
             return self.gameStage()
         elif command == 'list':
@@ -371,6 +373,30 @@ class draftGame:
         else: return "You cannot pick anyone at the moment. Check game stage"
 
 
+    def getRulesText(self):
+        rulesText = "Game consists of 2 stages: Draft and Live\n"
+        rulesText += "In the draft stage, there will be 3 rounds of bans follwed by 6 rounds of picks.\n"
+        rulesText += "Manager order for draft is decided randomly\n"
+        rulesText += "During picks, order is reversed every round, so last pick for one round gets first pick in the next\n"
+        rulesText += "You cannot pick a player who is banned / pick by someone else\n"
+        rulesText += "Each manager stars with 100.0 in the bank. Each pick counts towards that limit\n"
+        rulesText += "Once 9 rounds are complete, game becomes Live\n"
+        rulesText += "In a live game, you can bid on any player in the open market.\n"
+        rulesText += "These include all players unpicked during draft PLUS banned players from the draft\n"
+        rulesText += "The minimum bid for these players is their default value\n"
+        rulesText += "Auctions bids are blind, but bid actions be broadcasted in the group\n"
+        rulesText += "Auctions close in 12(?) hours. Highest bid will be awarded player\n"
+        rulesText += "At any point, managers may choose to auction a player from their team or force sell him for 70% value\n"
+        rulesText += "Managers decide the starting bid for the player auction\n"
+        rulesText += "==========================\n"
+        rulesText += "Scoring will be done using the rules from IPL fantasy\n"
+        rulesText += "Teams are frozen at every match deadline, and top 11 players will score points\n"
+        rulesText += "Managers will receive NO points for a match unless two conditions are met at every match deadline\n"
+        rulesText += "1. Bank value cannot be negative\n"
+        rulesText += "2. Must have atleast 11 players, including 4 bat, 1 wk, 2 bowl, 1 AR (max 5 intl)\n"
+        rulesText += "Good luck and have fun!"
+        return rulesText
+
     def getHelpText(self):
         helpText = "You can use the following commands:\n"
         helpText += "/help : display this page\n"
@@ -378,10 +404,10 @@ class draftGame:
         helpText += "/list [team] [category]: list all players from this team/category\n" #need to show status
         helpText += "/find <name>: get player ids by name\n" #need to show status
         helpText += "/player <id>: get player info\n"
-        helpText += "/ban <id>: ban player from draft (draft stage only)\n"
-        helpText += "/pick <id>: pick player from draft (draft stage only)\n"
+        helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
+        helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
         helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
-        helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days."
+        helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days.\n"
         helpText += "/forcesell <id>: immediate sale for 70% price\n"
         helpText += "/viewteam: see your team. your top 11 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"

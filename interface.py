@@ -22,6 +22,7 @@ class interface:
         self.bot = telegram.Bot(token=myBotToken)
         dispatcher = self.updater.dispatcher
         dispatcher.addTelegramCommandHandler('help', self.help)
+        dispatcher.addTelegramCommandHandler('rules', self.rules)
         dispatcher.addTelegramCommandHandler('stage', self.stage)
         dispatcher.addTelegramCommandHandler('list', self.list)
         dispatcher.addTelegramCommandHandler('find', self.find)
@@ -52,6 +53,9 @@ class interface:
 
     def help(self,bot,update):
         self.processCommand('help',update)
+
+    def rules(self,bot,update):
+        self.processCommand('rules',update)
     
     def stage(self,bot,update):
         self.processCommand('stage',update)
