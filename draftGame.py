@@ -5,6 +5,7 @@ from datetime import datetime as dt
 from threading import Thread
 from time import sleep
 from datetime import timedelta
+import sys
 
 class draftGame:
     def __init__(self):
@@ -390,10 +391,10 @@ class draftGame:
         return helpText
 
     def viewTeamQuery(self,user,args):
-        if (len(args) > 1):
+        if (len(sys.args) == 1): teamId = self.getTeamIdFromUser(user)
+        else:
             args = args.capitalize()
             teamId = self.getTeamIdFromUser(args)
-        else: teamId = self.getTeamIdFromUser(user)
         query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
         tmpTeamStr = self.db.sendPretty(query,[teamId])
         if (len(tmpTeamStr) > 0):
