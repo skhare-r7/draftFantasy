@@ -12,13 +12,13 @@ class draftGame:
         #game initialization
         self.tg = None
         self.rounds = []
-        self.rounds.append(['ban', 'ban', 'ban'])
+#        self.rounds.append(['ban', 'ban', 'ban'])
         self.rounds.append(['pick'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
         self.currentPhase = 'waiting' #we start at drafting
 
         self.currentRound = 0
@@ -164,17 +164,15 @@ class draftGame:
             return self.processSwap(user,args)
         elif command == 'viewmarket':
             return self.processViewMarket()
-        elif command == 'deadline':
-            return self.processDeadline()
         #hidden commands
         elif command == 'start':
             return self.startGame(user)
         else: pass
  
-    def processDeadline(self):
-        pass
     def processViewMarket(self):
-        pass
+        viewMarketQuery = "select info, playerInfo.playerName, playerStatus.forSale, timestamp from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info order by timestamp"
+/        return self.db.sendPretty(viewMarketQuery,[])
+
 
     def playerAvailableForBid(self,playerId):
         bidQuery = "select forSale from playerStatus where playerId=?"
@@ -207,6 +205,7 @@ class draftGame:
             self.db.commit()
             self.tg.broadcast("User:"+user+" placed bid on player:"+self.getName(playerId))
             return "Done"
+        else: return "Unable to bid" 
 
 
     def verifyOwnership(self,user,id):
@@ -386,7 +385,7 @@ class draftGame:
         helpText += "/forcesell <id>: immediate sale for 70% price\n"
         helpText += "/viewteam: see your team. your top 11 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
-        #helpText += "/viewmarket: view auction players and deadlines"
+        helpText += "/viewmarket: view auction players and deadlines"
         return helpText
 
     def viewTeamQuery(self,user,args):
