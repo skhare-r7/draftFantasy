@@ -38,7 +38,7 @@ class interface:
         dispatcher.addTelegramCommandHandler('bid', self.bid)
         dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
-        dispatcher.addTelegramCommandHandler('deadline', self.deadline)
+
 
 
         self.game = game
@@ -92,9 +92,6 @@ class interface:
     def viewmarket(self,bot,update):
         self.processCommand('viewmarket',update)
 
-    def deadline(self,bot,update):
-        self.processCommand('deadline',update)
-
     def startGame(self,bot,update):
         self.processCommand('start',update)
 
@@ -124,6 +121,3 @@ class interface:
 
 
 
-#if __name__=='__main__':
-#    draft = interface()
-#    draft.start()

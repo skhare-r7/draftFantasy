@@ -128,8 +128,10 @@ class draftGame:
         self.db.commit()
 
     def getTeamIdFromUser(self,user):
-        query = "select teamId from humanPlayers where name=?"
-        return self.db.send(query,[user])[0][0]
+        query = "select teamId from humanPlayers where name like ?"
+        try:
+            return self.db.send(query,["%"+user+"%"])[0][0]
+        except: return None
 
     def getUserById(self,id):
         query = "select name from humanPlayers where teamId=?"
@@ -384,22 +386,20 @@ class draftGame:
         helpText += "/forcesell <id>: immediate sale for 70% price\n"
         helpText += "/viewteam: see your team. your top 11 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
-        #helpText += "/viewmarket: see team owned players for sale\n"
-        #helpText += "/deadline: view auction deadline and bids"
+        #helpText += "/viewmarket: view auction players and deadlines"
         return helpText
 
     def viewTeamQuery(self,user,args):
-        if (len(args) > 1):
-            args = args.capitalize()
+        teamId = None
+        if args is None:
+            teamId = self.getTeamIdFromUser(user)
+        else:
             teamId = self.getTeamIdFromUser(args)
-        else: teamId = self.getTeamIdFromUser(user)
+        if teamId is None: return 'Invalid query'
         query = "select playerStatus.teamPos,playerStatus.playerId,playerInfo.playerName, playerInfo.team, playerInfo.price, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId=playerInfo.playerId where status = ? order by playerStatus.teamPos"
-        tmpTeamStr = self.db.sendPretty(query,[teamId])
-        if (len(tmpTeamStr) > 0):
-            teamStr = "Team name: " + self.getTeamName(teamId) + "\n"
-            teamStr += tmpTeamStr
-            teamStr += "\nBank Value:" + self.getBankValue(teamId).__str__()
-        else: teamStr = 'Invalid Query'
+        teamStr = "Team name: " + self.getTeamName(teamId) + "\n"
+        teamStr += self.db.sendPretty(query,[teamId])
+        teamStr += "\nBank Value:" + self.getBankValue(teamId).__str__()
         return teamStr
 
     def getBankValue(self,teamId):
@@ -526,3 +526,9 @@ if __name__=="__main__":
     tg.start() #telegram worker
     
     t.join()
+
+
+#todos: 
+#1. viewmarket
+#2. fix viewteam
+#3. view ownership when viewing player
