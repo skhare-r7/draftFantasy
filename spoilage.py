@@ -22,9 +22,9 @@ def checkSpoilage():
     db.close()
     
 while True:
-    print "checking spoilage"
+    print "checking spoilage: " + dt.now().__str__()
     checkSpoilage()
-    print "sleeping 30 minutes"
+    print "sleeping 30 mins"
     sleep(30*60) #check every 30 mins
     
     #dt.strptime(ts,"%Y-%m-%d %H:%M:%S.%f")

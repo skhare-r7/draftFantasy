@@ -8,7 +8,7 @@ from datetime import timedelta
 
 class draftGame:
     def __init__(self):
-        self.AUCTION_TIME_SECONDS = 1 * 60 * 60
+        self.AUCTION_TIME_SECONDS = 12 * 60 * 60 #12 hours
         self.FORCED_SALE_RATIO = 0.7
     
 
@@ -16,12 +16,14 @@ class draftGame:
         #game initialization
         self.tg = None
         self.rounds = []
-#        self.rounds.append(['ban', 'ban', 'ban'])
-#        self.rounds.append(['pick'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
+        self.rounds.append(['ban'])
+        self.rounds.append(['ban'])
+        self.rounds.append(['ban'])
+        self.rounds.append(['pick'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
         self.currentPhase = 'Paused' #we start at drafting
 
@@ -31,7 +33,8 @@ class draftGame:
 
         self.currentActivity = self.rounds[self.currentRound][self.currentStage]
         self.numberOfPlayers = self.db.send("select count(*) from humanPlayers",[])[0][0]
-        #print self.numberOfPlayers
+        
+        #TODO: DONT DO THIS -> causes things to break if players 1,2,3,4,5 are not available!!
         self.order = [i for i in range(0,self.numberOfPlayers)]
         shuffle(self.order)
         
@@ -62,7 +65,7 @@ class draftGame:
     def gameStage(self):
         toRet = "Current Phase:" + self.currentPhase + "\n"
         if self.currentPhase == 'Draft':
-            toRet += "Current Round:" + self.currentRound.__str__() + "\n"
+            toRet += "Current Round:" + self.currentRound.__str__() + " of " + len(self.rounds).__str__()+  "\n"
             toRet += "Current Stage:" + self.rounds[self.currentRound][self.currentStage] + "\n"
             toRet += "Current Player:" + self.getUserById(self.order[self.currentPlayer])
         return toRet
@@ -417,21 +420,22 @@ class draftGame:
     def getHelpText(self):
         helpText = "You can use the following commands:\n"
         helpText += "/help : display this page\n"
+        helpText += "/rules : show game rules\n"
         helpText += "/stage : show current game stage\n"
         helpText += "/list [team] [category]: list all players from this team/category\n" #need to show status
         helpText += "/find <name>: get player ids by name\n" #need to show status
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
-        helpText += "/viewbans: view banned players (Draft stage only)\n"
+        helpText += "/viewteam: see your team. your top 11 will play\n"
+        helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
         helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days.\n"
         helpText += "/forcesell <id>: immediate sale for 70% price\n"
-        helpText += "/viewteam: see your team. your top 11 will play\n"
-        helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
+        helpText += "/viewmarket: view auction players and deadlines\n"
+        helpText += "/viewbans: view banned players (Draft stage only)\n"
         helpText += "/viewbids: see your active bids\n"
-        helpText += "/viewmarket: view auction players and deadlines"
-
+        helpText += "Anything I missed? Suggest more commands!"
         return helpText
 
     def viewTeamQuery(self,user,args):

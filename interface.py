@@ -17,7 +17,7 @@ class interface:
         self.telegramIds['Ripu'] = 76484915
         self.telegramIds['Shrikar'] = 183002377
         self.telegramIds['Ali'] = 120943853
-        self.telegramIds['Kanav'] = -1
+        self.telegramIds['Kanav'] = 213318720
 
         self.updater = Updater(token=myBotToken)
         self.bot = telegram.Bot(token=myBotToken)
@@ -31,19 +31,14 @@ class interface:
         dispatcher.addTelegramCommandHandler('ban', self.ban)
         dispatcher.addTelegramCommandHandler('pick', self.pick)
         dispatcher.addTelegramCommandHandler('viewteam', self.viewteam)
-        
-        dispatcher.addTelegramCommandHandler('setcap', self.setcap)
         dispatcher.addTelegramCommandHandler('swap', self.swap)
         dispatcher.addTelegramCommandHandler('start', self.startGame)
-
         dispatcher.addTelegramCommandHandler('auction', self.auction)
         dispatcher.addTelegramCommandHandler('bid', self.bid)
         dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
         dispatcher.addTelegramCommandHandler('viewbans', self.viewbans)
         dispatcher.addTelegramCommandHandler('viewbids', self.viewbids)
-
-
 
         self.game = game
 
@@ -89,9 +84,6 @@ class interface:
 
     def viewteam(self,bot,update):
         self.processCommand('viewteam',update)
-
-    def setcap(self,bot,update):
-        self.processCommand('setcap',update)
 
     def swap(self,bot,update):
         self.processCommand('swap',update)
