@@ -526,6 +526,8 @@ def finalizeAuction(future,game):
     startingBidQuery = "select startBid from playerStatus where playerId=?"
     startingBid = game.db.send(startingBidQuery,[id])[0][0]
     message = ""
+    completeQuery = "update transactions set complete=1 where playerId=?"
+    game.db.send(completeQuery,[id])
     if value >= startingBid:
         message= "Congratulations. User:"+game.getUserById(newOwner)+" has won the bid on player:" + game.getPlayerNameById(id) +"\n"
         message+= "Winning bid:"+value.__str__()
