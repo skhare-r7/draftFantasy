@@ -170,11 +170,22 @@ class draftGame:
             return self.processSwap(user,args)
         elif command == 'viewmarket':
             return self.processViewMarket()
+        elif command == 'viewbans':
+            return self.processViewBans()
+
         #hidden commands
         elif command == 'start':
             return self.startGame(user)
         else: pass
  
+    def processViewBans(self):
+        if self.currentPhase == 'Draft':
+            toRet = "The following players have been banned:\n"
+            banQuery = "select playerInfo.playerId, playerInfo.playerName from playerStatus inner join playerInfo on playerInfo.playerId = playerStatus.playerId where status='Open'"
+            toRet += self.db.sendPretty(banQuery,[])
+            return toRet
+        else: return "Game is live, no players are banned"
+
     def processViewMarket(self):
         viewMarketQuery = "select info, playerInfo.playerName, playerStatus.startBid, deadline from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info order by deadline"
         return self.db.sendPretty(viewMarketQuery,[])
@@ -416,6 +427,7 @@ class draftGame:
         helpText += "/viewteam: see your team. your top 11 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         helpText += "/viewmarket: view auction players and deadlines"
+        helpText += "/viewbans: view banned players"
         return helpText
 
     def viewTeamQuery(self,user,args):

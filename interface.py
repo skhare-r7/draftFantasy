@@ -40,6 +40,7 @@ class interface:
         dispatcher.addTelegramCommandHandler('bid', self.bid)
         dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
         dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
+        dispatcher.addTelegramCommandHandler('viewbans', self.viewbans)
 
 
 
@@ -96,6 +97,9 @@ class interface:
 
     def viewmarket(self,bot,update):
         self.processCommand('viewmarket',update)
+
+    def viewbans(self,bot,update):
+        self.processCommand('viewbans',update)
 
     def startGame(self,bot,update):
         self.processCommand('start',update)
