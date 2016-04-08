@@ -513,16 +513,22 @@ class draftGame:
         if self.isValidId(args):
             query = "select * from playerInfo where playerInfo.playerId = ?"
             toRet = self.db.sendPretty(query,[args.strip()])
-            ownerQuery = "select teamName, name from humanPlayers where teamId=?"
-            ownerInfo = self.db.send(ownerQuery,[self.getOwnerId(args)])[0]
-            toRet += "\n Currently owned by " + ownerInfo[0] + "(" + ownerInfo[1]+")"
-            return toRet
+            ownerId = self.getOwnerId(args)
+            if ownerId is not None:
+                ownerQuery = "select teamName, name from humanPlayers where teamId=?"
+                ownerInfo = self.db.send(ownerQuery,[ownerId])[0]
+                toRet += "\n Currently owned by " + ownerInfo[0] + "(" + ownerInfo[1]+")"
+                return toRet
+            else:
+                toRet += "\n Currently in auction"
         else: return "Invalid player Id"
 
 
     def getOwnerId(self,id):
-        ownerQuery = "select status from playerStatus where playerId=?"
-        return self.db.send(ownerQuery,[id])[0][0]
+        if self.isValidId(id):
+            ownerQuery = "select status from playerStatus where playerId=?"
+            return self.db.send(ownerQuery,[id])[0][0]
+        else: return None
 
     def getNameFromTeamId(self,teamId):
         nameQuery = "select name from humanPlayers where teamId=?"
