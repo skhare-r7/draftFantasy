@@ -19,10 +19,10 @@ def create_humanplayers(c):
     humanPlayers = {}
     humanPlayers[0] = ['Unique Losers', 'Shreyas']
 #    humanPlayers[1] = ['Swingers', 'Akshay']
-    humanPlayers[1] = ['Dozer', 'Sri']
-    humanPlayers[2] = ['Kiakaha', 'Ripu']
+#    humanPlayers[1] = ['Dozer', 'Sri']
+#    humanPlayers[2] = ['Kiakaha', 'Ripu']
 #    humanPlayers[4] = ['Royal Canadian Challengers', 'Yenan']
-    humanPlayers[3] = ['NoBallXI', 'Shrikar']
+#    humanPlayers[3] = ['NoBallXI', 'Shrikar']
 
 
 #    humanPlayers[4] = ['team4', 'Ali']    

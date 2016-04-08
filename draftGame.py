@@ -16,12 +16,12 @@ class draftGame:
         #game initialization
         self.tg = None
         self.rounds = []
-        self.rounds.append(['ban', 'ban', 'ban'])
-        self.rounds.append(['pick'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
+#        self.rounds.append(['ban', 'ban', 'ban'])
+#        self.rounds.append(['pick'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
         self.currentPhase = 'Paused' #we start at drafting
 
@@ -172,6 +172,8 @@ class draftGame:
             return self.processViewMarket()
         elif command == 'viewbans':
             return self.processViewBans()
+        elif command == 'viewbids':
+            return self.processViewBids(user)
 
         #hidden commands
         elif command == 'start':
@@ -421,13 +423,15 @@ class draftGame:
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
+        helpText += "/viewbans: view banned players (Draft stage only)\n"
         helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
         helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days.\n"
         helpText += "/forcesell <id>: immediate sale for 70% price\n"
         helpText += "/viewteam: see your team. your top 11 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
+        helpText += "/viewbids: see your active bids\n"
         helpText += "/viewmarket: view auction players and deadlines"
-        helpText += "/viewbans: view banned players"
+
         return helpText
 
     def viewTeamQuery(self,user,args):
@@ -451,6 +455,10 @@ class draftGame:
         nameQuery = "select teamName from humanPlayers where teamId=?"
         return self.db.send(nameQuery,[teamId])[0][0]
 
+
+    def processViewBids(self,user):
+        viewQuery = "select transactions.playerId,transactions.value,playerInfo.playerName from transactions inner join playerInfo on playerInfo.playerId = transactions.playerId where humanId=? and complete=0"
+        return self.db.sendPretty(viewQuery,[self.getTeamIdFromUser(user)])
 
     def getListQuery(self,args):
         argsList = args.split(" ")
