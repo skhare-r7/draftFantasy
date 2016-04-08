@@ -25,7 +25,7 @@ class draftGame:
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
-        self.currentPhase = 'Paused' #we start at drafting
+        self.currentPhase = 'Live' #we start at drafting
 
         self.currentRound = 0
         self.currentStage = 0 
