@@ -187,7 +187,7 @@ class draftGame:
  
     def processCancelBid(self,user,args):
         if self.isValidId(args):
-            deleteQuery = "delete from transactions where humanId=? and complete=0 and playerId=?"
+            deleteQuery = "delete from transactions where type = 'Bid' and humanId=? and complete=0 and playerId=?"
             self.db.send(deleteQuery,[self.getTeamIdFromUser(user),args])
             self.db.commit()
             return "Done"
