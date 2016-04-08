@@ -514,14 +514,14 @@ class draftGame:
             query = "select * from playerInfo where playerInfo.playerId = ?"
             toRet = self.db.sendPretty(query,[args.strip()])
             ownerId = self.getOwnerId(args)
-            if ownerId is not None:
+            if ownerId == 'Open':
+                toRet += "\nCurrently available"
+            elif ownerId == 'Draft':
+                toRet += "\nIn draft"
+            else: #owned by some team
                 ownerQuery = "select teamName, name from humanPlayers where teamId=?"
                 ownerInfo = self.db.send(ownerQuery,[ownerId])[0]
                 toRet += "\nCurrently owned by " + ownerInfo[0] + "(" + ownerInfo[1]+")"
-            elif ownerId is 'Open':
-                toRet += "\nCurrently available"
-            else:
-                toRet += "\nIn draft"
             return toRet
         else: return "Invalid player Id"
 
