@@ -90,8 +90,10 @@ class draftGame:
         else: return None
 
     def isValidId(self,id):
-        query = "select count(*) from playerStatus where playerId=?"
-        return self.db.send(query,[id])[0][0] == 1
+        try:
+            query = "select count(*) from playerStatus where playerId=?"
+            return self.db.send(query,[id])[0][0] == 1
+        except: return False
 
     def isNotBanned(self, id): #player is not banned or picked
         query = "select status from playerStatus where playerId=?"
@@ -179,6 +181,9 @@ class draftGame:
             return self.processViewBids(user)
         elif command == 'cancelbid':
             return self.processCancelBid(user,args)
+        elif command == 'unpicked':
+            return self.processUnpicked()
+
 
         #hidden commands
         elif command == 'start':
@@ -193,6 +198,11 @@ class draftGame:
             return "Done"
         else:
             return "Invalid id"
+
+
+    def processUnpicked(self):
+        unpickedQuery = "select playerInfo.playerName, playerInfo.price from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerStatus.status = 'Open' order by price desc"
+        return self.db.sendPretty(unpickedQuery,[])
     
     def processViewBans(self):
         if self.currentPhase == 'Draft':
@@ -447,6 +457,7 @@ class draftGame:
         helpText += "/viewbans: view banned players (Draft stage only)\n"
         helpText += "/viewbids: see your active bids\n"
         helpText += "/cancelbid <id> : cancel all bids on player\n"
+        helpText += "/unpicked : view top unpicked players\n"
         helpText += "Anything I missed? Suggest more commands!"
         return helpText
 
@@ -499,8 +510,14 @@ class draftGame:
         return self.db.send(query,[id])[0][0]
 
     def findPlayerById(self,args):
-        query = "select playerInfo.playerId,playerInfo.team,playerInfo.playerName,playerInfo.price,playerInfo.skill1,playerInfo.overseas,playerStatus.status from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.playerId = ?"
-        return self.db.sendPretty(query,[args.strip()])
+        if self.isValidId(args):
+            query = "select * from playerInfo where playerInfo.playerId = ?"
+            toRet = self.db.sendPretty(query,[args.strip()])
+            ownerQuery = "select teamName, name from humanPlayers where teamId=?"
+            ownerInfo = self.db.send(ownerQuery,[self.getOwnerId(args)])[0]
+            toRet += "\n Currently owned by " + ownerInfo[0] + "(" + ownerInfo[1]+")"
+            return toRet
+        else: return "Invalid player Id"
 
 
     def getOwnerId(self,id):
