@@ -520,7 +520,9 @@ def finalizeAuction(future,game):
     futureId = future[0]
     id = future[3]
     bidsQuery = "select value, humanId from transactions where playerId=? and complete=0 order by value desc limit 1"
-    highestBid = game.db.send(bidsQuery,[id])[0]
+    try:
+        highestBid = game.db.send(bidsQuery,[id])[0]
+    except: highestBid = [-1, '0'] #todo fix this!
     value = highestBid[0]
     newOwner = highestBid[1]
     startingBidQuery = "select startBid from playerStatus where playerId=?"
@@ -547,9 +549,10 @@ def finalizeAuction(future,game):
         newOwnerBankUpdate = "update humanPlayers set bank=? where teamId=?"
         game.db.send(newOwnerBankUpdate,[newOwnerBank,newOwner])
         lastPos = game.getLastPos(newOwner) + 1
-        playerTransferQuery = "update playerStatus set status=?,teamPos=? where playerId=?"
+        playerTransferQuery = "update playerStatus set status=?,startBid=-1,teamPos=? where playerId=?"
         game.db.send(playerTransferQuery,[newOwner,lastPos,id])
-
+        updatePrice = "update playerInfo set price=? where playerId=?"
+	game.db.send(updatePrice,[value,id])
     else:
         message = "Closing auction on player:" + game.getPlayerNameById(id) + "\n"
         message += "No bids received were higher than starting bid"
