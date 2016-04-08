@@ -8,7 +8,7 @@ from datetime import timedelta
 
 class draftGame:
     def __init__(self):
-        self.AUCTION_TIME_SECONDS = 12 * 60 * 60 #12 hours
+        self.AUCTION_TIME_SECONDS = 4 * 60 * 60 #12 hours
         self.FORCED_SALE_RATIO = 0.7
     
 
@@ -177,12 +177,23 @@ class draftGame:
             return self.processViewBans()
         elif command == 'viewbids':
             return self.processViewBids(user)
+        elif command == 'cancelbid':
+            return self.processCancelBid(user,args)
 
         #hidden commands
         elif command == 'start':
             return self.startGame(user)
         else: pass
  
+    def processCancelBid(self,user,args):
+        if self.isValidId(args):
+            deleteQuery = "delete from transactions where humanId=? and complete=0 and playerId=?"
+            self.db.send(deleteQuery,[self.getTeamIdFromUser(user),args])
+            self.db.commit()
+            return "Done"
+        else:
+            return "Invalid id"
+    
     def processViewBans(self):
         if self.currentPhase == 'Draft':
             toRet = "The following players have been banned:\n"
@@ -435,6 +446,7 @@ class draftGame:
         helpText += "/viewmarket: view auction players and deadlines\n"
         helpText += "/viewbans: view banned players (Draft stage only)\n"
         helpText += "/viewbids: see your active bids\n"
+        helpText += "/cancelbid <id> : cancel all bids on player\n"
         helpText += "Anything I missed? Suggest more commands!"
         return helpText
 

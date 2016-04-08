@@ -13,7 +13,7 @@ def checkSpoilage():
         ValQuery = "select price from playerInfo where playerId=?"
         print "reducing price for playerId:" + id.__str__()
         price = db.sendQuery(valQuery,[id])
-        price -= 0.1
+        if price > 2.0: price -= 0.1
         dropQuery = "udpate playerInfo set price=? where playerId=?"
         db.sendQuery(dropQuery,[price,id])
         touchQuery = "update playerStatus set lastModified=? where playerId=?"
