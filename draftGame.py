@@ -8,17 +8,21 @@ from datetime import timedelta
 
 class draftGame:
     def __init__(self):
+        self.AUCTION_TIME_SECONDS = 1 * 60 * 60
+        self.FORCED_SALE_RATIO = 0.7
+    
+
         self.db = dbInterface()
         #game initialization
         self.tg = None
         self.rounds = []
-#        self.rounds.append(['ban', 'ban', 'ban'])
+        self.rounds.append(['ban', 'ban', 'ban'])
         self.rounds.append(['pick'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
-#        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
+        self.rounds.append(['pick_r'])
         self.currentPhase = 'Paused' #we start at drafting
 
         self.currentRound = 0
@@ -255,7 +259,7 @@ class draftGame:
     def prepareNewAuction(self,playerName,startingPrice,playerId):
         broadcastMessage= "Auction for: " + playerName + " has started\n"
         broadcastMessage+= "Starting bid: " + startingPrice.__str__() + "\n"
-        auctionCloseTime = dt.now() + timedelta(seconds=15*60)
+        auctionCloseTime = dt.now() + timedelta(seconds=self.AUCTION_TIME_SECONDS) 
         broadcastMessage+= "Auction closes: " + auctionCloseTime.__str__() + " EST"
         self.tg.broadcast(broadcastMessage)
         futuresQuery = "insert into futures (type,deadline,info) values ('Auction',?,?)"
@@ -296,7 +300,7 @@ class draftGame:
                 tg.broadcast("Auction on player:"+playerName+ " is closed due to forced sale")
                 #close auction immediately (delete from futures)
                 self.closeAuction(id)
-            newValue = 0.7 * value #todo: move to config file
+            newValue = self.FORCED_SALE_RATIO * value #todo: move to config file
             playerValueUpdateQuery = "update playerInfo set price=? where playerId=?"
             self.db.send(playerValueUpdateQuery,[newValue,id])
             teamId = self.getTeamIdFromUser(user)
