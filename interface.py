@@ -131,6 +131,3 @@ class interface:
                                  
     def start(self):
         self.updater.start_polling()
-
-
-

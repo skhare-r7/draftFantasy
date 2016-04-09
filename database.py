@@ -172,6 +172,52 @@ def create_futures(c):
               (id integer primary key, type text, deadline ts, info integer)''')
 
 
+#Create IPL points table
+#id: Unique id
+#matchid : Identifier for the game (used for filename)
+#game : some text (e.g. team names or something)
+#pXXXX : column for player code: XXXX
+#
+#example:
+#____________________________________________
+#id | matchid | game      | p1 | p2 | p3 ..  |
+# 1 |  100    | SRH vs RCB| 0  | 14 | 33 ..  |
+#
+def create_iplpoints(c):
+    playerCodes = c.execute("select playerId from playerInfo")
+    pquery = "CREATE TABLE iplpoints \
+          (id integer primary key, matchid integer, game text,"
+    for code in playerCodes:
+        pquery += "p" + code[0].__str__() + " integer,"
+
+    pquery = pquery.rstrip(',')
+    pquery += ")"
+    c.execute(pquery)
+
+
+#Create draft points table
+#id: Unique id
+#matchid : Identifier for the game (used for filename)
+#tXX : column for teamId code: XX
+#
+#example:
+#_________________________________
+#id | matchid | t1 | t2 | t3 ..  |
+# 1 |  100    | 0  | 14 | 33 ..  |
+#
+def create_draftpoints(c):
+    teamIds = c.execute("select teamId from humanPlayers")
+    tquery = "CREATE TABLE draftPoints \
+          (id integer primary key, matchid integer, "
+    for teamId in teamIds:
+        tquery += "t" + teamId[0].__str__() + " integer,"
+
+    tquery = tquery.rstrip(',')
+    tquery += ")"
+    c.execute(tquery)
+
+
+
 def init_database():
     conn = sqlite3.connect('draftGame.db')
     c = conn.cursor()
@@ -180,6 +226,8 @@ def init_database():
     create_playerStatus(c)
     create_transaction(c)
     create_futures(c)
+    create_iplpoints(c)
+    create_draftpoints(c)
     conn.commit()
     conn.close()
 

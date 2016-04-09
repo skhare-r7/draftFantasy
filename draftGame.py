@@ -5,6 +5,7 @@ from datetime import datetime as dt
 from threading import Thread
 from time import sleep
 from datetime import timedelta
+import json
 
 class draftGame:
     def __init__(self):
@@ -588,8 +589,39 @@ def finalizeAuction(future,game):
     return message
 
 
-def lockTeams(future):
-    pass
+def lockTeams(future,game):
+    futureId = future[0]
+    futureInfo = future[3]
+    teamIdQuery = "select teamId from humanPlayers"
+    teamIds = game.db.send(teamIdQuery,[])
+    for teamTuple in teamIds:
+        teamId = teamTuple[0]
+        playerInfo = {}
+        lockInfo = {}
+        lockInfo['bank'] = game.getBankValue(teamId) #bank value
+        lockInfo['teamId'] = teamId #teamId
+        lockInfo['players'] = playerInfo #this is a playerInfo dictionary
+        #key is skill, value is playerid
+        lockInfo['info'] = futureInfo
+        playerInfo['Wicketkeeper'] = []
+        playerInfo['Batsman'] = []
+        playerInfo['Allrounder'] = []
+        playerInfo['Bowler'] = []
+        
+        #save json file for each player
+        getTeams = "select playerStatus.playerId, playerInfo.skill1 from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 11"
+        players = game.db.send(getTeams,[teamId])
+        for player in players:
+            id = player[0]
+            skill = player[1]
+            playerInfo[skill].append(id)
+        with open("match"+futureInfo.__str__() + "_team" + teamId.__str__() + ".json","w") as outfile: 
+            json.dump(lockInfo, outfile)
+    deleteFutureQuery = "delete from futures where id=?"
+    game.db.send(deleteFutureQuery,[futureId])
+    game.db.commit()
+    return "Teams are locked for match. ID:" + info.__str__() #todo: get actual match name
+
 
 
 def futureWorker(tg,game):
@@ -619,9 +651,8 @@ if __name__=="__main__":
     t = Thread(target=futureWorker, args=(tg,game,))
     t.start() #future workers, uncomment once deletion of future starts
     tg.start() #telegram worker
-    
-    t.join()
 
+    t.join()
 
 #todos: 
 #1. viewmarket
