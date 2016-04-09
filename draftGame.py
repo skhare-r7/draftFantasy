@@ -271,10 +271,14 @@ class draftGame:
         valueQuery = "select playerName from playerInfo where playerId =?"
         return self.db.send(valueQuery,[id])[0][0]
 
+    def isNotAuctioned(self,id):
+        aucQuery = "select count(*) from transactions where complete=0 and type='Auction' and playerId=?"
+        return self.db.send(aucQuery,[id])[0][0] == 0
+
     def processAuction(self,user,args):
         playerId = args.split(' ')[0]
         startingPrice = None
-        if self.isValidId(playerId) and self.verifyOwnership(user,playerId):
+        if self.isValidId(playerId) and self.verifyOwnership(user,playerId) and self.isNotAuctioned(playerId):
             try:
                 startingPrice = float(args.split(' ')[1])
                 #some moron will try to do this
@@ -556,6 +560,7 @@ def finalizeAuction(future,game):
     message = ""
     completeQuery = "update transactions set complete=1 where playerId=?"
     game.db.send(completeQuery,[id])
+    #todo: remove above 2 lines since close auction should deal with this
     if value >= startingBid:
         message= "Congratulations. User:"+game.getUserById(newOwner)+" has won the bid on player:" + game.getPlayerNameById(id) +"\n"
         message+= "Winning bid:"+value.__str__()
@@ -582,7 +587,7 @@ def finalizeAuction(future,game):
     else:
         message = "Closing auction on player:" + game.getPlayerNameById(id) + "\n"
         message += "No bids received were higher than starting bid"
-    game.closeAuction(id)
+    game.closeAuction(id) #is this method broken?!
     deleteFutureQuery = "delete from futures where id=?"
     game.db.send(deleteFutureQuery,[futureId])
     game.db.commit()
@@ -597,6 +602,7 @@ def lockTeams(future,game):
     for teamTuple in teamIds:
         teamId = teamTuple[0]
         playerInfo = {}
+        overseasPlayers = 0
         lockInfo = {}
         lockInfo['bank'] = game.getBankValue(teamId) #bank value
         lockInfo['teamId'] = teamId #teamId
@@ -609,12 +615,15 @@ def lockTeams(future,game):
         playerInfo['Bowler'] = []
         
         #save json file for each player
-        getTeams = "select playerStatus.playerId, playerInfo.skill1 from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 11"
+        getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 11"
         players = game.db.send(getTeams,[teamId])
         for player in players:
             id = player[0]
             skill = player[1]
+            overseas = player[2]
+            if overseas: overseasPlayers += 1
             playerInfo[skill].append(id)
+        lockInfo['overseasTotal'] = overseasPlayers
         with open("lockedTeams/match"+futureInfo.__str__() + "_team" + teamId.__str__() + ".json","w") as outfile:
             json.dump(lockInfo, outfile)
     deleteFutureQuery = "delete from futures where id=?"
