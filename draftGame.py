@@ -615,12 +615,12 @@ def lockTeams(future,game):
             id = player[0]
             skill = player[1]
             playerInfo[skill].append(id)
-        with open("match"+futureInfo.__str__() + "_team" + teamId.__str__() + ".json","w") as outfile: 
+        with open("lockedTeams/match"+futureInfo.__str__() + "_team" + teamId.__str__() + ".json","w") as outfile:
             json.dump(lockInfo, outfile)
     deleteFutureQuery = "delete from futures where id=?"
     game.db.send(deleteFutureQuery,[futureId])
     game.db.commit()
-    return "Teams are locked for match. ID:" + info.__str__() #todo: get actual match name
+    return "Teams are locked for match. ID:" + futureInfo.__str__() #todo: get actual match name
 
 
 
