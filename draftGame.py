@@ -9,7 +9,7 @@ import json
 
 class draftGame:
     def __init__(self):
-        self.AUCTION_TIME_SECONDS = 4 * 60 * 60 #12 hours
+        self.AUCTION_TIME_SECONDS = 12 * 60 * 60 #12 hours
         self.FORCED_SALE_RATIO = 0.7
     
 
@@ -214,7 +214,7 @@ class draftGame:
         else: return "Game is live, no players are banned"
 
     def processViewMarket(self):
-        viewMarketQuery = "select info, playerInfo.playerName, playerStatus.startBid, deadline from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info order by deadline"
+        viewMarketQuery = "select info, playerInfo.playerName, playerStatus.startBid, deadline from futures inner join playerInfo on futures.info = playerInfo.playerId inner join playerStatus on playerStatus.playerId = futures.info where type='Auction' order by deadline"
         return self.db.sendPretty(viewMarketQuery,[])
 
 
