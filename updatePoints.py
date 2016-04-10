@@ -8,9 +8,10 @@ import os
 
 def updatePoints(matchId, teamId, points, db):
     entryExists = "select count(*) from draftPoints where matchid=? and teamId=?"
-    if db.send(entryExists,[matchId,teamId])[0][0]:
+    if not db.send(entryExists,[matchId,teamId])[0][0]:
         insertEntry = "insert into draftPoints (matchid, teamId, points) values (?,?,?)"
         db.send(insertEntry,[matchId,teamId,points])
+
     else:
         updateEntry = "update draftPoints set points=? where matchId=? and teamId=?"
         db.send(updateEntry,[points,matchId,teamId])
@@ -26,13 +27,11 @@ db= dbInterface()
 
 for fileName in os.listdir('lockedTeams'):
     if fileName.endswith(".json"): 
-        print fileName
         points = 0
         teamId = -1
         matchId = -1
         with open('lockedTeams/'+fileName) as lockFile:    
             lockInfo = json.load(lockFile)
-            print lockInfo
             teamId = lockInfo['teamId']
             matchId = lockInfo['info']
             #first check point criteria
