@@ -234,12 +234,19 @@ class draftGame:
     def existingAuction(self,playerId):
         existingQuery = "select count(*) from futures where info=?"
         return self.db.send(existingQuery,[playerId])[0][0]==1
-        
+
+    def userCanBid(self,teamId):
+        numPlayersQuery = "select count(*) from playerStatus where status=?"
+        numPlayers = self.db.send(numPlayersQuery,[teamId])[0][0]
+        activeBidsQuery = "select count(distinct playerId) from transactions where type='Bid' and humanId=? and complete=0"
+        activeBids = self.db.send(activeBidsQuery,[teamId])[0][0]
+        return numPlayers + activeBids <= 15 #check if # of players + active bids <= 15
+
     def processBid(self,user,args):
         playerId = args.split(' ')[0]
         teamId = self.getTeamIdFromUser(user)
         bid = None
-        if self.isValidId(playerId) and self.playerAvailableForBid(playerId):
+        if self.isValidId(playerId) and self.playerAvailableForBid(playerId) and self.userCanBid(teamId):
             try:
                 bid = float(args.split(' ')[1])
                 #some moron will try to do this
