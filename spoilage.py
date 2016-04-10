@@ -18,13 +18,17 @@ def checkSpoilage():
         db.send(dropQuery,[price,id])
         touchQuery = "update playerStatus set lastModified=? where playerId=?"
         db.send(touchQuery,[dt.now(),id])
-        db.commit()
+	try:
+            db.commit()
+        except:
+            print "..failed"
+            pass # database locked? we'll try again later
     db.close()
     
 while True:
     print "checking spoilage: " + dt.now().__str__()
     checkSpoilage()
-    print "sleeping 30 mins"
-    sleep(30*60) #check every 30 mins
+    print "sleeping 15 mins"
+    sleep(15*60) #check every 30 mins
     
     #dt.strptime(ts,"%Y-%m-%d %H:%M:%S.%f")
