@@ -10,14 +10,14 @@ def checkSpoilage():
 
     for row in db.send(spoilQuery,[]):
         id = row[0]
-        ValQuery = "select price from playerInfo where playerId=?"
+        valQuery = "select price from playerInfo where playerId=?"
         print "reducing price for playerId:" + id.__str__()
-        price = db.sendQuery(valQuery,[id])
+        price = db.send(valQuery,[id])[0][0]
         if price >= 2.04: price -= (0.02 * price) #2 percent spoilage
-        dropQuery = "udpate playerInfo set price=? where playerId=?"
-        db.sendQuery(dropQuery,[price,id])
+        dropQuery = "update playerInfo set price=? where playerId=?"
+        db.send(dropQuery,[price,id])
         touchQuery = "update playerStatus set lastModified=? where playerId=?"
-        db.sendQuery(touchQuery,[dt.now(),id])
+        db.send(touchQuery,[dt.now(),id])
         db.commit()
     db.close()
     
