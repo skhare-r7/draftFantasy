@@ -184,7 +184,10 @@ class draftGame:
             return self.processCancelBid(user,args)
         elif command == 'unpicked':
             return self.processUnpicked()
-
+        elif command == 'league':
+            return self.processLeague()
+        elif command == 'viewpoints':
+            return self.processViewPoints(user,args)
 
         #hidden commands
         elif command == 'start':
@@ -200,6 +203,12 @@ class draftGame:
         else:
             return "Invalid id"
 
+    def processLeague(self):
+        leagueQuery = "select name, totals.points from humanPlayers inner join (select teamId, sum(points) as points from draftPoints group by teamId) as totals on humanPlayers.teamId = totals.teamId order by points desc"
+        return self.db.sendPretty(leagueQuery,[])
+
+    def processViewPoints(self,user,args):
+        pass
 
     def processUnpicked(self):
         unpickedQuery = "select playerInfo.playerName, playerInfo.price from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerStatus.status = 'Open' order by price desc"
@@ -453,7 +462,7 @@ class draftGame:
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
-        helpText += "/viewteam: see your team. your top 11 will play\n"
+        helpText += "/viewteam [user]: see your team. your top 11 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
         helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days.\n"
@@ -463,6 +472,8 @@ class draftGame:
         helpText += "/viewbids: see your active bids\n"
         helpText += "/cancelbid <id> : cancel all bids on player\n"
         helpText += "/unpicked : view top unpicked players\n"
+        helpText += "/league : view current draft league\n"
+        #helpText += "/viewpoints [user]: view points\n"
         helpText += "Anything I missed? Suggest more commands!"
         return helpText
 

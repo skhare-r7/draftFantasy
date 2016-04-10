@@ -176,44 +176,32 @@ def create_futures(c):
 #id: Unique id
 #matchid : Identifier for the game (used for filename)
 #game : some text (e.g. team names or something)
-#pXXXX : column for player code: XXXX
-#
+#playerId : column for player code: XXXX
+#points : points earned by that player for that game
 #example:
-#____________________________________________
-#id | matchid | game      | p1 | p2 | p3 ..  |
-# 1 |  100    | SRH vs RCB| 0  | 14 | 33 ..  |
+#_____________________________________________
+#| matchid | game      | playerId | points |
+#|  100    | SRH vs RCB| 2733     |     33 |
 #
 def create_iplpoints(c):
-    playerCodes = c.execute("select playerId from playerInfo")
     pquery = "CREATE TABLE iplpoints \
-          (id integer primary key, matchid integer, game text,"
-    for code in playerCodes:
-        pquery += "p" + code[0].__str__() + " integer,"
-
-    pquery = pquery.rstrip(',')
-    pquery += ")"
+          (matchid integer, game text, playerId integer, points integer)"
     c.execute(pquery)
 
 
 #Create draft points table
 #id: Unique id
 #matchid : Identifier for the game (used for filename)
-#tXX : column for teamId code: XX
-#
+#teamId : column for teamId code
+#points : points from match
 #example:
 #_________________________________
-#id | matchid | t1 | t2 | t3 ..  |
-# 1 |  100    | 0  | 14 | 33 ..  |
+#| matchid | teamId | points  |
+#|  100    | 0      |  34     |
 #
 def create_draftpoints(c):
-    teamIds = c.execute("select teamId from humanPlayers")
     tquery = "CREATE TABLE draftPoints \
-          (id integer primary key, matchid integer, "
-    for teamId in teamIds:
-        tquery += "t" + teamId[0].__str__() + " integer,"
-
-    tquery = tquery.rstrip(',')
-    tquery += ")"
+          (matchid integer, teamId integer, points integer)"
     c.execute(tquery)
 
 
