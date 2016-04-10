@@ -17,7 +17,7 @@ def updatePoints(matchId, teamId, points, db):
     db.commit()
 
 def getPoints(matchId, id,db):
-    res = db.send("select points from iplpoints where playerId=? and matchid=?",[matchId,id])
+    res = db.send("select points from iplpoints where playerId=? and matchid=?",[id,matchId])
     if len(res) < 1: return 0
     else: return res[0][0]
 
