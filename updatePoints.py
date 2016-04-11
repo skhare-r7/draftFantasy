@@ -35,7 +35,7 @@ for fileName in os.listdir('lockedTeams'):
             teamId = lockInfo['teamId']
             matchId = lockInfo['info']
             #first check point criteria
-            if lockInfo['overseas'] > 5 or \
+            if lockInfo['overseasTotal'] > 5 or \
                lockInfo['bank'] < 0 or \
                len(lockInfo['players']['Wicketkeeper']) < 1 or \
                len(lockInfo['players']['Batsman']) < 4 or \

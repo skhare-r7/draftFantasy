@@ -16,8 +16,8 @@ def checkSpoilage():
         price -= round(0.02 * price,2) #2 percent spoilage
         dropQuery = "update playerInfo set price=? where playerId=?"
         db.send(dropQuery,[price,id])
-        touchQuery = "update playerStatus set lastModified=? where playerId=?"
-        db.send(touchQuery,[dt.now(),id])
+        touchQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"
+        db.send(touchQuery,[price,dt.now(),id])
 	try:
             db.commit()
         except:
