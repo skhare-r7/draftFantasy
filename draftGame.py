@@ -355,9 +355,6 @@ class draftGame:
             teamLastPos = self.getLastPos(teamId) 
             #hack to ensure the force sale is last position
             self.processSwap(user, teamPos.__str__() + " " + teamLastPos.__str__())
-            #move player to open market
-            sellQuery = "update playerStatus set status='Open', lastModified=?,teamPos=-1 where playerId=?"
-            self.db.send(sellQuery,[dt.now(),id])
             #transfer 70% to bank
             valueQuery = "select price,playerName from playerInfo where playerId=?"
             ret = self.db.send(valueQuery,[id])[0]
@@ -368,6 +365,10 @@ class draftGame:
                 #close auction immediately (delete from futures)
                 self.closeAuction(id)
             newValue = self.FORCED_SALE_RATIO * value #todo: move to config file
+            #move player to open market
+            sellQuery = "update playerStatus set status='Open', startBid=?,lastModified=?,teamPos=-1 where playerId=?"
+            self.db.send(sellQuery,[newValue,dt.now(),id])
+
             playerValueUpdateQuery = "update playerInfo set price=? where playerId=?"
             self.db.send(playerValueUpdateQuery,[newValue,id])
             teamId = self.getTeamIdFromUser(user)

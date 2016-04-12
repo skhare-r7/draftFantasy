@@ -37,7 +37,8 @@ def create_humanplayers(c):
 #   Open    : Player is available for bidding in the open market
 #             Stale players lose value in the open market
 #   TeamId  : Player belongs to Team TeamId
-# forSale: Indicates opening auction price. -1 means not on auction
+# startBid: Indicates opening auction price. -1 means not on auction
+#           For players on open market, this should be the price
 # lastModified: Keep track of time spent in open market
 # teamPos: Indicates playing position in roster (players 1-11 are active)
 
@@ -182,7 +183,7 @@ def create_futures(c):
 #_____________________________________________
 #| matchid | game      | playerId | points |
 #|  100    | SRH vs RCB| 2733     |     33 |
-#
+# 
 def create_iplpoints(c):
     pquery = "CREATE TABLE iplpoints \
           (matchid integer, game text, playerId integer, points integer)"
