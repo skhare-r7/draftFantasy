@@ -9,16 +9,17 @@ def checkSpoilage():
     spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-2 days')"
 
     for row in db.send(spoilQuery,[]):
-        id = row[0]
-        valQuery = "select price from playerInfo where playerId=?"
-        print "reducing price for playerId:" + id.__str__()
-        price = db.send(valQuery,[id])[0][0]
-        price -= round(0.02 * price,2) #2 percent spoilage
-        dropQuery = "update playerInfo set price=? where playerId=?"
-        db.send(dropQuery,[price,id])
-        touchQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"
-        db.send(touchQuery,[price,dt.now(),id])
-	try:
+        try:
+            id = row[0]
+            valQuery = "select price from playerInfo where playerId=?"
+            print "reducing price for playerId:" + id.__str__()
+            price = db.send(valQuery,[id])[0][0]
+            price -= round(0.02 * price,2) #2 percent spoilage
+            dropQuery = "update playerInfo set price=? where playerId=?"
+            db.send(dropQuery,[price,id])
+            touchQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"
+            db.send(touchQuery,[price,dt.now(),id])
+	
             db.commit()
         except:
             print "..failed"
