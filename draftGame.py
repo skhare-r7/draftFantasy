@@ -215,7 +215,7 @@ class draftGame:
             teamId = self.getTeamIdFromUser(args)
         if teamId is None: return 'Invalid query'
         ownerQuery = "select teamName, name from humanPlayers where teamId=?"
-        ownerInfo = self.db.send(ownerQuery,[ownerId])[0]
+        ownerInfo = self.db.send(ownerQuery,[teamId])[0]
         toRet = "Team Name: " + ownerInfo[0] + "(" + ownerInfo[1]+")\n"
         toRet += db.sendPretty("select draftPoints.points, (select game from iplPoints where draftPoints.matchid = iplPoints.matchid) as game from draftPoints where teamId=?",[teamId])
         return toRet
