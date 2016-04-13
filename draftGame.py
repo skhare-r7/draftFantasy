@@ -217,7 +217,7 @@ class draftGame:
         ownerQuery = "select teamName, name from humanPlayers where teamId=?"
         ownerInfo = self.db.send(ownerQuery,[teamId])[0]
         toRet = "Team Name: " + ownerInfo[0] + "(" + ownerInfo[1]+")\n"
-        toRet += db.sendPretty("select draftPoints.points, (select game from iplPoints where draftPoints.matchid = iplPoints.matchid) as game from draftPoints where teamId=?",[teamId])
+        toRet += self.db.sendPretty("select draftPoints.points, (select game from iplPoints where draftPoints.matchid = iplPoints.matchid) as game from draftPoints where teamId=?",[teamId])
         return toRet
 
     def processUnpicked(self,args):
