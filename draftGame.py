@@ -208,7 +208,17 @@ class draftGame:
         return self.db.sendPretty(leagueQuery,[])
 
     def processViewPoints(self,user,args):
-        pass
+        teamId = None
+        if args is None:
+            teamId = self.getTeamIdFromUser(user)
+        else:
+            teamId = self.getTeamIdFromUser(args)
+        if teamId is None: return 'Invalid query'
+        ownerQuery = "select teamName, name from humanPlayers where teamId=?"
+        ownerInfo = self.db.send(ownerQuery,[ownerId])[0]
+        toRet = "Team Name: " + ownerInfo[0] + "(" + ownerInfo[1]+")\n"
+        toRet += db.sendPretty("select draftPoints.points, (select game from iplPoints where draftPoints.matchid = iplPoints.matchid) as game from draftPoints where teamId=?",[teamId])
+        return toRet
 
     def processUnpicked(self,args):
         underVal = None
@@ -490,7 +500,7 @@ class draftGame:
         helpText += "/cancelbid <id> : cancel all bids on player\n"
         helpText += "/unpicked [max price] : view top unpicked players. optional max price\n"
         helpText += "/league : view current draft league\n"
-        #helpText += "/viewpoints [user]: view points\n"
+        helpText += "/viewpoints [user]: view points\n"
         helpText += "Anything I missed? Suggest more commands!"
         return helpText
 
