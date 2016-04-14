@@ -541,7 +541,7 @@ class draftGame:
             else:
                 team = arg #may be a team?
             
-        query = "select * from playerInfo where team like ? and (skill1 like ?)"
+        query = "select *,(select sum(points) from iplpoints where iplPoints.playerId=playerInfo.playerId) as points from playerInfo where team like ? and (skill1 like ?) order by points desc"
         return self.db.sendPretty(query,["%"+team+"%","%"+skill+"%"])
 
     def findPlayer(self,args):
