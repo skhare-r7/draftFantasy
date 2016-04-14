@@ -251,7 +251,7 @@ class draftGame:
         return self.db.send(bidQuery,[playerId])[0][0] != -1
 
     def existingAuction(self,playerId):
-        existingQuery = "select count(*) from futures where info=?"
+        existingQuery = "select count(*) from futures where type='Auction' and info=?"
         return self.db.send(existingQuery,[playerId])[0][0]==1
 
     def userCanBid(self,teamId):
