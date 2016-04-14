@@ -35,20 +35,29 @@ for fileName in os.listdir('lockedTeams'):
             teamId = lockInfo['teamId']
             matchId = lockInfo['info']
             playerList = lockInfo['players']
-            #first check point criteria
-            flatList = chain.from_iterable(playerList.values())
-            if len(list(flatList)) < 11 or \
+            #first check point criteria            
+#            print 'Overseas:' + lockInfo['overseasTotal'].__str__()
+#            print 'Bank:' + lockInfo['bank'].__str__()
+#            print 'WK:' + len(lockInfo['players']['Wicketkeeper']).__str__()
+#            print 'Bat:' + len(lockInfo['players']['Batsman']).__str__()
+#            print 'AR:' + len(lockInfo['players']['Allrounder']).__str__()
+#            print 'Bowl:'+len(lockInfo['players']['Bowler']).__str__()
+            
+            if len(list(chain.from_iterable(playerList.values()))) < 11 or \
                lockInfo['overseasTotal'] > 5 or \
                lockInfo['bank'] < 0 or \
                len(lockInfo['players']['Wicketkeeper']) < 1 or \
                len(lockInfo['players']['Batsman']) < 4 or \
                len(lockInfo['players']['Allrounder']) < 1 or \
                len(lockInfo['players']['Bowler']) < 2:
-               points = 0 #no point in processing data
+            	points = 0 #no point in processing data
             else:
-                for player in flatList:
+#                print "team ok"
+                for player in chain.from_iterable(playerList.values()):
                     points += getPoints(matchId, player,db)
         updatePoints(matchId, teamId, points,db)
+#        print 'Points:'+points.__str__()
+#        print teamId
     else:
         continue
 
