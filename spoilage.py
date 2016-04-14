@@ -5,11 +5,10 @@ from time import sleep
 
 
 def checkSpoilage():
-    db = dbInterface()
-    spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-2 days')"
-
-    for row in db.send(spoilQuery,[]):
-        try:
+    try:
+        db = dbInterface()
+        spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-2 days')"
+        for row in db.send(spoilQuery,[]):
             id = row[0]
             valQuery = "select price from playerInfo where playerId=?"
             print "reducing price for playerId:" + id.__str__()
@@ -19,12 +18,12 @@ def checkSpoilage():
             db.send(dropQuery,[price,id])
             touchQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"
             db.send(touchQuery,[price,dt.now(),id])
-	
             db.commit()
-        except:
-            print "..failed"
-            pass # database locked? we'll try again later
-    db.close()
+        db.close()
+    except Exception,e:
+        print "..failed"
+        print e
+        pass # database locked? we'll try again later
     
 while True:
     print "checking spoilage: " + dt.now().__str__()

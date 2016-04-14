@@ -34,8 +34,11 @@ for fileName in os.listdir('lockedTeams'):
             lockInfo = json.load(lockFile)
             teamId = lockInfo['teamId']
             matchId = lockInfo['info']
+            playerList = lockInfo['players']
             #first check point criteria
-            if lockInfo['overseasTotal'] > 5 or \
+            flatList = chain.from_iterable(playerList.values())
+            if len(list(flatList)) < 11 or \
+               lockInfo['overseasTotal'] > 5 or \
                lockInfo['bank'] < 0 or \
                len(lockInfo['players']['Wicketkeeper']) < 1 or \
                len(lockInfo['players']['Batsman']) < 4 or \
@@ -43,8 +46,7 @@ for fileName in os.listdir('lockedTeams'):
                len(lockInfo['players']['Bowler']) < 2:
                points = 0 #no point in processing data
             else:
-                playerList = lockInfo['players']
-                for player in chain.from_iterable(playerList.values()):
+                for player in flatList:
                     points += getPoints(matchId, player,db)
         updatePoints(matchId, teamId, points,db)
     else:
