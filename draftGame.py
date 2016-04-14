@@ -230,7 +230,7 @@ class draftGame:
             except:
                 pass
         if underVal is None: return 'Invalid query'
-        unpickedQuery = "select playerInfo.playerName, playerInfo.team, playerInfo.price from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.price <= ? and playerStatus.status = 'Open' order by price desc"
+        unpickedQuery = "select playerInfo.playerName, playerInfo.team, playerInfo.skill1, playerInfo.price from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.price <= ? and playerStatus.status = 'Open' order by price desc"
         return self.db.sendPretty(unpickedQuery,[underVal])
     
     def processViewBans(self):
