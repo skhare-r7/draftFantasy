@@ -51,6 +51,7 @@ for fileName in os.listdir('lockedTeams'):
                len(lockInfo['players']['Allrounder']) < 1 or \
                len(lockInfo['players']['Bowler']) < 2:
             	points = 0 #no point in processing data
+                print "Team:"+ teamId.__str__() + " failed check for match:" + matchId.__str__()
             else:
 #                print "team ok"
                 for player in chain.from_iterable(playerList.values()):
