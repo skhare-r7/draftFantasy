@@ -294,7 +294,7 @@ class draftGame:
 
     def getLastPos(self,teamId):
         try:
-            self.db.send("select teamPos from playerStatus where status=? order by teamPos desc limit 1",[teamId])[0][0]
+            return self.db.send("select teamPos from playerStatus where status=? order by teamPos desc limit 1",[teamId])[0][0]
         except:
             return 0
 
