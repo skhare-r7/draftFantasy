@@ -293,7 +293,10 @@ class draftGame:
         return self.db.send(verifyQuery,[id,teamId])[0][0] == 1
 
     def getLastPos(self,teamId):
-        return self.db.send("select teamPos from playerStatus where status=? order by teamPos desc limit 1",[teamId])[0][0]
+        try:
+            self.db.send("select teamPos from playerStatus where status=? order by teamPos desc limit 1",[teamId])[0][0]
+        except:
+            return 0
 
     def getTeamPos(self,playerId):
         return self.db.send("select teamPos from playerStatus where playerId=?",[playerId])[0][0]
