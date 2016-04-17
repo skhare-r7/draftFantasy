@@ -9,7 +9,7 @@ import json
 
 class draftGame:
     def __init__(self):
-        self.AUCTION_TIME_SECONDS = 12 * 60 * 60 #12 hours
+        self.AUCTION_TIME_SECONDS = 8 * 60 * 60 #12 hours
         self.FORCED_SALE_RATIO = 0.7
     
 
@@ -572,16 +572,21 @@ class draftGame:
     def getOwnerId(self,id):
         if self.isValidId(id):
             ownerQuery = "select status from playerStatus where playerId=?"
-            return self.db.send(ownerQuery,[id])[0][0]
-        else: return None
+            ret = self.db.send(ownerQuery,[id])[0][0]
+            if ret != 'Open': return ret #this is what happens when we overload status
+        return None
 
     def getNameFromTeamId(self,teamId):
         nameQuery = "select name from humanPlayers where teamId=?"
         return self.db.send(nameQuery,[teamId])[0][0]
 
     def isValidOwner(self,id):
+        if id is None: return False
         query = "select count(*) from humanPlayers where teamId=?"
-        return self.db.send(query,[id])[0][0] == 1
+        try:
+            return self.db.send(query,[id])[0][0] == 1
+        except:
+            return False
 
 
 def finalizeAuction(future,game):
