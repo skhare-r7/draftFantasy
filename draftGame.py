@@ -607,7 +607,7 @@ def finalizeAuction(future,game):
     completeQuery = "update transactions set complete=1 where playerId=?"
     game.db.send(completeQuery,[id])
     #todo: remove above 2 lines since close auction should deal with this
-    if value >= startingBid:
+    if value >= startingBid - 0.001: #need this hack because python acts up when comparing floats!
         message= "Congratulations. User:"+game.getUserById(newOwner)+" has won the bid on player:" + game.getPlayerNameById(id) +"\n"
         message+= "Winning bid:"+value.__str__()
         #transfer ownership
