@@ -6,6 +6,8 @@ import sys
 
 #matchPoints dict will look as follows
 #{ "matchId": 11,
+#  "team1": RCB,
+#  "team2": DD,
 #  "game": "RCB vs DD",
 #  "players": {
 #    "CH Gayle":{
@@ -69,6 +71,7 @@ tree = lxml.html.parse(gamePage)
 matchPoints = {}
 
 batting = tree.xpath("//table[@class='batting-table innings']/tr[not(@*)]")
+teamNameXpath = "../tr/th[@class='th-innings-heading']/text()"
 bowling = tree.xpath("//table[@class='bowling-table']/tr[not(@*)]")
 dnb = tree.xpath("//div[@class='to-bat']/p/span/a/text()")
 
@@ -87,6 +90,8 @@ matchPoints["matchId"] = matchId
 m = re.search(match_teams_regex,match_info.strip())
 team1 = m.group(1).strip()
 team2 = m.group(2).strip()
+matchPoints["team1"] = team1
+matchPoints["team2"] = team2
 matchPoints["game"] = convTeam(team1) + ' vs ' + convTeam(team2)
 m = re.search(match_winner_regex,match_winner.strip())
 winner = m.group(1).strip()
@@ -97,13 +102,16 @@ matchPoints["mom"] = mom
 players = {}
 matchPoints["players"] = players
 dismissals = []
-caught_regex = "c (.*?) b .*"
-runout_regex = "run out \((.*)"
+caught_regex = "c ((?!&).*?) b .*"
+c_and_b_regex = "c & b (.*)"
+runout_regex = "run out \((.*?)(/.*)?\).*"
 stumped_regex = "st (.*?) b .*"
 
 for player in batting:
     name = player.xpath("./td[@class='batsman-name']/a/text()")[0]
     dismissal = player.xpath("./td[3]/text()")[0]
+    if 'not out' in dismissal: out = False
+    else: out = True
     dismissals.append(dismissal)
     runs = player.xpath("./td[4]/text()")[0]
     balls = player.xpath("./td[5]/text()")[0]
@@ -116,8 +124,10 @@ for player in batting:
     batting["fours"] = fours
     batting["sixes"] = sixes
     batting["sr"] = sr
+    batting["out"] = out
     players[name] = {}
     players[name]["bat"] = batting
+    players[name]["team"] = convTeam(player.xpath(teamNameXpath)[0].strip().split(' innings')[0])
 
 for player in dnb:
     name = player
@@ -145,7 +155,11 @@ for player in bowling:
     players[name]["bowl"] = bowling
 
 def closest(player):
+  try:
     return difflib.get_close_matches(player,players.keys(),1)[0]
+  except:
+    print player
+    print difflib.get_close_matches(player,players.keys(),3,0)
 
 for name,info in players.items():
    info['field'] = {}
@@ -158,7 +172,7 @@ for dismissal in dismissals:
     if gre.match(runout_regex,dismissal):
         player = gre.last_match.group(1)
         players[closest(player)]["field"]["runouts"] += 1
-    elif gre.match(caught_regex,dismissal):
+    elif gre.match(caught_regex,dismissal) or gre.match(c_and_b_regex,dismissal):
         player = gre.last_match.group(1)
         players[closest(player)]["field"]["catches"] += 1
     elif gre.match(stumped_regex,dismissal):
