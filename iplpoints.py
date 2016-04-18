@@ -73,7 +73,7 @@ for fileName in os.listdir('scorecards'):
             team1 = match['team1']
             team2 = match['team2']
             players = db.send("select playerName,playerId from playerInfo where team like ? or team like ?",[team1,team2])
-            players_dict = dict((item[0],item[1]) for item in players)
+            players_dict = dict((item[0].split(' ')[0][:2] + ' ' +item[0].split(' ')[1],item[1]) for item in players)
             playerName = None
             for name, playerInfo in match["players"].items():
                 points = iplPointCalculator(name,match)

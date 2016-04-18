@@ -101,7 +101,10 @@ mom = m.group(1).strip()
 matchPoints["mom"] = mom
 players = {}
 matchPoints["players"] = players
-dismissals = []
+dismissals = {}
+dismissals[team1] = []
+dismissals[team2] = []
+
 caught_regex = "c ((?!&).*?) b .*"
 c_and_b_regex = "c & b (.*)"
 runout_regex = "run out \((.*?)(/.*)?\).*"
@@ -112,7 +115,6 @@ for player in batting:
     dismissal = player.xpath("./td[3]/text()")[0]
     if 'not out' in dismissal: out = False #err retired hurt?
     else: out = True
-    dismissals.append(dismissal)
     runs = player.xpath("./td[4]/text()")[0]
     balls = player.xpath("./td[5]/text()")[0]
     fours = player.xpath("./td[6]/text()")[0]
@@ -126,8 +128,10 @@ for player in batting:
     batting["sr"] = sr
     batting["out"] = out
     players[name] = {}
-    players[name]["bat"] = batting
     players[name]["team"] = convTeam(player.xpath(teamNameXpath)[0].strip().split(' innings')[0])
+    dismissals[players[name]["team"]].append(dismissal)
+    players[name]["bat"] = batting
+
 
 for player in dnb:
     name = player.xpath("./text()")[0]
@@ -156,12 +160,13 @@ for player in bowling:
     bowling["sixes"] = sixes
     players[name]["bowl"] = bowling
 
-def closest(player):
+def closest(player,team):
+  oppPlayers = [i for i in players.keys() if players[i]["team"]!=team] #opposition team only!
   try:
-    return difflib.get_close_matches(player,players.keys(),1)[0]
+    return difflib.get_close_matches(player,oppPlayers,1)[0]
   except:
     print player
-    print difflib.get_close_matches(player,players.keys(),3,0)
+    print difflib.get_close_matches(player,oppPlayers,3,0)
 
 for name,info in players.items():
    info['field'] = {}
@@ -170,16 +175,17 @@ for name,info in players.items():
    info['field']['stumpings'] = 0
 
 gre = Re()
-for dismissal in dismissals:
+for team,dismissalList in dismissals.items():
+  for dismissal in dismissalList:
     if gre.match(runout_regex,dismissal):
         player = gre.last_match.group(1)
-        players[closest(player)]["field"]["runouts"] += 1
+        players[closest(player,team)]["field"]["runouts"] += 1
     elif gre.match(caught_regex,dismissal) or gre.match(c_and_b_regex,dismissal):
         player = gre.last_match.group(1)
-        players[closest(player)]["field"]["catches"] += 1
+        players[closest(player,team)]["field"]["catches"] += 1
     elif gre.match(stumped_regex,dismissal):
         player = gre.last_match.group(1)
-        players[closest(player)]["field"]["stumpings"] += 1
+        players[closest(player,team)]["field"]["stumpings"] += 1
     else:
         pass
 
