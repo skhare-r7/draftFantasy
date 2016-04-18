@@ -73,8 +73,8 @@ matchPoints = {}
 batting = tree.xpath("//table[@class='batting-table innings']/tr[not(@*)]")
 teamNameXpath = "../tr/th[@class='th-innings-heading']/text()"
 bowling = tree.xpath("//table[@class='bowling-table']/tr[not(@*)]")
-dnb = tree.xpath("//div[@class='to-bat']/p/span/a/text()")
-
+dnb = tree.xpath("//div[@class='to-bat']/p/span/a")
+dnbTeam = "../../../../preceding-sibling::table[@class='batting-table innings']/tr/th[@class='th-innings-heading']/text()"
 more_stats_second = tree.xpath("//div[@class='more-match-stats'][2]")
 match_info = tree.xpath("//div[@class='match-information-strip']/text()")[0]
 match_no_regex = ".*?(\d+).*"
@@ -88,11 +88,11 @@ m = re.search(match_no_regex,match_info.strip())
 matchId = m.group(1)
 matchPoints["matchId"] = matchId
 m = re.search(match_teams_regex,match_info.strip())
-team1 = m.group(1).strip()
-team2 = m.group(2).strip()
+team1 = convTeam(m.group(1).strip())
+team2 = convTeam(m.group(2).strip())
 matchPoints["team1"] = team1
 matchPoints["team2"] = team2
-matchPoints["game"] = convTeam(team1) + ' vs ' + convTeam(team2)
+matchPoints["game"] = team1 + ' vs ' + team2
 m = re.search(match_winner_regex,match_winner.strip())
 winner = m.group(1).strip()
 matchPoints["winner"] =  convTeam(winner)
@@ -110,7 +110,7 @@ stumped_regex = "st (.*?) b .*"
 for player in batting:
     name = player.xpath("./td[@class='batsman-name']/a/text()")[0]
     dismissal = player.xpath("./td[3]/text()")[0]
-    if 'not out' in dismissal: out = False
+    if 'not out' in dismissal: out = False #err retired hurt?
     else: out = True
     dismissals.append(dismissal)
     runs = player.xpath("./td[4]/text()")[0]
@@ -130,8 +130,10 @@ for player in batting:
     players[name]["team"] = convTeam(player.xpath(teamNameXpath)[0].strip().split(' innings')[0])
 
 for player in dnb:
-    name = player
+    name = player.xpath("./text()")[0]
     players[name] = {}
+    team = player.xpath(dnbTeam)[0].strip().split(' innings')[0]
+    players[name]['team'] = convTeam(team)
 
 for player in bowling:
     name = player.xpath("./td[@class='bowler-name']/a/text()")[0]
