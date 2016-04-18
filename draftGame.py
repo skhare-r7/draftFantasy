@@ -560,7 +560,7 @@ class draftGame:
             query = "select * from playerInfo where playerInfo.playerId = ?"
             toRet = self.db.sendPretty(query,[args.strip()])
             ownerId = self.getOwnerId(args)
-            if ownerId == 'Open':
+            if ownerId is None:
                 toRet += "\nCurrently available"
             elif ownerId == 'Draft':
                 toRet += "\nIn draft"
