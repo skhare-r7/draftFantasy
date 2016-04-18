@@ -48,6 +48,10 @@ class Re(object):
   def match(self,pattern,text):
     self.last_match = re.match(pattern,text)
     return self.last_match
+  def search(self,pattern,text):
+    self.last_match = re.search(pattern,text)
+    return self.last_match
+
 
 
 def convTeam(longName):
@@ -69,6 +73,7 @@ gamePage = sys.argv[1]
 
 tree = lxml.html.parse(gamePage)
 matchPoints = {}
+gre = Re()
 
 batting = tree.xpath("//table[@class='batting-table innings']/tr[not(@*)]")
 teamNameXpath = "../tr/th[@class='th-innings-heading']/text()"
@@ -84,21 +89,21 @@ match_winner_regex = "(.*?) won by .*"
 mom = tree.xpath("//div[@class='match-information']/div[2]/span/text()")[0]
 mom_regex = "(.*?)\(.*"
 
-m = re.search(match_no_regex,match_info.strip())
-matchId = m.group(1)
+if gre.search(match_no_regex,match_info.strip()):
+  matchId = gre.last_match.group(1)
 matchPoints["matchId"] = matchId
-m = re.search(match_teams_regex,match_info.strip())
-team1 = convTeam(m.group(1).strip())
-team2 = convTeam(m.group(2).strip())
+if gre.search(match_teams_regex,match_info.strip()):
+  team1 = convTeam(gre.last_match.group(1).strip())
+  team2 = convTeam(gre.last_match.group(2).strip())
 matchPoints["team1"] = team1
 matchPoints["team2"] = team2
 matchPoints["game"] = team1 + ' vs ' + team2
-m = re.search(match_winner_regex,match_winner.strip())
-winner = m.group(1).strip()
-matchPoints["winner"] =  convTeam(winner)
-m = re.search(mom_regex,mom.strip())
-mom = m.group(1).strip()
-matchPoints["mom"] = mom
+if gre.search(match_winner_regex,match_winner.strip()):
+  winner = gre.last_match.group(1).strip()
+  matchPoints["winner"] =  convTeam(winner)
+if gre.search(mom_regex,mom.strip()):
+  mom = gre.last_match.group(1).strip()
+  matchPoints["mom"] = mom
 players = {}
 matchPoints["players"] = players
 dismissals = {}
@@ -136,7 +141,11 @@ for player in batting:
 for player in dnb:
     name = player.xpath("./text()")[0]
     players[name] = {}
-    team = player.xpath(dnbTeam)[0].strip().split(' innings')[0]
+    inningsTitle = player.xpath(dnbTeam)[0].strip()
+    if 'innings' in inningsTitle:
+      team = inningsTitle.split(' innings')[0]
+    else:
+      team = inningsTitle.split(' team')[0]
     players[name]['team'] = convTeam(team)
 
 for player in bowling:
@@ -174,7 +183,7 @@ for name,info in players.items():
    info['field']['catches'] = 0
    info['field']['stumpings'] = 0
 
-gre = Re()
+
 for team,dismissalList in dismissals.items():
   for dismissal in dismissalList:
     if gre.match(runout_regex,dismissal):

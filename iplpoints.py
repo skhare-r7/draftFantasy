@@ -54,12 +54,12 @@ def iplPointCalculator(name,match):
     #10 points per runout
     points += (10 * getAct(perf,"field","runouts"))
     #25 points for mom
-    if match['mom'] == name:
+    if 'mom' in match and match['mom'] == name:
         points += 25
     #winning team
     #print match
     #print perf
-    if match['winner'] == perf['team']:
+    if 'winner' in match and match['winner'] == perf['team']:
         points += 5
     return int(points)
 
