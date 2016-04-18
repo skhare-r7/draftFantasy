@@ -74,7 +74,7 @@ batting = tree.xpath("//table[@class='batting-table innings']/tr[not(@*)]")
 teamNameXpath = "../tr/th[@class='th-innings-heading']/text()"
 bowling = tree.xpath("//table[@class='bowling-table']/tr[not(@*)]")
 dnb = tree.xpath("//div[@class='to-bat']/p/span/a")
-dnbTeam = "../../../../preceding-sibling::table[@class='batting-table innings']/tr/th[@class='th-innings-heading']/text()"
+dnbTeam = "../../../../preceding-sibling::table[@class='batting-table innings'][1]/tr/th[@class='th-innings-heading']/text()"
 more_stats_second = tree.xpath("//div[@class='more-match-stats'][2]")
 match_info = tree.xpath("//div[@class='match-information-strip']/text()")[0]
 match_no_regex = ".*?(\d+).*"

@@ -11,7 +11,7 @@ def getAct(perf,skill,act):
     try:
         return float(perf[skill][act])
     except:
-        return -1
+        return 0
 
 def iplPointCalculator(name,match):
     points = 0
@@ -25,14 +25,14 @@ def iplPointCalculator(name,match):
     #-5 for duck
     if getAct(perf,"bat","runs")==0 and getAct(perf,"bat","out"): points -= 5
     #strike rate
-    if getAct(perf,"bat","runs") > 10:
+    if getAct(perf,"bat","runs") >= 10:
         if getAct(perf,"bat","sr") < 75: points -= 15
         elif getAct(perf,"bat","sr") < 100: points -= 10
         elif getAct(perf,"bat","sr") < 150: points += 5
         elif getAct(perf,"bat","sr") < 200: points += 10
         else: points += 15
     #20 points per wicket
-    points += (20 * getAct(perf,"bat","wickets"))
+    points += (20 * getAct(perf,"bowl","wickets"))
     #10 point wicket bonus
     if getAct(perf,"bowl","wickets") > 1:
         points += (10 * (getAct(perf,"bowl","wickets")-1))
@@ -42,10 +42,10 @@ def iplPointCalculator(name,match):
     points += (20 * getAct(perf,"bowl","maidens"))
     #economy
     if getAct(perf,"bowl","overs") >= 1: #remeber overs can be 1.3!
-        if getAct(perf,"bowl","eco") <= 5: points += 15
-        elif getAct(perf,"bowl","eco") <= 8: points += 10
-        elif getAct(perf,"bowl","eco") <= 10: points += 5
-        elif getAct(perf,"bowl","eco") <= 12: points -= 10
+        if getAct(perf,"bowl","econ") <= 5: points += 15
+        elif getAct(perf,"bowl","econ") <= 8: points += 10
+        elif getAct(perf,"bowl","econ") <= 10: points += 5
+        elif getAct(perf,"bowl","econ") <= 12: points -= 10
         else: points -= 15
     #10 points per catch
     points += (10 * getAct(perf,"field","catches"))
@@ -60,8 +60,8 @@ def iplPointCalculator(name,match):
     #print match
     #print perf
     if match['winner'] == perf['team']:
-        points += 10
-    return points
+        points += 5
+    return int(points)
 
 for fileName in os.listdir('scorecards'):
     if fileName.endswith(".json"):
