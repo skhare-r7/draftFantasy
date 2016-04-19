@@ -67,6 +67,9 @@ class iplPoints:
         return int(points)
     
     def run(self,match):
+        delSql = "delete from iplpoints where matchid=?"
+        pointSql = "insert into iplpoints (matchid,game,playerId,points) values (?,?,?,?)"
+                    
         for fileName in os.listdir('scorecards'):
             res = re.search("match"+match.__str__()+".json",fileName)
             if res is not None:
@@ -90,11 +93,10 @@ class iplPoints:
                             print difflib.get_close_matches(name,players_dict.keys(),3,0)
                             raise
                         print playerName + "(" + name + ") : " + points.__str__()
-                    delSql = "delete from iplpoints where matchid=?"
-                    pointSql = "insert into iplpoints (matchid,game,playerId,points) values (?,?,?,?)"
-                    if matchId != None and gameInfo != None:
-                        self.db.send(delSql,[matchId])
-                        self.db.send(pointSql,[matchId,gameInfo,players_dict[playerName],points])
+                        if matchId != None and gameInfo != None:
+                            self.db.send(delSql,[matchId])
+                            self.db.send(pointSql,[matchId,gameInfo,players_dict[playerName],points])
+                    
                     self.db.commit()
     def close(self):
         self.db.close()
