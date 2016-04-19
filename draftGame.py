@@ -5,6 +5,7 @@ from datetime import datetime as dt
 from threading import Thread
 from time import sleep
 from datetime import timedelta
+from livescorer import livescorer
 import json
 
 class draftGame:

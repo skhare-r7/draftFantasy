@@ -57,7 +57,7 @@ class updater:
         print "finishing game " + game.__str__()
         for fileName in os.listdir('lockedTeams'):
             res = re.search("match(\d+)_team\d+.*",fileName)
-            if res is not None and if res.group(1) == game: #game is done, move file
+            if res is not None and res.group(1) == game: #game is done, move file
                 print "moving "  + fileName
                 os.rename('lockedTeams/'+fileName,'lockedTeams/finished/'+fileName)
 
