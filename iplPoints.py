@@ -96,7 +96,11 @@ class iplPoints:
                             raise
                         print playerName + "(" + name + ") : " + points.__str__()
                         self.db.send(pointSql,[matchId,gameInfo,players_dict[playerName],points])
-                        self.db.commit()
+                        try:
+                            self.db.commit()
+                        except:
+                            print "cannot update ipl points.., db busy?"
+                scoreFile.close()
 
     def close(self):
         self.db.close()

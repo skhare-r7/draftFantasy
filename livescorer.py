@@ -7,13 +7,24 @@ from time import sleep
 import sys
 import os
 from iplPoints import iplPoints
+from threading import Thread
 
-class livescorer:
+
+class livescorer(Thread):
     def __init__(self,db,matchId):
         self.db = db
         self.updater = updater(db)
         self.matchId = int(matchId)
         self.iplPoints = iplPoints(db)
+        self.time = 0
+        self.interval = 0
+        self.scoreType = None
+        Thread.__init__(self)
+    
+    def setScorerType(self,scoreType='once', time=4.5*60*60 ,interval=2*60):
+        self.time = time
+        self.interval = interval
+        self.scoreType = scoreType
 
     def runOnce(self):
         #get live url
@@ -24,16 +35,24 @@ class livescorer:
         self.iplPoints.run(self.matchId)
         self.updater.run()
 
-    
-    def runAgressive(self,time,interval):
-        end = dt.now() + timedelta(seconds=time)
+    def run(self):
+        if self.scoreType == 'once':
+            self.runOnce()
+        elif self.scoreType == 'aggressive':
+            self.runAgressive()
+        else:
+            pass
+
+    def runAgressive(self):
+        end = dt.now() + timedelta(seconds=self.time)
         while dt.now() < end:
             self.runOnce()
-            sleep(interval)
+            sleep(self.interval)
         self.updater.finishGame(self.matchId)
 
 
 if __name__=='__main__':
     db = dbInterface()
     ls = livescorer(db,sys.argv[1])
-    ls.runOnce()
+    ls.setScorerType()
+    ls.start()

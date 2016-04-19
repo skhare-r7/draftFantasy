@@ -692,6 +692,12 @@ def futureWorker(tg,game):
             elif future[1] == 'Lock':
                 message = lockTeams(future,game)
                 tg.broadcast(message)
+                #start live updater for this game
+                #in agressive mode for 4.5 hours
+                matchId = future[3]
+                liveupdater = livescorer(db,matchId)
+                liveupdater.setScorerType(scoreType='aggressive',time=4.5*60*60,interval=4*60)
+                liveupdater.start()
             else:
                 pass
         sleep(60) #sleep 60 seconds?

@@ -45,14 +45,20 @@ class updater:
                     else: #team is ok
                         for player in chain.from_iterable(playerList.values()):
                             points += self.getPoints(matchId, player)
-                    self.updatePoints(matchId, teamId, points)
+                    try:
+                        self.updatePoints(matchId, teamId, points)
+                    except: #db is busy, try again
+                        print "Failed to update.., DB busy?"
+                lockFile.close()
             else:
                 continue
 
     def finishGame(self,game):
+        print "finishing game " + game.__str__()
         for fileName in os.listdir('lockedTeams'):
             res = re.search("match(\d+)_team\d+.*",fileName)
-            if res is not None and res.group(1) == game: #game is done, move files to finished
+            if res is not None and if res.group(1) == game: #game is done, move file
+                print "moving "  + fileName
                 os.rename('lockedTeams/'+fileName,'lockedTeams/finished/'+fileName)
 
     def close(self):
