@@ -83,6 +83,8 @@ class iplPoints:
                     players = self.db.send("select playerName,playerId from playerInfo where team like ? or team like ?",[team1,team2])
                     players_dict = dict((item[0].split(' ')[0][:2] + ' ' +item[0].split(' ')[1],item[1]) for item in players)
                     playerName = None
+                    if matchId != None and gameInfo != None:
+                        self.db.send(delSql,[matchId])
                     for name, playerInfo in match["players"].items():
                         points = self.iplPointCalculator(name,match)
                         try:
@@ -93,10 +95,8 @@ class iplPoints:
                             print difflib.get_close_matches(name,players_dict.keys(),3,0)
                             raise
                         print playerName + "(" + name + ") : " + points.__str__()
-                        if matchId != None and gameInfo != None:
-                            self.db.send(delSql,[matchId])
-                            self.db.send(pointSql,[matchId,gameInfo,players_dict[playerName],points])
-                    
-                    self.db.commit()
+                        self.db.send(pointSql,[matchId,gameInfo,players_dict[playerName],points])
+                        self.db.commit()
+
     def close(self):
         self.db.close()
