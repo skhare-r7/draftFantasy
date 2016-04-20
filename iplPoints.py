@@ -81,7 +81,7 @@ class iplPoints:
                     team1 = match['team1']
                     team2 = match['team2']
                     players = self.db.send("select playerName,playerId from playerInfo where team like ? or team like ?",[team1,team2])
-                    players_dict = dict((item[0].split(' ')[0][:2] + ' ' +item[0].split(' ')[1],item[1]) for item in players)
+                    players_dict = dict((item[0].split(' ')[0][:2] + ' ' +item[0].split(' ',1)[1],item[1]) for item in players)
                     playerName = None
                     if matchId != None and gameInfo != None:
                         self.db.send(delSql,[matchId])
