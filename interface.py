@@ -18,6 +18,7 @@ class interface:
         self.telegramIds['Shrikar'] = 183002377
         self.telegramIds['Ali'] = 120943853
         self.telegramIds['Kanav'] = 213318720
+        self.telegramIds['Aniket'] = 212593489
 
         self.updater = Updater(token=myBotToken)
         self.bot = telegram.Bot(token=myBotToken)
@@ -127,6 +128,7 @@ class interface:
             except:
                 pass
             user = self.get_user_from_id(update.message.chat_id)
+            if user is None: user = update.message.chat_id
             self.bot.sendMessage(chat_id=update.message.chat_id, text=self.game.handleCommand(user, command, args))
         
     def get_user_from_id(self,id):

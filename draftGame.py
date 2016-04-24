@@ -10,7 +10,7 @@ import json
 
 class draftGame:
     def __init__(self):
-        self.AUCTION_TIME_SECONDS = 8 * 60 * 60 #12 hours
+        self.AUCTION_TIME_SECONDS = 12 * 60 * 60 #12 hours
         self.FORCED_SALE_RATIO = 0.7
     
 
@@ -108,7 +108,7 @@ class draftGame:
         teamId = self.getTeamIdFromUser(user)
         transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
         self.db.send(transactionQuery,["Ban",id,0,teamId,1,dt.now()])
-        self.db.commit()
+        #self.db.commit()
 
     def moveAllPlayersToOpenMarket(self):
         #sqlite join and update doesnt work!
@@ -119,7 +119,7 @@ class draftGame:
             price = self.getPrice(id)
             updateQuery = "update playerStatus set status='Open',lastModified=?,teamPos=-1,startBid=? where playerId=?"
             self.db.send(updateQuery,[dt.now(),price,id])
-        self.db.commit()
+        #self.db.commit()
         
     def pickId(self,user, id):
         teamId = self.getTeamIdFromUser(user)
@@ -136,7 +136,7 @@ class draftGame:
         self.db.send(bankUpdate,[newBank,teamId])
         transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
         self.db.send(transactionQuery,["Pick",id,0,teamId,1,dt.now()])        
-        self.db.commit()
+        #self.db.commit()
 
     def getTeamIdFromUser(self,user):
         query = "select teamId from humanPlayers where name like ?"
@@ -199,7 +199,7 @@ class draftGame:
         if self.isValidId(args):
             deleteQuery = "delete from transactions where type = 'Bid' and humanId=? and complete=0 and playerId=?"
             self.db.send(deleteQuery,[self.getTeamIdFromUser(user),args])
-            self.db.commit()
+            #self.db.commit()
             return "Done"
         else:
             return "Invalid id"
@@ -282,7 +282,7 @@ class draftGame:
             #place bid
             bidQuery = "insert into transactions values ('Bid',?,?,?,?,?)"
             self.db.send(bidQuery,[playerId,bid,teamId,0,dt.now()])
-            self.db.commit()
+            #self.db.commit()
             self.tg.broadcast("User:"+user+" placed bid on player:"+self.getName(playerId))
             return "Done"
         else: return "Unable to bid" 
@@ -333,7 +333,7 @@ class draftGame:
             transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
             self.db.send(transactionQuery,['Auction',playerId,startingPrice,teamId,0,dt.now()])
             self.prepareNewAuction(playerName,startingPrice,playerId)
-            self.db.commit()
+            #self.db.commit()
             return "Done"
         else: return "Invalid player id? Check auction syntax"
 
@@ -345,7 +345,7 @@ class draftGame:
         self.tg.broadcast(broadcastMessage)
         futuresQuery = "insert into futures (type,deadline,info) values ('Auction',?,?)"
         self.db.send(futuresQuery,[auctionCloseTime,playerId])
-        self.db.commit()
+        #self.db.commit()
         return "Done"
  
         
@@ -354,7 +354,7 @@ class draftGame:
         self.db.send(closeQuery,[id])
         transactionsQuery = "update transactions set complete=1 where playerId=? and (type='Auction' or type='Bid')"
         self.db.send(transactionsQuery,[id])
-        self.db.commit()
+        #self.db.commit()
 
     def processForcedSale(self,user,args):
         #verify ownership
@@ -394,7 +394,7 @@ class draftGame:
 
             transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
             self.db.send(transactionQuery,['ForceSell',id,newValue,teamId,1,dt.now()])
-            self.db.commit()
+            #self.db.commit()
             return "Done"
             
 
@@ -413,7 +413,7 @@ class draftGame:
                 swapQuery = "update playerStatus set teamPos=? where playerId=?"
                 self.db.send(swapQuery,[pos2,pos1Id])
                 self.db.send(swapQuery,[pos1,pos2Id])
-                self.db.commit()
+                #self.db.commit()
                 return "Swapped position: " + pos1.__str__() + " with position:" + pos2.__str__()
             else:
                 return "You do not have players in these positions. Check your team with /viewteam"

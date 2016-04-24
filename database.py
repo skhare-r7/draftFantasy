@@ -238,11 +238,13 @@ class dbInterface:
     
     def send(self,query, args):
         self.c.execute(query, args)
+        self.conn.commit() #should only commit for create, insert , update and delete?
         return self.c.fetchall()
 
     def sendPretty(self,query,args):
         print query
         self.c.execute(query,args)
+        self.conn.commit()
         header = [description[0] for description in self.c.description]
         
         table = PrettyTable(header)

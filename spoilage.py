@@ -18,7 +18,7 @@ def checkSpoilage():
             db.send(dropQuery,[price,id])
             touchQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"
             db.send(touchQuery,[price,dt.now(),id])
-            db.commit()
+            #db.commit()
         db.close()
     except Exception,e:
         print "..failed"

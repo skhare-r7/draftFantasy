@@ -14,7 +14,7 @@ class updater:
         self.db.send(dropCurrentQ,[matchId,teamId])
         insertEntry = "insert into draftPoints (matchid, teamId, points) values (?,?,?)"
         self.db.send(insertEntry,[matchId,teamId,points])
-        self.db.commit()
+        #self.db.commit()
 
     def getPoints(self,matchId, id):
         res = self.db.send("select points from iplpoints where playerId=? and matchid=?",[id,matchId])
