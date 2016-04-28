@@ -32,8 +32,11 @@ class livescorer(Thread):
         #run scorecard scraper
         os.system("python scorescrape.py " + url) 
         #update points
-        self.iplPoints.run(self.matchId)
-        self.updater.run()
+        try:
+            self.iplPoints.run(self.matchId)
+            self.updater.run()
+        except:
+            print "Failed to update points, db locked?"
 
     def run(self):
         if self.scoreType == 'once':

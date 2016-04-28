@@ -66,6 +66,12 @@ def convTeam(longName):
     conversion["Sunrisers Hyderabad"] = "SRH"
     return conversion[longName]
 
+def getVal(player,xpathStr):
+  try:
+    return player.xpath(xpathStr)[0]
+  except:
+    return 0
+
 
 #finalized scorecard scraping
 #gamePage = "http://www.espncricinfo.com/indian-premier-league-2016/engine/match/980921.html"
@@ -118,17 +124,17 @@ runout_regex = "run out \((.*?)(/.*)?\).*"
 stumped_regex = "st (.*?) b .*"
 
 for player in batting:
-    name = player.xpath("./td[@class='batsman-name']/a/text()")[0]
-    dismissal = player.xpath("./td[3]/text()")[0]
+    name = getVal(player,"./td[@class='batsman-name']/a/text()")
+    dismissal = getVal(player,"./td[3]/text()")
     if 'not out' in dismissal: out = False #err retired hurt?
     else: out = True
-    runs = player.xpath("./td[4]/text()")[0]
+    runs = getVal(player,"./td[4]/text()")
     ballsIndex = 5
     if min_batted_exists: ballsIndex +=1
-    balls = player.xpath("./td["+str(ballsIndex)+"]/text()")[0]
-    fours = player.xpath("./td["+str(ballsIndex+1)+"]/text()")[0]
-    sixes = player.xpath("./td["+str(ballsIndex+2)+"]/text()")[0]
-    sr = player.xpath("./td["+str(ballsIndex+3)+"]/text()")[0]
+    balls = getVal(player,"./td["+str(ballsIndex)+"]/text()")
+    fours = getVal(player,"./td["+str(ballsIndex+1)+"]/text()")
+    sixes = getVal(player,"./td["+str(ballsIndex+2)+"]/text()")
+    sr = getVal(player,"./td["+str(ballsIndex+3)+"]/text()")
       
     batting = {}
     batting["runs"] = runs
@@ -138,15 +144,15 @@ for player in batting:
     batting["sr"] = sr
     batting["out"] = out
     players[name] = {}
-    players[name]["team"] = convTeam(player.xpath(teamNameXpath)[0].strip().split(' innings')[0])
+    players[name]["team"] = convTeam(getVal(player,teamNameXpath).strip().split(' innings')[0])
     dismissals[players[name]["team"]].append(dismissal)
     players[name]["bat"] = batting
 
 
 for player in dnb:
-    name = player.xpath("./text()")[0]
+    name = getVal(player,"./text()")
     players[name] = {}
-    inningsTitle = player.xpath(dnbTeam)[0].strip()
+    inningsTitle = getVal(player,dnbTeam).strip()
     if 'innings' in inningsTitle:
       team = inningsTitle.split(' innings')[0]
     else:
@@ -154,15 +160,15 @@ for player in dnb:
     players[name]['team'] = convTeam(team)
 
 for player in bowling:
-    name = player.xpath("./td[@class='bowler-name']/a/text()")[0]
-    overs = player.xpath("./td[3]/text()")[0]
-    maidens = player.xpath("./td[4]/text()")[0]
-    runs = player.xpath("./td[5]/text()")[0]
-    wickets = player.xpath("./td[6]/text()")[0]
-    econ = player.xpath("./td[7]/text()")[0]
-    dots = player.xpath("./td[8]/text()")[0]
-    fours = player.xpath("./td[9]/text()")[0]
-    sixes = player.xpath("./td[10]/text()")[0]
+    name = getVal(player,"./td[@class='bowler-name']/a/text()")
+    overs = getVal(player,"./td[3]/text()")
+    maidens = getVal(player,"./td[4]/text()")
+    runs = getVal(player,"./td[5]/text()")
+    wickets = getVal(player,"./td[6]/text()")
+    econ = getVal(player,"./td[7]/text()")
+    dots = getVal(player,"./td[8]/text()")
+    fours = getVal(player,"./td[9]/text()")
+    sixes = getVal(player,"./td[10]/text()")
     bowling = {}
     bowling["overs"] = overs
     bowling["runs"] = runs
@@ -173,6 +179,7 @@ for player in bowling:
     bowling["fours"] = fours
     bowling["sixes"] = sixes
     players[name]["bowl"] = bowling
+
 
 def closest(player,team):
   oppPlayers = [i for i in players.keys() if players[i]["team"]!=team] #opposition team only!

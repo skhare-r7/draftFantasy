@@ -681,26 +681,30 @@ def lockTeams(future,game):
 
 
 def futureWorker(tg,game):
+    print 'starting future worker'
     db = dbInterface()
     while True:
         print 'monitoring future queue'
         checkFutureQuery = "select * from futures where deadline <= datetime('now','localtime')"
-        futures = db.send(checkFutureQuery,[])
-        for future in futures:
-            if future[1] == 'Auction':
-                message = finalizeAuction(future,game)
-                tg.broadcast(message)
-            elif future[1] == 'Lock':
-                message = lockTeams(future,game)
-                tg.broadcast(message)
-                #start live updater for this game
-                #in agressive mode for 4.5 hours
-                matchId = future[3]
-                liveupdater = livescorer(db,matchId)
-                liveupdater.setScorerType(scoreType='aggressive',time=4.5*60*60,interval=4*60)
-                liveupdater.start()
-            else:
-                pass
+        try:
+            futures = db.send(checkFutureQuery,[])
+            for future in futures:
+                if future[1] == 'Auction':
+                    message = finalizeAuction(future,game)
+                    tg.broadcast(message)
+                elif future[1] == 'Lock':
+                    message = lockTeams(future,game)
+                    tg.broadcast(message)
+                    #start live updater for this game
+                    #in agressive mode for 4.5 hours
+                    matchId = future[3]
+                    liveupdater = livescorer(db,matchId)
+                    liveupdater.setScorerType(scoreType='aggressive',time=4.5*60*60,interval=4*60)
+                    liveupdater.start()
+                else:
+                    pass
+        except:
+            "..failed, db locked"
         sleep(60) #sleep 60 seconds?
 
 
@@ -711,7 +715,7 @@ if __name__=="__main__":
     game.setTg(tg)
 
     t = Thread(target=futureWorker, args=(tg,game,))
-    t.start() #future workers, uncomment once deletion of future starts
+    t.start() 
     tg.start() #telegram worker
 
     t.join()
