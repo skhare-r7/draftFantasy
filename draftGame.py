@@ -531,7 +531,7 @@ class draftGame:
 
 
     def processViewBids(self,user):
-        viewQuery = "select transactions.playerId,transactions.value,playerInfo.playerName from transactions inner join playerInfo on playerInfo.playerId = transactions.playerId where humanId=? and complete=0"
+        viewQuery = "select transactions.playerId,transactions.value,playerInfo.playerName from transactions inner join playerInfo on playerInfo.playerId = transactions.playerId where humanId=? and complete=0 and type='Bid'"
         return self.db.sendPretty(viewQuery,[self.getTeamIdFromUser(user)])
 
     def getListQuery(self,args):

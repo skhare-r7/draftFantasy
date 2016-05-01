@@ -1,5 +1,6 @@
 import telegram
 from telegram.ext import Updater
+from telegram.ext import CommandHandler
 import logging
 #from draftGame import draftGame
 
@@ -23,27 +24,27 @@ class interface:
         self.updater = Updater(token=myBotToken)
         self.bot = telegram.Bot(token=myBotToken)
         dispatcher = self.updater.dispatcher
-        dispatcher.addTelegramCommandHandler('help', self.help)
-        dispatcher.addTelegramCommandHandler('rules', self.rules)
-        dispatcher.addTelegramCommandHandler('stage', self.stage)
-        dispatcher.addTelegramCommandHandler('list', self.list)
-        dispatcher.addTelegramCommandHandler('find', self.find)
-        dispatcher.addTelegramCommandHandler('player', self.player)
-        dispatcher.addTelegramCommandHandler('ban', self.ban)
-        dispatcher.addTelegramCommandHandler('pick', self.pick)
-        dispatcher.addTelegramCommandHandler('viewteam', self.viewteam)
-        dispatcher.addTelegramCommandHandler('swap', self.swap)
-        dispatcher.addTelegramCommandHandler('start', self.startGame)
-        dispatcher.addTelegramCommandHandler('auction', self.auction)
-        dispatcher.addTelegramCommandHandler('bid', self.bid)
-        dispatcher.addTelegramCommandHandler('forcesell', self.forcesell)
-        dispatcher.addTelegramCommandHandler('viewmarket', self.viewmarket)
-        dispatcher.addTelegramCommandHandler('viewbans', self.viewbans)
-        dispatcher.addTelegramCommandHandler('viewbids', self.viewbids)
-        dispatcher.addTelegramCommandHandler('cancelbid', self.cancelbid)
-        dispatcher.addTelegramCommandHandler('unpicked', self.unpicked)
-        dispatcher.addTelegramCommandHandler('league', self.league)
-        dispatcher.addTelegramCommandHandler('viewpoints', self.viewpoints)
+        dispatcher.addHandler(CommandHandler('help', self.help))
+        dispatcher.addHandler(CommandHandler('rules', self.rules))
+        dispatcher.addHandler(CommandHandler('stage', self.stage))
+        dispatcher.addHandler(CommandHandler('list', self.list))
+        dispatcher.addHandler(CommandHandler('find', self.find))
+        dispatcher.addHandler(CommandHandler('player', self.player))
+        dispatcher.addHandler(CommandHandler('ban', self.ban))
+        dispatcher.addHandler(CommandHandler('pick', self.pick))
+        dispatcher.addHandler(CommandHandler('viewteam', self.viewteam))
+        dispatcher.addHandler(CommandHandler('swap', self.swap))
+        dispatcher.addHandler(CommandHandler('start', self.startGame))
+        dispatcher.addHandler(CommandHandler('auction', self.auction))
+        dispatcher.addHandler(CommandHandler('bid', self.bid))
+        dispatcher.addHandler(CommandHandler('forcesell', self.forcesell))
+        dispatcher.addHandler(CommandHandler('viewmarket', self.viewmarket))
+        dispatcher.addHandler(CommandHandler('viewbans', self.viewbans))
+        dispatcher.addHandler(CommandHandler('viewbids', self.viewbids))
+        dispatcher.addHandler(CommandHandler('cancelbid', self.cancelbid))
+        dispatcher.addHandler(CommandHandler('unpicked', self.unpicked))
+        dispatcher.addHandler(CommandHandler('league', self.league))
+        dispatcher.addHandler(CommandHandler('viewpoints', self.viewpoints))
 
         self.game = game
 
