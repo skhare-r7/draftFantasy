@@ -118,9 +118,9 @@ dismissals = {}
 dismissals[team1] = []
 dismissals[team2] = []
 
-caught_regex = "c ((?!&).*?) b .*"
+caught_regex = "c ((?!&|sub).*?) b .*"
 c_and_b_regex = "c & b (.*)"
-runout_regex = "run out \((.*?)(/.*)?\).*"
+runout_regex = "run out \((?!sub)(.*?)(/.*)?\).*"
 stumped_regex = "st (.*?) b .*"
 
 for player in batting:

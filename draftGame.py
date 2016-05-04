@@ -550,7 +550,8 @@ class draftGame:
 
     def findPlayer(self,args):
         query = "select * from playerInfo where playerName like ?"
-        return self.db.sendPretty(query,["%"+args.strip()+"%"])
+        if args:
+            return self.db.sendPretty(query,["%"+args.strip()+"%"])
 
     def getPlayerNameById(self,id):
         query = "select playerName from playerInfo where playerId=?"
