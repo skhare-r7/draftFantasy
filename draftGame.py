@@ -260,7 +260,7 @@ class draftGame:
         numPlayers = self.db.send(numPlayersQuery,[teamId])[0][0]
         activeBidsQuery = "select count(distinct playerId) from transactions where type='Bid' and humanId=? and complete=0"
         activeBids = self.db.send(activeBidsQuery,[teamId])[0][0]
-        return numPlayers + activeBids <= 15 #check if # of players + active bids <= 15
+        return numPlayers + activeBids < 15 
 
     def processBid(self,user,args):
         playerId = args.split(' ')[0]
