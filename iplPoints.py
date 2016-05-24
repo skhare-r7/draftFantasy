@@ -63,7 +63,7 @@ class iplPoints:
         #print match
         #print perf
         if 'winner' in match and match['winner'] == perf['team']:
-            points += 5
+            points += 10
         return int(points)
     
     def run(self,match):

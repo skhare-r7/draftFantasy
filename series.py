@@ -6,13 +6,21 @@ import sys
 
 class series:
   def __init__():
-    pass
+    self.finals = {}
+    self.finals[57]='981013'
+#    self.finals[58]=
+#    self.finals[59]=
+#    self.finals[60]=
   
   
   @staticmethod
   def get_live_url(matchId):
     base_url = "http://www.espncricinfo.com"
     suffix_url = "?view=scorecard"
+    finals_url = "/indian-premier-league-2016/engine/match/"
+    if matchId in self.finals.keys():
+      return base_url+finals_url+self.finals[matchId]+'.html'
+
     SUFFIXES = {1: 'st', 2: 'nd', 3: 'rd'}
     def ordinal(num):
       if 10 <= num % 100 <= 20:
