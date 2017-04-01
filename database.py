@@ -18,13 +18,11 @@ def create_humanplayers(c):
               (teamId integer, teamName text, name text, bank real)''')
     humanPlayers = {}
     humanPlayers[0] = ['Unique Losers', 'Shreyas']
-#    humanPlayers[1] = ['Swingers', 'Akshay']
-    humanPlayers[2] = ['Dozer', 'Sri']
-    humanPlayers[3] = ['Kiakaha', 'Ripu']
-    humanPlayers[4] = ['Royal Canadian Challengers', 'Yenan']
-    humanPlayers[5] = ['NoBallXI', 'Shrikar']
-    humanPlayers[6] = ['WtfCricket', 'Ali']
-    humanPlayers[1] = ['Faadu', 'Kanav']
+    humanPlayers[1] = ['Champion', 'Sri']
+    humanPlayers[2] = ['Bangla2019', 'Shrikar']
+    humanPlayers[3] = ['Ma Niggas', 'Yenan']
+
+
 
     for teamId, info in humanPlayers.items():
         c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'100.0')",[teamId,info[0],info[1]])
@@ -63,31 +61,31 @@ def create_playerStatus(c):
 
 def getSkillFromCategory(value):
     if value == 1: return "Batsman"
-    elif value == 2: return "Wicketkeeper"
+    elif value == 2: return "Bowler"
     elif value == 3: return "Allrounder"
-    elif value == 4: return "Bowler"
+    elif value == 4: return "Wicketkeeper"
     else: return None
 
 def getFullTeamNameFromSideId(value):
-    if value == 1: return "Delhi Daredevils"
-    elif value == 2: return "Gujarat Lions"
-    elif value == 3: return "Kings XI Punjab"
-    elif value == 4: return "Kolkata Knight Riders"
-    elif value == 5: return "Mumbai Indians"
-    elif value == 6: return "Rising Pune Supergiants"
-    elif value == 7: return "Royal Challengers Bangalore"
-    elif value == 8: return "Sunrisers Hyderabad"
+    if value == "DEL": return "Delhi Daredevils"
+    elif value == "GUJ": return "Gujarat Lions"
+    elif value == "PNJ": return "Kings XI Punjab"
+    elif value == "KOL": return "Kolkata Knight Riders"
+    elif value == "MUM": return "Mumbai Indians"
+    elif value == "PUN": return "Rising Pune Supergiants"
+    elif value == "BNG": return "Royal Challengers Bangalore"
+    elif value == "HYD": return "Sunrisers Hyderabad"
     else: return None
 
 def getTeamNameFromSideId(value):
-    if value == 1: return "DD"
-    elif value == 2: return "GL"
-    elif value == 3: return "KXIP"
-    elif value == 4: return "KKR"
-    elif value == 5: return "MI"
-    elif value == 6: return "RPS"
-    elif value == 7: return "RCB"
-    elif value == 8: return "SRH"
+    if value == "DEL": return "DD"
+    elif value == "GUJ": return "GL"
+    elif value == "PNJ": return "KXIP"
+    elif value == "KOL": return "KKR"
+    elif value == "MUM": return "MI"
+    elif value == "PUN": return "RPS"
+    elif value == "BNG": return "RCB"
+    elif value == "HYD": return "SRH"
     else: return None
 
 
@@ -107,12 +105,12 @@ def create_playerinfo(c):
 #    f = open("playerListJson.dump","rb") #downloaded offline from ICC
 #    playerList = pickle.load(f)
 #    f.close() 
-    json_data = open('iplPlayerList.json')
+    json_data = open('ipl2017PlayerList.json')
     data = json.load(json_data)
 
     c.execute('''CREATE TABLE playerInfo
               (playerId integer, team text, playerName text, price real, skill1 text, overseas integer)''')
-    for player in data['players']:
+    for player in data:
         playerId = None
         teamName = None
         name = None
@@ -120,11 +118,11 @@ def create_playerinfo(c):
         skill1 = None
         overseas = 0
         for key,value in  player.items():
-            if key == 'code': playerId = value
-            elif key == 'info1' : name = value
-            elif key == 'sideId' : teamName = getTeamNameFromSideId(value)
-            elif key == 'value' : price = value
-            elif key == 'categoryId' : skill1 = getSkillFromCategory(value)
+            if key == 'PlayerId': playerId = value
+            elif key == 'PlayerName' : name = value
+            elif key == 'RealTeamName' : teamName = getTeamNameFromSideId(value)
+            elif key == 'Price' : price = value
+            elif key == 'PlayerTypeId' : skill1 = getSkillFromCategory(value)
             elif key == 'info4' : overseas = 1
             else: pass
 
