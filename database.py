@@ -21,11 +21,12 @@ def create_humanplayers(c):
     humanPlayers[1] = ['Champion', 'Sri']
     humanPlayers[2] = ['Bangla2019', 'Shrikar']
     humanPlayers[3] = ['Ma Niggas', 'Yenan']
+    humanPlayers[4] = ["Khan's Super Kings",'Farhan']
 
 
 
     for teamId, info in humanPlayers.items():
-        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'100.0')",[teamId,info[0],info[1]])
+        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'80.0')",[teamId,info[0],info[1]])
 
 
 #Create a player Status table
@@ -123,7 +124,7 @@ def create_playerinfo(c):
             elif key == 'RealTeamName' : teamName = getTeamNameFromSideId(value)
             elif key == 'Price' : price = value
             elif key == 'PlayerTypeId' : skill1 = getSkillFromCategory(value)
-            elif key == 'info4' : overseas = 1
+            elif key == 'OPlayerId' and value: overseas = 1
             else: pass
 
         if (playerId and name and teamName and price):
