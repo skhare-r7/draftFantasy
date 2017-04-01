@@ -8,9 +8,9 @@ class interface:
     def __init__(self,game):
         logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        myBotToken='184819989:AAHAXw47XxOQlYMQbe6TtFuSqdSVhCLKM70'
+        myBotToken='309142165:AAFE5_m9RqUvxQ2FESo9BxD8vQFbFvgCnOU'
         self.telegramIds = {}
-        self.telegramIds['draftFantasyGroup'] = -65624170
+        self.telegramIds['draftFantasyGroup'] = -197047422
         self.telegramIds['Shreyas'] = 21851479
         self.telegramIds['Akshay'] = 74058426
         self.telegramIds['Yenan'] =89001170

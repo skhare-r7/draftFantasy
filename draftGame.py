@@ -27,7 +27,7 @@ class draftGame:
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
-        self.currentPhase = 'Live' #we start at drafting
+        self.currentPhase = 'Draft' #we start at drafting
 
         self.currentRound = 0
         self.currentStage = 0 
@@ -464,7 +464,7 @@ class draftGame:
         rulesText += "In the draft stage, there will be 3 rounds of bans follwed by 6 rounds of picks.\n"
         rulesText += "Manager order for draft is decided randomly\n"
         rulesText += "During picks, order is reversed every round, so last pick for one round gets first pick in the next\n"
-        rulesText += "You cannot pick a player who is banned / pick by someone else\n"
+        rulesText += "You cannot pick a player who is banned / picked by someone else\n"
         rulesText += "Each manager stars with 100.0 in the bank. Each pick counts towards that limit\n"
         rulesText += "Once 9 rounds are complete, game becomes Live\n"
         rulesText += "In a live game, you can bid on any player in the open market.\n"
