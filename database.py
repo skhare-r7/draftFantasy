@@ -23,6 +23,7 @@ def create_humanplayers(c):
     humanPlayers[3] = ['Ma Niggas', 'Yenan']
     humanPlayers[4] = ["Khan's Super Kings",'Farhan']
     humanPlayers[5] = ["Kia Kaha",'Ripu']
+    humanPlayers[6] = ["Delhi Bellies",'Anmol']
 
     for teamId, info in humanPlayers.items():
         c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'80.0')",[teamId,info[0],info[1]])

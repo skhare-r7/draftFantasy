@@ -21,6 +21,7 @@ class interface:
         self.telegramIds['Kanav'] = 213318720
         self.telegramIds['Aniket'] = 212593489
         self.telegramIds['Farhan'] = 370194752
+        self.telegramIds['Anmol'] = 31587490
 
         self.updater = Updater(token=myBotToken)
         self.bot = telegram.Bot(token=myBotToken)

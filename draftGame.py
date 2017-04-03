@@ -26,7 +26,7 @@ class draftGame:
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
+#        self.rounds.append(['pick_r'])
         self.currentPhase = 'Draft' #we start at drafting
 
         self.currentRound = 0
@@ -260,7 +260,7 @@ class draftGame:
         numPlayers = self.db.send(numPlayersQuery,[teamId])[0][0]
         activeBidsQuery = "select count(distinct playerId) from transactions where type='Bid' and humanId=? and complete=0"
         activeBids = self.db.send(activeBidsQuery,[teamId])[0][0]
-        return numPlayers + activeBids < 15 
+        return numPlayers + activeBids < 12 
 
     def processBid(self,user,args):
         playerId = args.split(' ')[0]
@@ -461,25 +461,33 @@ class draftGame:
 
     def getRulesText(self):
         rulesText = "Game consists of 2 stages: Draft and Live\n"
-        rulesText += "In the draft stage, there will be 3 rounds of bans follwed by 6 rounds of picks.\n"
+        rulesText += "In the draft stage, there will be 3 rounds of bans follwed by 5 rounds of picks.\n"
         rulesText += "Manager order for draft is decided randomly\n"
         rulesText += "During picks, order is reversed every round, so last pick for one round gets first pick in the next\n"
         rulesText += "You cannot pick a player who is banned / picked by someone else\n"
-        rulesText += "Each manager stars with 80.0 in the bank. Each pick counts towards that limit\n"
+        rulesText += "Each manager stars with 90.0 in the bank. Each pick counts towards that limit\n"
         rulesText += "Once 9 rounds are complete, game becomes Live\n"
         rulesText += "In a live game, you can bid on any player in the open market.\n"
         rulesText += "These include all players unpicked during draft PLUS banned players from the draft\n"
         rulesText += "The minimum bid for these players is their default value\n"
         rulesText += "Auctions bids are blind, but bid actions will be broadcasted in the group\n"
-        rulesText += "Auctions close in 24* hours. Highest bid will be awarded player\n"
+        rulesText += "Auctions close in 24 hours. Highest bid will be awarded player\n"
         rulesText += "At any point, managers may choose to auction a player from their team or force sell him for 70% value\n"
         rulesText += "Managers decide the starting bid for the player auction\n"
         rulesText += "==========================\n"
         rulesText += "Scoring will be done using the rules from IPL fantasy\n"
-        rulesText += "Teams are frozen at every match deadline, and top 11* players will score points\n"
+        rulesText += "Teams are frozen at every match deadline, and top 9 players will score points\n"
         rulesText += "Managers will receive NO points for a match unless two conditions are met at every match deadline\n"
         rulesText += "1. Bank value cannot be negative\n"
-        rulesText += "2. Must have atleast 11 players, including 4 bat, 1 wk, 2 bowl, 1 AR (max 5 intl)\n"
+        rulesText += "2. Must have atleast 9 players, including 3 bat, 1 wk, 2 bowl, 1 AR (max 4 intl)\n"
+        rulesText += "==========================\n"
+        rulesText += "Changes this year:\n"
+        rulesText += "1. You cannot have more than 11 players in your team (active + bench)\n"
+        rulesText += "2. Unpicked players lose 2% of their value daily\n"
+        rulesText += "3. Teams will be given two boosts during the tournament:\n"
+        rulesText += "On April 14th: [13.0 to 7.0] in their bank, highest going to team in last place\n"
+        rulesText += "On April 28th: [26.0 to 14.0] in their bank, highest going to team in last place\n"
+        rulesText += "==========================\n"
         rulesText += "Good luck and have fun!"
         return rulesText
 
@@ -663,7 +671,7 @@ def lockTeams(future,game):
         playerInfo['Bowler'] = []
         
         #save json file for each player
-        getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 11"
+        getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 9"
         players = game.db.send(getTeams,[teamId])
         for player in players:
             id = player[0]
