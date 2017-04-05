@@ -7,7 +7,7 @@ from time import sleep
 def checkSpoilage():
     try:
         db = dbInterface()
-        spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-2 days')"
+        spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-1 days')"
         for row in db.send(spoilQuery,[]):
             id = row[0]
             valQuery = "select price from playerInfo where playerId=?"

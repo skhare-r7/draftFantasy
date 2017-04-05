@@ -27,7 +27,7 @@ class draftGame:
         self.rounds.append(['pick_r'])
         self.rounds.append(['pick_r'])
 #        self.rounds.append(['pick_r'])
-        self.currentPhase = 'Draft' #we start at drafting
+        self.currentPhase = 'Live' #we start at drafting
 
         self.currentRound = 0
         self.currentStage = 0 
@@ -67,7 +67,7 @@ class draftGame:
     def gameStage(self):
         toRet = "Current Phase:" + self.currentPhase + "\n"
         if self.currentPhase == 'Draft':
-            toRet += "Current Round:" + self.currentRound.__str__() + " of " + len(self.rounds).__str__()+  "\n"
+            toRet += "Current Round:" + (self.currentRound+1).__str__() + " of " + len(self.rounds).__str__()+  "\n"
             toRet += "Current Stage:" + self.rounds[self.currentRound][self.currentStage] + "\n"
             toRet += "Current Player:" + self.getUserById(self.order[self.currentPlayer])
         return toRet
@@ -268,7 +268,7 @@ class draftGame:
         bid = None
         if self.isValidId(playerId) and self.playerAvailableForBid(playerId) and self.userCanBid(teamId):
             try:
-                bid = float(args.split(' ')[1])
+                bid = round(float(args.split(' ')[1]),2)
                 #some moron will try to do this
                 if bid < 0 : bid = None
             except:
@@ -378,7 +378,7 @@ class draftGame:
                 tg.broadcast("Auction on player:"+playerName+ " is closed due to forced sale")
                 #close auction immediately (delete from futures)
                 self.closeAuction(id)
-            newValue = self.FORCED_SALE_RATIO * value #todo: move to config file
+            newValue = round(self.FORCED_SALE_RATIO * value, 2) #todo: move to config file
             #move player to open market
             sellQuery = "update playerStatus set status='Open', startBid=?,lastModified=?,teamPos=-1 where playerId=?"
             self.db.send(sellQuery,[newValue,dt.now(),id])
@@ -501,7 +501,7 @@ class draftGame:
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
-        helpText += "/viewteam [user]: see your team. your top 11 will play\n"
+        helpText += "/viewteam [user]: see your team. your top 9 will play\n"
         helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
         helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
         helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days.\n"

@@ -15,7 +15,7 @@ class interface:
         self.telegramIds['Akshay'] = 74058426
         self.telegramIds['Yenan'] =89001170
         self.telegramIds['Sri'] = 58583921
-        self.telegramIds['Ripu'] = 76484915
+        self.telegramIds['Ripu'] = 272524465
         self.telegramIds['Shrikar'] = 183002377
         self.telegramIds['Ali'] = 120943853
         self.telegramIds['Kanav'] = 213318720

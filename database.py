@@ -20,13 +20,13 @@ def create_humanplayers(c):
     humanPlayers[0] = ['Unique Losers', 'Shreyas']
     humanPlayers[1] = ['Champion', 'Sri']
     humanPlayers[2] = ['Bangla2019', 'Shrikar']
-    humanPlayers[3] = ['Ma Niggas', 'Yenan']
-    humanPlayers[4] = ["Khan's Super Kings",'Farhan']
-    humanPlayers[5] = ["Kia Kaha",'Ripu']
-    humanPlayers[6] = ["Delhi Bellies",'Anmol']
-
+    humanPlayers[3] = ["Kia Kaha",'Ripu']
+    humanPlayers[4] = ["Delhi Bellies",'Anmol']
+    humanPlayers[5] = ["Khan's Super Kings",'Farhan']
+    humanPlayers[6] = ['Ma Niggas', 'Yenan']
+    
     for teamId, info in humanPlayers.items():
-        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'80.0')",[teamId,info[0],info[1]])
+        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'90.0')",[teamId,info[0],info[1]])
 
 
 #Create a player Status table
