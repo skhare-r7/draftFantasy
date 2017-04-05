@@ -17,7 +17,7 @@ dates = tree.xpath("//li[@class='large-20 medium-20 columns']/div[1]/span/text()
 for i in range(0,len(dates),2):
     date_string = dates[i].strip()+' '+dates[i+1].split(u'\xa0')[0] + '+0530 2017'
     dt = parser.parse(date_string)
-    c.execute("insert into futures (type,deadline,info) values (?,?,?)",['Lock',dt.astimezone(HERE),i+1])
+    c.execute("insert into futures (type,deadline,info) values (?,?,?)",['Lock',dt.astimezone(HERE),(i/2)+1])
 
 conn.commit()
 conn.close()
