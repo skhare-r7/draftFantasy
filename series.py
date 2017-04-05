@@ -7,7 +7,7 @@ import sys
 class series:
   def __init__():
     self.finals = {}
-    self.finals[57]='981013'
+#    self.finals[57]='981013'
 #    self.finals[58]=
 #    self.finals[59]=
 #    self.finals[60]=
@@ -17,7 +17,7 @@ class series:
   def get_live_url(matchId):
     base_url = "http://www.espncricinfo.com"
     suffix_url = "?view=scorecard"
-    finals_url = "/indian-premier-league-2016/engine/match/"
+    finals_url = "/indian-premier-league-2017/engine/match/"
     if matchId in self.finals.keys():
       return base_url+finals_url+self.finals[matchId]+'.html'
 
@@ -31,7 +31,7 @@ class series:
       return str(num) + suffix
 
     lookFor = "'"+ ordinal(matchId) + " match'"
-    seriesPage = "http://www.espncricinfo.com/indian-premier-league-2016/content/series/968923.html?template=fixtures"
+    seriesPage = "http://www.espncricinfo.com/indian-premier-league-2017/content/series/1078425.html?template=fixtures"
     tree = lxml.html.parse(seriesPage)
     link = tree.xpath("//span[@class='play_team']/a[contains(text(),"+lookFor+")]/@href")[0]
     return base_url+link+suffix_url
