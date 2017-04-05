@@ -9,7 +9,7 @@ HERE = tz.tzlocal()
 conn = sqlite3.connect('draftGame.db') 
 c = conn.cursor()
 
-series_url = 'http://www.espncricinfo.com/indian-premier-league-2016/content/series/968923.html?template=fixtures'
+series_url = 'http://www.espncricinfo.com/indian-premier-league-2017/content/series/1078425.html?template=fixtures'
 
 tree = lxml.html.parse(series_url)
 dates = tree.xpath("//li[@class='large-20 medium-20 columns']/div[1]/span/text()")
