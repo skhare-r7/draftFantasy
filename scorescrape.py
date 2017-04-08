@@ -61,7 +61,7 @@ def convTeam(longName):
     conversion["Kings XI Punjab"] = "KXIP"
     conversion["Kolkata Knight Riders"] = "KKR"
     conversion["Mumbai Indians"] = "MI"
-    conversion["Rising Pune Supergiants"] = "RPS"
+    conversion["Rising Pune Supergiant"] = "RPS"
     conversion["Royal Challengers Bangalore"] = "RCB"
     conversion["Sunrisers Hyderabad"] = "SRH"
     return conversion[longName]

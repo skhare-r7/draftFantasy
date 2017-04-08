@@ -21,7 +21,7 @@ class livescorer(Thread):
         self.scoreType = None
         Thread.__init__(self)
     
-    def setScorerType(self,scoreType='once', time=4.5*60*60 ,interval=2*60):
+    def setScorerType(self,scoreType='aggressive', time=4.5*60*60 ,interval=2*60):
         self.time = time
         self.interval = interval
         self.scoreType = scoreType

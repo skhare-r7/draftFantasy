@@ -7,7 +7,7 @@ import sys
 class series:
   def __init__():
     self.finals = {}
-#    self.finals[57]='981013'
+    self.finals[57]='981013'
 #    self.finals[58]=
 #    self.finals[59]=
 #    self.finals[60]=
@@ -18,8 +18,9 @@ class series:
     base_url = "http://www.espncricinfo.com"
     suffix_url = "?view=scorecard"
     finals_url = "/indian-premier-league-2017/engine/match/"
-    if matchId in self.finals.keys():
-      return base_url+finals_url+self.finals[matchId]+'.html'
+#todo: fix before finals
+#    if matchId in self.finals.keys():
+#      return base_url+finals_url+self.finals[matchId]+'.html'
 
     SUFFIXES = {1: 'st', 2: 'nd', 3: 'rd'}
     def ordinal(num):
