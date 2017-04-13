@@ -104,7 +104,7 @@ class interface:
         self.processCommand('unpicked',update)
 
     def top(self,bot,update):
-        self.processCommand('unpicked',update)
+        self.processCommand('top',update)
 
     def league(self,bot,update):
         self.processCommand('league',update)
