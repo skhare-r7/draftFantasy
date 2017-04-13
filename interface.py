@@ -45,6 +45,7 @@ class interface:
         dispatcher.addHandler(CommandHandler('viewbids', self.viewbids))
         dispatcher.addHandler(CommandHandler('cancelbid', self.cancelbid))
         dispatcher.addHandler(CommandHandler('unpicked', self.unpicked))
+        dispatcher.addHandler(CommandHandler('top', self.top))
         dispatcher.addHandler(CommandHandler('league', self.league))
         dispatcher.addHandler(CommandHandler('viewpoints', self.viewpoints))
 
@@ -100,6 +101,9 @@ class interface:
         self.processCommand('viewmarket',update)
 
     def unpicked(self,bot,update):
+        self.processCommand('unpicked',update)
+
+    def top(self,bot,update):
         self.processCommand('unpicked',update)
 
     def league(self,bot,update):

@@ -185,6 +185,8 @@ class draftGame:
             return self.processCancelBid(user,args)
         elif command == 'unpicked':
             return self.processUnpicked(args)
+        elif command == 'top':
+            return self.processTop()
         elif command == 'league':
             return self.processLeague()
         elif command == 'viewpoints':
@@ -233,7 +235,11 @@ class draftGame:
         if underVal is None: return 'Invalid query'
         unpickedQuery = "select playerInfo.playerName, playerInfo.team, playerInfo.skill1, playerInfo.price, (select sum(points) from iplpoints where iplpoints.playerId=playerInfo.playerId) as points from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId where playerInfo.price <= ? and playerStatus.status = 'Open' order by points desc"
         return self.db.sendPretty(unpickedQuery,[underVal])
-    
+
+    def processTop(self):
+        topQuery = "select playerInfo.playerName, playerInfo.team, playerInfo.skill1, playerInfo.price, (select sum(points) from iplpoints where iplpoints.playerId=playerInfo.playerId) as points from playerInfo inner join playerStatus on playerInfo.playerId = playerStatus.playerId order by points desc"
+        return self.db.sendPretty(topQuery,[])
+
     def processViewBans(self):
         if self.currentPhase == 'Draft':
             toRet = "The following players have been banned:\n"
@@ -511,6 +517,7 @@ class draftGame:
         helpText += "/viewbids: see your active bids\n"
         helpText += "/cancelbid <id> : cancel all bids on player\n"
         helpText += "/unpicked [max price] : view top unpicked players. optional max price\n"
+        helpText += "/top: view top players.\n"
         helpText += "/league : view current draft league\n"
         helpText += "/viewpoints [user]: view points\n"
         helpText += "Anything I missed? Suggest more commands!"
