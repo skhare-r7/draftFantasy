@@ -570,6 +570,7 @@ class draftGame:
             query = "select game,points from iplPoints where playerID = ?"
             toRet = self.db.sendPretty(query,[args.strip()])
             query = "select * from playerInfo where playerInfo.playerId = ?"
+            toRet += "\n"
             toRet += self.db.sendPretty(query,[args.strip()])
             ownerId = self.getOwnerId(args)
             if ownerId is None:
