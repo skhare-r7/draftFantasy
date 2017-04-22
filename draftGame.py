@@ -618,7 +618,7 @@ def finalizeAuction(future,game):
     bidsQuery = "select value, humanId from transactions where playerId=? and complete=0 and type='Bid' order by value desc limit 1"
     try:
         highestBid = game.db.send(bidsQuery,[id])[0]
-    except: highestBid = [-1, '0'] #todo fix this!
+    except: highestBid = [-2, '0'] #todo fix this!
     value = highestBid[0]
     newOwner = highestBid[1]
     startingBidQuery = "select startBid from playerStatus where playerId=?"
