@@ -31,6 +31,7 @@ class interface:
         dispatcher.addHandler(CommandHandler('stage', self.stage))
         dispatcher.addHandler(CommandHandler('list', self.list))
         dispatcher.addHandler(CommandHandler('find', self.find))
+        dispatcher.addHandler(CommandHandler('whohas', self.whohas))
         dispatcher.addHandler(CommandHandler('player', self.player))
         dispatcher.addHandler(CommandHandler('ban', self.ban))
         dispatcher.addHandler(CommandHandler('pick', self.pick))
@@ -120,6 +121,9 @@ class interface:
 
     def cancelbid(self,bot,update):
         self.processCommand('cancelbid',update)
+
+    def whohas(self,bot,update):
+        self.processCommand('whohas',update)
 
     def startGame(self,bot,update):
         self.processCommand('start',update)

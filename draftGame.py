@@ -191,6 +191,8 @@ class draftGame:
             return self.processLeague()
         elif command == 'viewpoints':
             return self.processViewPoints(user,args)
+        elif command == 'whohas':
+            return self.findWhoHas(args)
 
         #hidden commands
         elif command == 'start':
@@ -210,6 +212,10 @@ class draftGame:
         leagueQuery = "select name, totals.points from humanPlayers inner join (select teamId, sum(points) as points from draftPoints group by teamId) as totals on humanPlayers.teamId = totals.teamId order by points desc"
         return self.db.sendPretty(leagueQuery,[])
 
+    def findWhoHas(self, args):
+        whoHasQuery = "SELECT  name,Sum(points) as 'Total Points' , playerName From (SELECT pi.playerName, hp.name, iplp.points FROM playerInfo pi INNER JOIN playerStatus as ps on pi.playerId = ps.playerId INNER JOIN humanPlayers hp on hp.teamId = ps.status INNER JOIN iplpoints iplp on iplp.playerId = pi.playerId) WHERE playerName like ?  GROUP BY playerName"
+        return self.db.sendPretty(whoHasQuery,['%'+args+'%'])
+    
     def processViewPoints(self,user,args):
         teamId = None
         if args is None:
@@ -504,6 +510,7 @@ class draftGame:
         helpText += "/stage : show current game stage\n"
         helpText += "/list [team] [category]: list all players from this team/category\n" #need to show status
         helpText += "/find <name>: get player ids by name\n" #need to show status
+        helpText += "/whohas <name>: list player owner\n"
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
