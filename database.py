@@ -169,7 +169,7 @@ def create_transaction(c):
 # 2 | Lock      |           | 4    |<-- game number (optional)
 def create_futures(c):
     c.execute('''CREATE TABLE futures
-              (id integer primary key, type text, deadline ts, info integer)''')
+              (id integer primary key, type text, game text, deadline ts, info integer)''')
 
 
 #Create IPL points table

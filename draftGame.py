@@ -193,6 +193,8 @@ class draftGame:
             return self.processViewPoints(user,args)
         elif command == 'whohas':
             return self.findWhoHas(args)
+        elif command == 'fixtures':
+            return self.getFixtures()
 
         #hidden commands
         elif command == 'start':
@@ -215,7 +217,11 @@ class draftGame:
     def findWhoHas(self, args):
         whoHasQuery = "SELECT  name,Sum(points) as 'Total Points' , playerName From (SELECT pi.playerName, hp.name, iplp.points FROM playerInfo pi INNER JOIN playerStatus as ps on pi.playerId = ps.playerId INNER JOIN humanPlayers hp on hp.teamId = ps.status INNER JOIN iplpoints iplp on iplp.playerId = pi.playerId) WHERE playerName like ?  GROUP BY playerName"
         return self.db.sendPretty(whoHasQuery,['%'+args+'%'])
-    
+
+    def getFixtures(self):
+        fixturesQuery = "SELECT game FROM futures WHERE deadline BETWEEN date('now') and date('now', '+5 day')"
+        return self.db.sendPretty(fixturesQuery,[])
+
     def processViewPoints(self,user,args):
         teamId = None
         if args is None:
@@ -511,6 +517,7 @@ class draftGame:
         helpText += "/list [team] [category]: list all players from this team/category\n" #need to show status
         helpText += "/find <name>: get player ids by name\n" #need to show status
         helpText += "/whohas <name>: list player owner\n"
+        helpText += "/fixtures : list next 5 days fixtures \n"
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
