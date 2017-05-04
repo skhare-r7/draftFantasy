@@ -49,6 +49,7 @@ class interface:
         dispatcher.addHandler(CommandHandler('top', self.top))
         dispatcher.addHandler(CommandHandler('league', self.league))
         dispatcher.addHandler(CommandHandler('viewpoints', self.viewpoints))
+        dispatcher.addHandler(CommandHandler('fixtures', self.fixtures))
 
         self.game = game
 
@@ -127,6 +128,9 @@ class interface:
 
     def startGame(self,bot,update):
         self.processCommand('start',update)
+
+    def fixtures(self,bot,update):
+        self.processCommand('fixtures',update)
 
 
     def processCommand(self,command, update):

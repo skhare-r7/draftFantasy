@@ -534,6 +534,7 @@ class draftGame:
         helpText += "/top: view top players.\n"
         helpText += "/league : view current draft league\n"
         helpText += "/viewpoints [user]: view points\n"
+        helpText += "/fixtures: view upcoming fixtures\n"
         helpText += "Anything I missed? Suggest more commands!"
         return helpText
 
