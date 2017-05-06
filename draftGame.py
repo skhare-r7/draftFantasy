@@ -219,7 +219,7 @@ class draftGame:
         return self.db.sendPretty(whoHasQuery,['%'+args+'%'])
 
     def getFixtures(self):
-        fixturesQuery = "SELECT deadline,game FROM futures WHERE deadline BETWEEN date('now') and date('now', '+5 day')"
+        fixturesQuery = "SELECT type,deadline FROM (SELECT deadline,type FROM futures WHERE deadline BETWEEN date('now') and date('now', '+5 day')) Where type='Lock'"
         return self.db.sendPretty(fixturesQuery,[])
 
     def processViewPoints(self,user,args):

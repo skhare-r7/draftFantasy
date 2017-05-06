@@ -3,6 +3,7 @@ from datetime import datetime
 import lxml.html
 from dateutil import parser
 from dateutil import tz
+from scorescrape import convTeam as convertTeam
 
 HERE = tz.tzlocal()
 
@@ -10,6 +11,12 @@ conn = sqlite3.connect('draftGame.db')
 c = conn.cursor()
 
 series_url = 'http://www.espncricinfo.com/indian-premier-league-2017/content/series/1078425.html?template=fixtures'
+
+def getFixturesWithShortNames(fixture):
+	shortName  = fixture.split(' v ')
+	firstTeamName = convertTeam(shortName[0].strip())
+	secondTeamName = convertTeam(shortName[1].strip())
+	return firstTeamName+" "+"v"+" "+secondTeamName
 
 gameFullSchedule = []
 
@@ -29,7 +36,7 @@ for i in range(0,len(dates)):
 	if (i%2==0):
 		date_string = dates[i].strip()+' '+dates[i+1].split(u'\xa0')[0] + '+0530 2017'
 		dt = parser.parse(date_string)
-		c.execute("insert into futures (type,game,deadline,info) values (?,?,?,?)",['Lock',gameFullSchedule[countGame].split('-')[1],dt.astimezone(HERE),(i/2)+1])
+		c.execute("insert into futures (type,game,deadline,info) values (?,?,?,?)",['Lock',getFixturesWithShortNames(gameFullSchedule[countGame].split('-')[1]),dt.astimezone(HERE),(i/2)+1])
 		countGame = countGame + 1
 
 conn.commit()
