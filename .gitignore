@@ -2,3 +2,5 @@ lockedTeams
 scorecards
 *.pyc
 *.log
+*.db
+*~
