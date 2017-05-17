@@ -30,7 +30,7 @@ class livescorer(Thread):
         #get live url
         url = series.get_live_url(self.matchId)
         #run scorecard scraper
-        os.system("python scorescrape.py " + url) 
+        os.system("python scorescrape.py " + url + " " + self.matchId.__str__())
         #update points
         try:
             self.iplPoints.run(self.matchId)
@@ -57,5 +57,5 @@ class livescorer(Thread):
 if __name__=='__main__':
     db = dbInterface()
     ls = livescorer(db,sys.argv[1])
-    ls.setScorerType()
+    ls.setScorerType(scoreType='once')
     ls.start()

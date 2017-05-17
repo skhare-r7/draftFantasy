@@ -5,13 +5,11 @@ import json
 import sys
 
 class series:
-  def __init__():
-    self.finals = {}
-    self.finals[57]='981013'
-#    self.finals[58]=
-#    self.finals[59]=
-#    self.finals[60]=
-  
+  finals = {}
+  finals[57]='1082647'
+  finals[58]='1082648'
+  finals[59]='1082649'
+  finals[60]='1082650'
   
   @staticmethod
   def get_live_url(matchId):
@@ -19,8 +17,8 @@ class series:
     suffix_url = "?view=scorecard"
     finals_url = "/indian-premier-league-2017/engine/match/"
 #todo: fix before finals
-#    if matchId in self.finals.keys():
-#      return base_url+finals_url+self.finals[matchId]+'.html'
+    if matchId in series.finals.keys():
+      return base_url+finals_url+series.finals[matchId]+'.html'+suffix_url
 
     SUFFIXES = {1: 'st', 2: 'nd', 3: 'rd'}
     def ordinal(num):

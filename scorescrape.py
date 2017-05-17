@@ -76,6 +76,7 @@ def getVal(player,xpathStr):
 #finalized scorecard scraping
 #gamePage = "http://www.espncricinfo.com/indian-premier-league-2016/engine/match/980921.html"
 gamePage = sys.argv[1]
+matchId = sys.argv[2]
 
 tree = lxml.html.parse(gamePage)
 matchPoints = {}
@@ -89,16 +90,13 @@ dnb = tree.xpath("//div[@class='to-bat']/p/span/a")
 dnbTeam = "../../../../preceding-sibling::table[@class='batting-table innings'][1]/tr/th[@class='th-innings-heading']/text()"
 more_stats_second = tree.xpath("//div[@class='more-match-stats'][2]")
 match_info = tree.xpath("//div[@class='match-information-strip']/text()")[0]
-match_no_regex = ".*?(\d+).*"
+
 match_teams_regex = ".*?:(.*?) v (.*?) at .*"
 match_winner = tree.xpath("//div[@class='innings-requirement']/text()")[0]
 match_winner_regex = "(.*?) won by .*"
 mom = tree.xpath("//div[@class='match-information']/div[2]/span/text()")[0]
 mom_regex = "(.*?)\(.*"
 
-
-if gre.search(match_no_regex,match_info.strip()):
-  matchId = gre.last_match.group(1)
 matchPoints["matchId"] = matchId
 if gre.search(match_teams_regex,match_info.strip()):
   team1 = convTeam(gre.last_match.group(1).strip())
