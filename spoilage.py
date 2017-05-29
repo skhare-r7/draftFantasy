@@ -5,6 +5,7 @@ from time import sleep
 
 
 def checkSpoilage():
+    SPOILAGE_RATE = 0.02
     try:
         db = dbInterface()
         spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-1 days')"
@@ -13,7 +14,7 @@ def checkSpoilage():
             valQuery = "select price from playerInfo where playerId=?"
             print "reducing price for playerId:" + id.__str__()
             price = db.send(valQuery,[id])[0][0]
-            price -= round(0.02 * price,2) #2 percent spoilage
+            price -= int(SPOILAGE_RATE * price)
             dropQuery = "update playerInfo set price=? where playerId=?"
             db.send(dropQuery,[price,id])
             touchQuery = "update playerStatus set startBid=?,lastModified=? where playerId=?"

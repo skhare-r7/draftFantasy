@@ -15,7 +15,7 @@ import json
 #TODO
 def create_humanplayers(c):
     c.execute('''CREATE TABLE humanPlayers
-              (teamId integer, teamName text, name text, bank real)''')
+              (teamId integer, teamName text, name text, bank int)''')
     humanPlayers = {}
     humanPlayers[0] = ['Unique Losers', 'Shreyas']
     humanPlayers[1] = ['Champion', 'Sri']
@@ -24,9 +24,11 @@ def create_humanplayers(c):
     humanPlayers[4] = ["Delhi Bellies",'Anmol']
     humanPlayers[5] = ["Khan's Super Kings",'Farhan']
     humanPlayers[6] = ['Ma Niggas', 'Yenan']
+
+    startMoney = 90
     
     for teamId, info in humanPlayers.items():
-        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,'90.0')",[teamId,info[0],info[1]])
+        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,?)",[teamId,info[0],info[1],startMoney])
 
 
 #Create a player Status table
@@ -51,7 +53,7 @@ def create_humanplayers(c):
 
 def create_playerStatus(c):
     c.execute('''CREATE TABLE playerStatus
-              (playerId integer, status text, startBid real, lastModified ts, teamPos int)''')
+              (playerId integer, status text, startBid int, lastModified ts, teamPos int)''')
 
     c.execute("select playerId from playerInfo")
     for entry in c.fetchall():
@@ -110,7 +112,7 @@ def create_playerinfo(c):
     data = json.load(json_data)
 
     c.execute('''CREATE TABLE playerInfo
-              (playerId integer, team text, playerName text, price real, skill1 text, overseas integer)''')
+              (playerId integer, team text, playerName text, price int, skill1 text, overseas integer)''')
     for player in data:
         playerId = None
         teamName = None
@@ -152,7 +154,7 @@ def create_playerinfo(c):
 
 def create_transaction(c):
     c.execute('''CREATE TABLE transactions
-              (type text, playerId integer, value real, humanId integer, complete integer, timestamp ts)''')
+              (type text, playerId integer, value int, humanId integer, complete integer, timestamp ts)''')
 
 
 #Create futures table
