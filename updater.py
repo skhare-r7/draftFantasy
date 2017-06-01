@@ -33,13 +33,12 @@ class updater:
                     teamId = lockInfo['teamId']
                     matchId = lockInfo['info']
                     playerList = lockInfo['players']
-                    if len(list(chain.from_iterable(playerList.values()))) < 9 or \
-                       lockInfo['overseasTotal'] > 4 or \
+                    if len(list(chain.from_iterable(playerList.values()))) < 7 or \
                        lockInfo['bank'] < 0 or \
                        len(lockInfo['players']['Wicketkeeper']) < 1 or \
-                       len(lockInfo['players']['Batsman']) < 3 or \
+                       len(lockInfo['players']['Batsman']) < 2 or \
                        len(lockInfo['players']['Allrounder']) < 1 or \
-                       len(lockInfo['players']['Bowler']) < 2:
+                       len(lockInfo['players']['Bowler']) < 1:
                         points = 0 #no point in processing data
                         print "Team:"+ teamId.__str__() + " failed check for match:" + matchId.__str__()
                     else: #team is ok

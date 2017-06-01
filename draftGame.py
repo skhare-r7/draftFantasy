@@ -699,7 +699,7 @@ def finalizeAuction(future,game):
 
 def lockTeams(future,game):
     futureId = future[0]
-    futureInfo = future[3]
+    futureInfo = future[4]
     teamIdQuery = "select teamId from humanPlayers"
     teamIds = game.db.send(teamIdQuery,[])
     for teamTuple in teamIds:
@@ -755,7 +755,7 @@ def futureWorker(tg,game):
                     #in agressive mode for 4.5 hours
                     matchId = future[3]
                     liveupdater = livescorer(db,matchId)
-                    liveupdater.setScorerType(scoreType='aggressive',time=4.5*60*60,interval=4*60)
+                    liveupdater.setScorerType(scoreType='aggressive',time=9*60*60,interval=4*60)
                     liveupdater.start()
                 else:
                     pass

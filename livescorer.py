@@ -21,7 +21,7 @@ class livescorer(Thread):
         self.scoreType = None
         Thread.__init__(self)
     
-    def setScorerType(self,scoreType='aggressive', time=4.5*60*60 ,interval=2*60):
+    def setScorerType(self,scoreType='aggressive', time=9*60*60 ,interval=2*60):
         self.time = time
         self.interval = interval
         self.scoreType = scoreType
@@ -57,5 +57,5 @@ class livescorer(Thread):
 if __name__=='__main__':
     db = dbInterface()
     ls = livescorer(db,sys.argv[1])
-    ls.setScorerType(scoreType='once')
+    ls.setScorerType(scoreType='aggressive')
     ls.start()
