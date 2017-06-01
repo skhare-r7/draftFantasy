@@ -84,7 +84,6 @@ gre = Re()
 
 batting = tree.xpath("//table[@class='batting-table innings']/tr[not(@*)]")
 teamNameXpath = "../tr/th[@class='th-innings-heading']/text()"
-min_batted_exists = int(tree.xpath("count(//th[@title='minutes batted'])"))>0
 bowling = tree.xpath("//table[@class='bowling-table']/tr[not(@*)]")
 dnb = tree.xpath("//div[@class='to-bat']/p/span/a")
 dnbTeam = "../../../../preceding-sibling::table[@class='batting-table innings'][1]/tr/th[@class='th-innings-heading']/text()"
@@ -128,7 +127,7 @@ for player in batting:
     else: out = True
     runs = getVal(player,"./td[4]/text()")
     ballsIndex = 5
-    if min_batted_exists: ballsIndex +=1
+    if getVal(player,"../tr/th[@title='minutes batted']/text()") == 'M': ballsIndex += 1
     balls = getVal(player,"./td["+str(ballsIndex)+"]/text()")
     fours = getVal(player,"./td["+str(ballsIndex+1)+"]/text()")
     sixes = getVal(player,"./td["+str(ballsIndex+2)+"]/text()")
