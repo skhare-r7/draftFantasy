@@ -5,7 +5,7 @@ from time import sleep
 
 
 def checkSpoilage():
-    SPOILAGE_RATE = 0.02
+    SPOILAGE_RATE = 0.04
     try:
         db = dbInterface()
         spoilQuery = "select * from playerStatus where status='Open' and lastModified <= datetime('now','localtime', '-1 days')"

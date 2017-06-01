@@ -18,12 +18,12 @@ def create_humanplayers(c):
               (teamId integer, teamName text, name text, bank int)''')
     humanPlayers = {}
     humanPlayers[0] = ['Unique Losers', 'Shreyas']
-    humanPlayers[1] = ['Champion', 'Sri']
-    humanPlayers[2] = ['Bangla2019', 'Shrikar']
+    humanPlayers[1] = ['Champion x2', 'Sri']
+    humanPlayers[2] = ['NoPakXI', 'Shrikar']
     humanPlayers[3] = ["Kia Kaha",'Ripu']
-    humanPlayers[4] = ["Delhi Bellies",'Anmol']
-    humanPlayers[5] = ["Khan's Super Kings",'Farhan']
-    humanPlayers[6] = ['Ma Niggas', 'Yenan']
+    humanPlayers[4] = ["Khan Ke Shaitan",'Farhan']
+    humanPlayers[5] = ["Anarkale",'Paritosh']
+    humanPlayers[6] = ["Champions XI", 'Anmol']
 
     startMoney = 700
     
@@ -98,12 +98,12 @@ def create_playerinfo(c):
 #    f = open("playerListJson.dump","rb") #downloaded offline from ICC
 #    playerList = pickle.load(f)
 #    f.close() 
-    json_data = open('ipl2017PlayerList.json')
+    json_data = open('playerList.json')
     data = json.load(json_data)
-
+    players = data['players']
     c.execute('''CREATE TABLE playerInfo
               (playerId integer, team text, playerName text, price int, skill1 text, overseas integer)''')
-    for player in data:
+    for player in players:
         playerId = None
         teamName = None
         name = None
@@ -112,13 +112,12 @@ def create_playerinfo(c):
         overseas = 0
         for key,value in  player.items():
             if key == 'code': playerId = value
-            elif key == 'info' : name = value
+            elif key == 'info1' : name = value
             elif key == 'sideId' : teamName = getTeamNameFromSideId(value)
             elif key == 'value' : price = value*10
             elif key == 'categoryId' : skill1 = getSkillFromCategory(value)
 #            elif key == 'OPlayerId' and value: overseas = 1
             else: pass
-
         if (playerId and name and teamName and price):
             insertQuery = "INSERT INTO playerInfo VALUES (?,?,?,?,?,?)"
             c.execute(insertQuery,[playerId,teamName,name,price,skill1,overseas])

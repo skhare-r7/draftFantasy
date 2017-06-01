@@ -9,7 +9,7 @@ HERE = tz.tzlocal()
 conn = sqlite3.connect('draftGame.db') 
 c = conn.cursor()
 
-series_url = 'http://www.espncricinfo.com/indian-premier-league-2017/content/series/1078425.html?template=fixtures'
+series_url = 'http://www.espncricinfo.com/icc-champions-trophy-2017/content/series/1022345.html?template=fixtures'
 
 gameFullSchedule = []
 

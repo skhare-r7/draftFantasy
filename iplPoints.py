@@ -23,33 +23,31 @@ class iplPoints:
         points += (1* self.getAct(perf,"bat","runs"))
         #2 points per six
         points += (2* self.getAct(perf,"bat","sixes"))
-        #25 run bonus
-        points += (10* math.floor(self.getAct(perf,"bat","runs")/25))
+        #50 run bonus
+        points += (15* math.floor(self.getAct(perf,"bat","runs")/50))
         #-5 for duck
         if self.getAct(perf,"bat","runs")==0 and self.getAct(perf,"bat","out"): points -= 5
         #strike rate
         if self.getAct(perf,"bat","runs") >= 10:
-            if self.getAct(perf,"bat","sr") < 75: points -= 15
-            elif self.getAct(perf,"bat","sr") < 100: points -= 10
-            elif self.getAct(perf,"bat","sr") < 150: points += 5
-            elif self.getAct(perf,"bat","sr") < 200: points += 10
-            else: points += 15
+            if self.getAct(perf,"bat","sr") < 60: points -= 5
+            elif self.getAct(perf,"bat","sr") < 100: points += 0
+            elif self.getAct(perf,"bat","sr") <= 140: points += 5
+            else: points += 10
         #20 points per wicket
         points += (20 * self.getAct(perf,"bowl","wickets"))
         #10 point wicket bonus
-        if self.getAct(perf,"bowl","wickets") > 1:
+        if self.getAct(perf,"bowl","wickets") > 2:
             points += (10 * (self.getAct(perf,"bowl","wickets")-1))
         #1 point per dot
         points += self.getAct(perf,"bowl","dots")
-        #20 points per maiden
-        points += (20 * self.getAct(perf,"bowl","maidens"))
+        #5 points per maiden
+        points += (5 * self.getAct(perf,"bowl","maidens"))
         #economy
         if self.getAct(perf,"bowl","overs") >= 1: #remeber overs can be 1.3!
-            if self.getAct(perf,"bowl","econ") <= 5: points += 15
-            elif self.getAct(perf,"bowl","econ") <= 8: points += 10
-            elif self.getAct(perf,"bowl","econ") <= 10: points += 5
-            elif self.getAct(perf,"bowl","econ") <= 12: points -= 10
-            else: points -= 15
+            if self.getAct(perf,"bowl","econ") <= 4: points += 10
+            elif self.getAct(perf,"bowl","econ") <= 6: points += 5
+            elif self.getAct(perf,"bowl","econ") <= 8: points += 0
+            else: points -= 5
         #10 points per catch
         points += (10 * self.getAct(perf,"field","catches"))
         #15 points per stumping
@@ -63,7 +61,7 @@ class iplPoints:
         #print match
         #print perf
         if 'winner' in match and match['winner'] == perf['team']:
-            points += 10
+            points += 5
         return int(points)
     
     def run(self,match):
