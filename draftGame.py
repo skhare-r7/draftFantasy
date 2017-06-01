@@ -241,7 +241,7 @@ class draftGame:
             underVal = 9999 #todo: fix later
         else:
             try:
-                underVal = float(args)
+                underVal = int(args)
             except:
                 pass
         if underVal is None: return 'Invalid query'
@@ -273,12 +273,18 @@ class draftGame:
         existingQuery = "select count(*) from futures where type='Auction' and info=?"
         return self.db.send(existingQuery,[playerId])[0][0]==1
 
+#    def userCanBid(self,teamId, playerId):
+#        # TODO:
+#        # allow bid if bid does not push user under arbitrary value (-20 ? )
+#        pass
     def userCanBid(self,teamId):
         numPlayersQuery = "select count(*) from playerStatus where status=?"
         numPlayers = self.db.send(numPlayersQuery,[teamId])[0][0]
         activeBidsQuery = "select count(distinct playerId) from transactions where type='Bid' and humanId=? and complete=0"
         activeBids = self.db.send(activeBidsQuery,[teamId])[0][0]
         return numPlayers + activeBids < 11
+    
+        
 
     def processBid(self,user,args):
         playerId = args.split(' ')[0]
@@ -286,7 +292,7 @@ class draftGame:
         bid = None
         if self.isValidId(playerId) and self.playerAvailableForBid(playerId) and self.userCanBid(teamId):
             try:
-                bid = round(float(args.split(' ')[1]),2)
+                bid = int(args.split(' ')[1])
                 #some moron will try to do this
                 if bid < 0 : bid = None
             except:
@@ -298,11 +304,13 @@ class draftGame:
                 startingPrice = self.getPrice(playerId)
                 self.prepareNewAuction(playerName,startingPrice,playerId)
             #place bid
+            #TODO: delete older bid, if exists
             bidQuery = "insert into transactions values ('Bid',?,?,?,?,?)"
             self.db.send(bidQuery,[playerId,bid,teamId,0,dt.now()])
             #self.db.commit()
             self.tg.broadcast("User:"+user+" placed bid on player:"+self.getName(playerId))
             return "Done"
+        # TODO: return warning if winning the bid will push the player into negative OR over player limit
         else: return "Unable to bid" 
 
 
@@ -337,7 +345,7 @@ class draftGame:
         startingPrice = None
         if self.isValidId(playerId) and self.verifyOwnership(user,playerId) and self.isNotAuctioned(playerId):
             try:
-                startingPrice = float(args.split(' ')[1])
+                startingPrice = int(args.split(' ')[1])
                 #some moron will try to do this
                 if startingPrice < 0 : startingPrice = 0
             except:
@@ -396,7 +404,7 @@ class draftGame:
                 tg.broadcast("Auction on player:"+playerName+ " is closed due to forced sale")
                 #close auction immediately (delete from futures)
                 self.closeAuction(id)
-            newValue = round(self.FORCED_SALE_RATIO * value, 2) #todo: move to config file
+            newValue = int(self.FORCED_SALE_RATIO * value) #todo: move to config file
             #move player to open market
             sellQuery = "update playerStatus set status='Open', startBid=?,lastModified=?,teamPos=-1 where playerId=?"
             self.db.send(sellQuery,[newValue,dt.now(),id])
@@ -627,10 +635,24 @@ class draftGame:
             return False
 
 
+# TODO: Tokens
+# Part 1. Create token table in database (token, qty, player name)
+# Part 2a. Create processToken function (can player play a token? if so record transaction and process token?)
+#           Broadcast as 'player X may use token'
+# Part 2b. Create deleteToken function  (delete from transaction, restore to token table)
+# Part 3. Change lock teams to look at and broadcast all tokens
+#          Create tokens.json file , listing token details
+# Part 4. Change updater.py to use token modifiers for points
+    
+
 def finalizeAuction(future,game):
     futureId = future[0]
     id = future[3]
     bidsQuery = "select value, humanId from transactions where playerId=? and complete=0 and type='Bid' order by value desc limit 1"
+    #TODO: process all bids, starting from highest
+    # if bidder goes over bench size:
+    # throw warning, move to next bid
+    # if no more bids left, close auction
     try:
         highestBid = game.db.send(bidsQuery,[id])[0]
     except: highestBid = [-2, '0'] #todo fix this!
@@ -642,7 +664,7 @@ def finalizeAuction(future,game):
     completeQuery = "update transactions set complete=1 where playerId=?"
     game.db.send(completeQuery,[id])
     #todo: remove above 2 lines since close auction should deal with this
-    if value >= startingBid - 0.001: #need this hack because python acts up when comparing floats!
+    if value >= startingBid:
         message= "Congratulations. User:"+game.getUserById(newOwner)+" has won the bid on player:" + game.getPlayerNameById(id) +"\n"
         message+= "Winning bid:"+value.__str__()
         #transfer ownership
@@ -754,7 +776,5 @@ if __name__=="__main__":
 
     t.join()
 
-#todos: 
-#1. viewmarket
-#2. fix viewteam
-#3. view ownership when viewing player
+
+
