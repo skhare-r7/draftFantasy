@@ -647,7 +647,7 @@ class draftGame:
 
 def finalizeAuction(future,game):
     futureId = future[0]
-    id = future[3]
+    id = future[4]
     bidsQuery = "select value, humanId from transactions where playerId=? and complete=0 and type='Bid' order by value desc limit 1"
     #TODO: process all bids, starting from highest
     # if bidder goes over bench size:
