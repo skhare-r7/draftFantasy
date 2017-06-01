@@ -25,7 +25,7 @@ def create_humanplayers(c):
     humanPlayers[5] = ["Khan's Super Kings",'Farhan']
     humanPlayers[6] = ['Ma Niggas', 'Yenan']
 
-    startMoney = 900
+    startMoney = 700
     
     for teamId, info in humanPlayers.items():
         c.execute("INSERT INTO humanPlayers VALUES (?,?,?,?)",[teamId,info[0],info[1],startMoney])
@@ -63,32 +63,22 @@ def create_playerStatus(c):
 
 
 def getSkillFromCategory(value):
-    if value == 1: return "Batsman"
-    elif value == 2: return "Bowler"
-    elif value == 3: return "Allrounder"
-    elif value == 4: return "Wicketkeeper"
+    if value == 16: return "Batsman"
+    elif value == 17: return "Wicketkeeper"
+    elif value == 18: return "Allrounder"
+    elif value == 19: return "Bowler"
     else: return None
 
-def getFullTeamNameFromSideId(value):
-    if value == "DEL": return "Delhi Daredevils"
-    elif value == "GUJ": return "Gujarat Lions"
-    elif value == "PNJ": return "Kings XI Punjab"
-    elif value == "KOL": return "Kolkata Knight Riders"
-    elif value == "MUM": return "Mumbai Indians"
-    elif value == "PUN": return "Rising Pune Supergiants"
-    elif value == "BNG": return "Royal Challengers Bangalore"
-    elif value == "HYD": return "Sunrisers Hyderabad"
-    else: return None
 
 def getTeamNameFromSideId(value):
-    if value == "DEL": return "DD"
-    elif value == "GUJ": return "GL"
-    elif value == "PNJ": return "KXIP"
-    elif value == "KOL": return "KKR"
-    elif value == "MUM": return "MI"
-    elif value == "PUN": return "RPS"
-    elif value == "BNG": return "RCB"
-    elif value == "HYD": return "SRH"
+    if value == 23: return "AUS"
+    elif value == 24: return "BAN"
+    elif value == 25: return "ENG"
+    elif value == 26: return "IND"
+    elif value == 27: return "NZ"
+    elif value == 28: return "PAK"
+    elif value == 29: return "RSA"
+    elif value == 30: return "SL"
     else: return None
 
 
@@ -121,12 +111,12 @@ def create_playerinfo(c):
         skill1 = None
         overseas = 0
         for key,value in  player.items():
-            if key == 'PlayerId': playerId = value
-            elif key == 'PlayerName' : name = value
-            elif key == 'RealTeamName' : teamName = getTeamNameFromSideId(value)
-            elif key == 'Price' : price = value
-            elif key == 'PlayerTypeId' : skill1 = getSkillFromCategory(value)
-            elif key == 'OPlayerId' and value: overseas = 1
+            if key == 'code': playerId = value
+            elif key == 'info' : name = value
+            elif key == 'sideId' : teamName = getTeamNameFromSideId(value)
+            elif key == 'value' : price = value*10
+            elif key == 'categoryId' : skill1 = getSkillFromCategory(value)
+#            elif key == 'OPlayerId' and value: overseas = 1
             else: pass
 
         if (playerId and name and teamName and price):
