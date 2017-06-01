@@ -16,5 +16,5 @@ class series:
 
     seriesPage = "http://www.espncricinfo.com/icc-champions-trophy-2017/content/series/1022345.html?template=fixtures"
     tree = lxml.html.parse(seriesPage)
-    link = tree.xpath('//ul[@class="large-20 columns"]/li['+matchId+']//a/@href')
+    link = tree.xpath('//ul[@class="large-20 columns"]/li['+matchId.__str__()+']//a/@href')[0]
     return base_url+link+suffix_url

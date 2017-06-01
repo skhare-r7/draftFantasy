@@ -56,14 +56,14 @@ class Re(object):
 
 def convTeam(longName):
     conversion = {}
-    conversion["Delhi Daredevils"] = "DD"
-    conversion["Gujarat Lions"] = "GL"
-    conversion["Kings XI Punjab"] = "KXIP"
-    conversion["Kolkata Knight Riders"] = "KKR"
-    conversion["Mumbai Indians"] = "MI"
-    conversion["Rising Pune Supergiant"] = "RPS"
-    conversion["Royal Challengers Bangalore"] = "RCB"
-    conversion["Sunrisers Hyderabad"] = "SRH"
+    conversion["England"] = "ENG"
+    conversion["Australia"] = "AUS"
+    conversion["Bangladesh"] = "BAN"
+    conversion["India"] = "IND"
+    conversion["South Africa"] = "SA"
+    conversion["New Zealand"] = "NZ"
+    conversion["Pakistan"] = "PAK"
+    conversion["Srilanka"] = "SL"
     return conversion[longName]
 
 def getVal(player,xpathStr):
