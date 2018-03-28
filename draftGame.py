@@ -507,7 +507,7 @@ class draftGame:
         rulesText += "1. You cannot have more than " + str(MAX_SQUAD) + " players in your team (active + bench)\n"
         rulesText += "2. Unpicked players lose "+ str(SPOILAGE)+"% of their value daily\n"
         rulesText += "3. Teams will be given one boost during the tournament:\n"
-        rulesText += "On " + BOOST_DETAILS " in their bank, highest going to team in last place\n"
+        rulesText += "On " + BOOST_DETAILS + " in their bank, highest going to team in last place\n"
         rulesText += "==========================\n"
         rulesText += "Good luck and have fun!"
         return rulesText
