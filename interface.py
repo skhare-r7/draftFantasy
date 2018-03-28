@@ -51,7 +51,9 @@ class interface:
         dispatcher.add_handler(CommandHandler('league', self.league))
         dispatcher.add_handler(CommandHandler('viewpoints', self.viewpoints))
         dispatcher.add_handler(CommandHandler('fixtures', self.fixtures))
-
+        dispatcher.add_handler(CommandHandler('viewtokens',self.viewtokens))
+        dispatcher.add_handler(CommandHandler('token',self.tokens))
+        dispatcher.add_handler(CommandHandler('canceltokens', self.canceltokens))
         self.game = game
 
 
@@ -133,6 +135,14 @@ class interface:
     def fixtures(self,bot,update):
         self.processCommand('fixtures',update)
 
+    def viewTokens(self,bot,update):
+        self.processCommand('viewtokens',update)
+
+    def token(self,bot,update):
+        self.processCommand('token',update)
+
+    def cancelTokens(self,bot,update):
+        self.processCommand('canceltokens')
 
     def processCommand(self,command, update):
         if update.message.chat.type == 'group':

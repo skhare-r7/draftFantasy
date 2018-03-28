@@ -193,6 +193,12 @@ class draftGame:
             return self.findWhoHas(args)
         elif command == 'fixtures':
             return self.getFixtures()
+        elif command == 'viewtokens':
+            return self.viewTokens(user)
+        elif command == 'canceltokens':
+            return self.processCancelTokens(user)
+        elif command == 'token':
+            return self.processToken(user, args)
 
         #hidden commands
         elif command == 'start':
@@ -538,6 +544,9 @@ class draftGame:
         helpText += "/league : view current draft league\n"
         helpText += "/viewpoints [user]: view points\n"
         helpText += "/fixtures: view upcoming fixtures\n"
+        helpText += "/viewtokens [user]: view all tokens\n"
+        helpText += "/canceltokens: cancel active tokens\n"
+        helpText += "/token [type] [playerId]: play token on player for the next game. token can be boost, curse or borrow\n"
         helpText += "Anything I missed? Suggest more commands!"
         return helpText
 
@@ -629,12 +638,77 @@ class draftGame:
         except:
             return False
 
+    def viewTokens(self, user, args):
+        teamId = None
+        if args is None:
+            teamId = self.getTeamIdFromUser(user)
+        else:
+            teamId = self.getTeamIdFromUser(args)
+        if teamId is None: return 'Invalid query'
+        tokenQuery = 'select * from tokens where teamId=?'
+        return self.db.sendPretty(tokenQuery, [teamId])
 
-# TODO: Tokens
+    def processToken(self, user, args):
+        try:
+            token = args.split(' ')[0].strip()
+            playerId = args.split(' ')[1]
+        except:
+            return 'Incorrect token syntax. Try /token <type> <playerId>'
+        if not isValidId(playerId): return 'Invalid player Id'
+        teamId = self.getTeamIdFromUser(user)
+        tokenValue = self.tokenToTValue(token) # should never be 0
+        if tokenValue == 0:
+            return '<type> must be among boost, curse or borrow'
+        count = tokensAvailable(teamId, token)
+        if count > 0:
+            transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
+            self.db.send(transactionQuery,["Token",playerId,tokenValue,teamId,0,dt.now()])
+            tokenUpdateQuery = "update tokens set count=? where teamId=? and token=?"
+            self.db.send(tokenUpdateQuery,[count-1, teamId, token])
+            toRet = 'Token ' + token + ' will be used on player ' + str(playerId) + ' at next game start\n'
+            toet += 'You have ' + str(count-1) + ' ' + token + ' tokens left'
+        else:
+            return 'You are out of ' + token + ' tokens'
+
+    def tokensAvailable(self, teamId, token):
+        query = "select count from tokens where teamId=? and token=?"
+        return self.db.send(query, [teamId, token])[0][0]
+
+    def cancelTokens(self, user):
+        teamId = self.getTeamIdFromUser(user)
+        transactionQuery = 'select value from transactions where teamId=? and type=? and completed=0'
+        transactions = self.db.send(transactionQuery, [teamId, 'Token'])
+        for transaction in transactions:
+            token = tValueToToken(transaction[0])
+            tokenQuery = 'select count from tokens where token=? and teamId=?'
+            count = self.db.send(tokenQuery, [token, teamId])[0][0]
+            returnTokens = 'update tokens set count=? where token=? and teamId=?'
+            self.db.send(returnTokens, [count+1, token, teamId])
+        transactionQuery = 'delete from transactions where teamId=? and type=? and completed=0'
+
+    def tValueToToken(self, value):
+        if value == 1:
+            return 'boost'
+        elif value == 2:
+            return 'curse'
+        elif value == 3:
+            return 'borrow'
+        else:
+            return None
+    def tokenToTValue(self, token):
+        if token == 'boost':
+            return 1
+        elif token == 'curse':
+            return 2
+        elif token == 'borrow':
+            return 3
+        else:
+            return 0
 # Part 1. Create token table in database (token, qty, player name)
 # Part 2a. Create processToken function (can player play a token? if so record transaction and process token?)
 #           Broadcast as 'player X may use token'
 # Part 2b. Create deleteToken function  (delete from transaction, restore to token table)
+# TODO: Tokens
 # Part 3. Change lock teams to look at and broadcast all tokens
 #          Create tokens.json file , listing token details
 # Part 4. Change updater.py to use token modifiers for points

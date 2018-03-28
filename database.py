@@ -4,6 +4,12 @@ import datetime
 from prettytable import PrettyTable
 import json
 
+_START_MONEY = 700
+
+_CURSE_TOKENS = 1
+_BOOST_TOKENS = 1
+_BORROW_TOKENS = 2
+
 #Create a table that has details of human players
 # game initializes with everyone having equal bank value of 100M?
 
@@ -24,11 +30,9 @@ def create_humanplayers(c):
     humanPlayers[4] = ["Khan Ke Shaitan",'Farhan']
     humanPlayers[5] = ["Anarkale",'Paritosh']
     humanPlayers[6] = ["Champions XI", 'Anmol']
-
-    startMoney = 700
     
     for teamId, info in humanPlayers.items():
-        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,?)",[teamId,info[0],info[1],startMoney])
+        c.execute("INSERT INTO humanPlayers VALUES (?,?,?,?)",[teamId,info[0],info[1],_START_MONEY])
 
 
 #Create a player Status table
@@ -129,17 +133,24 @@ def create_playerinfo(c):
 #   Auction: Put up player from team for auction, [value] is min. price
 #   Bid: Bid [value] on player
 #   ForceSell: Instantly sell player to open market. [value] is 75%(?) of purchase price
-# value: Only applicable for Auction, Bid and forceSell
+#   Token: Play token on playerId. Value is a hack here, different values will map to different tokens
+#                1 - boost
+#                2 - curse
+#                3 - borrow
+# value: Only applicable for Auction, Bid and forceSell (special meaning for token, see above)
 # complete [0|1]: mark all (bid / auction) transactions as complete after auction finishes
+
 
 #example:
 #_______________________________________________________________
-#|type     | playerId | value | teamId | complete | timestamp |
+#|type     | playerId | value | teamId | complete  | timestamp |
 #|Ban      | 12       |  0    |    1    |    1     |           |
 #|Pick     | 16       |  0    |    2    |    1     |           |
 #|Auction  | 76       |  7.5  |    5    |    0     |           |  <- playerId 76 is up for bidding, starting bid is 7.5
 #|ForceSell| 100      |  5    |    6    |    1     |           |
 #|Bid      | 65       |  5    |    2    |    1     |           |  <- 5M bid was made on playerid 65, auction is now closed
+#|Token    | 65       |  1    |    2    |    0     |           |  <- Player 2 has played token type 1 against playerId 65
+
 
 def create_transaction(c):
     c.execute('''CREATE TABLE transactions
@@ -195,7 +206,32 @@ def create_draftpoints(c):
           (matchid integer, teamId integer, points integer)"
     c.execute(tquery)
 
-
+#Create tokens table
+#teamId: Team name
+#token: Token type. Currently supported tokens are:
+   # boost - double player's points for the day
+   # curse - half player's points for the day
+   # borrow - borrow another team's player for the day
+#count: Number of available tokens
+#
+#example:
+#_________________________________
+#| teamId  | token  | count  |
+#|  100    | curse  |  0     |
+#|  100    | boost  |  1     |
+#|  100    | borrow |  2     |
+#|  102    | curse  |  0     |
+#
+def create_tokens(c):
+    tquery = "CREATE TABLE tokens \
+          (teamId integer, token text, count integer)"
+    c.execute(tquery)
+    c.execute("select teamId from humanPlayers")
+    for entry in c.fetchall():
+        teamId = entry[0]
+        c.execute("INSERT INTO tokens VALUES (?,?,?)",[teamId,'boost', _BOOST_TOKENS])
+        c.execute("INSERT INTO tokens VALUES (?,?,?)",[teamId,'curse', _CURSE_TOKENS])
+        c.execute("INSERT INTO tokens VALUES (?,?,?)",[teamId,'borrow', _BORROW_TOKENS])
 
 def init_database():
     conn = sqlite3.connect('draftGame.db')
@@ -207,6 +243,7 @@ def init_database():
     create_futures(c)
     create_iplpoints(c)
     create_draftpoints(c)
+    create_tokens(c)
     conn.commit()
     conn.close()
 
