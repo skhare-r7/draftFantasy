@@ -15,5 +15,5 @@ wget https://bitbucket.org/phpliteadmin/public/downloads/phpLiteAdmin_v1-9-7-1.z
 
 pip install python-telegram-bot
 apt-get install zlib1g-dev libxml2-dev libxslt-dev python-dev
-pip install lxml prettytable python-dateutils
+pip install lxml prettytable python-dateutil
 
