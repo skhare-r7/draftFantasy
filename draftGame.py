@@ -8,33 +8,40 @@ from datetime import timedelta
 from livescorer import livescorer
 import json
 
+_START_GAME_PHASE = 'Draft' # We start at Draft, edit to Live once drafting is done
+_AUCTION_TIME_SECONDS = 12 * 60 * 60 # 12 hours
+_FORCED_SALE_RATIO = 0.7
+MIN_SQUAD = 7
+MAX_SQUAD = 9
+MIN_BAT = 2
+MIN_WK = 1
+MIN_BOWL = 1
+MIN_AR = 1
+SCORING_PLAYERS = MAX_SQUAD 
+BOOST_DETAILS = "June 4th: [53 to 47]" #todo
+SPOILAGE = 2
+
 class draftGame:
     def __init__(self):
-        self.AUCTION_TIME_SECONDS = 12 * 60 * 60 #12 hours
-        self.FORCED_SALE_RATIO = 0.7
-    
-
         self.db = dbInterface()
         #game initialization
         self.tg = None
         self.rounds = []
-        self.rounds.append(['ban'])
-        self.rounds.append(['ban'])
-#        self.rounds.append(['ban'])
-        self.rounds.append(['pick'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.rounds.append(['pick_r'])
-        self.currentPhase = 'Live' #we start at drafting
+        self.rounds.append('ban')
+        self.rounds.append('ban')
+        self.rounds.append('pick')
+        self.rounds.append('pick_r')
+        self.rounds.append('pick_r')
+        self.rounds.append('pick_r')
+        self.rounds.append('pick_r')
+        self.rounds.append('pick_r')
+        self.rounds.append('pick_r')
+        self.currentPhase = _START_GAME_PHASE #we start at drafting
 
         self.currentRound = 0
-        self.currentStage = 0 
         self.currentPlayer = 0
 
-        self.currentActivity = self.rounds[self.currentRound][self.currentStage]
+        self.currentActivity = self.rounds[self.currentRound]
         self.numberOfPlayers = self.db.send("select count(*) from humanPlayers",[])[0][0]
         
         #TODO: DONT DO THIS -> causes things to break if players 1,2,3,4,5 are not available!!
@@ -45,38 +52,28 @@ class draftGame:
     def setTg(self,tg):
         self.tg = tg #used to broadcast messages
 
-    def nextStage(self):
+    def nextRound(self):
         totalRounds = len(self.rounds)
-        if self.currentStage < len(self.rounds[self.currentRound])-1: #more stages in this round
-            self.currentStage += 1
-        elif self.currentStage == len(self.rounds[self.currentRound])-1 and self.currentRound < totalRounds -1: #next round
-            self.currentStage = 0
-            self.currentRound += 1
-        elif self.currentStage == len(self.rounds[totalRounds-1])-1 and self.currentRound == totalRounds-1: #next phase
+        if self.currentRound == totalRounds-1: #next phase
             #drafting is done
             self.currentPhase = 'Live'
             self.moveAllPlayersToOpenMarket()
-        if self.rounds[self.currentRound][self.currentStage][-2:] == '_r': self.order.reverse()
+        else:
+            self.currentRound += 1
+        if self.rounds[self.currentRound][-2:] == '_r': self.order.reverse()
 
 
-    def getCurrentStage(self):
-        stage= self.rounds[self.currentRound][self.currentStage]
-        if 'ban' in stage: return 'ban'
-        elif 'pick' in stage: return 'pick'
-        else: return 'none'
-
-    def gameStage(self):
+    def gameState(self):
         toRet = "Current Phase:" + self.currentPhase + "\n"
         if self.currentPhase == 'Draft':
             toRet += "Current Round:" + (self.currentRound+1).__str__() + " of " + len(self.rounds).__str__()+  "\n"
-            toRet += "Current Stage:" + self.rounds[self.currentRound][self.currentStage] + "\n"
             toRet += "Current Player:" + self.getUserById(self.order[self.currentPlayer])
         return toRet
 
     def nextPlayer(self):
         self.currentPlayer += 1
         if self.currentPlayer > len(self.order)-1: 
-            self.nextStage()
+            self.nextRound()
             self.currentPlayer = 0
         
 
@@ -84,12 +81,12 @@ class draftGame:
         if user == 'Shreyas':
             self.currentPhase = 'Draft'
             tg.broadcast("Game is on! Good luck")
-            tg.broadcast(game.gameStage())
+            tg.broadcast(game.gameState())
             return "Done"
 
-    def getCurdrentStage(self):
-        if 'ban' in self.rounds[self.currentRound][self.currentStage]: return 'ban'
-        elif 'pick' in self.rounds[self.currentRound][self.currentStage]: return 'pick'
+    def getCurrentRound(self):
+        if 'ban' in self.rounds[self.currentRound]: return 'ban'
+        elif 'pick' in self.rounds[self.currentRound]: return 'pick'
         else: return None
 
     def isValidId(self,id):
@@ -154,8 +151,8 @@ class draftGame:
             return self.getHelpText()
         elif command == 'rules':
             return self.getRulesText()
-        elif command == 'stage':
-            return self.gameStage()
+        elif command == 'state':
+            return self.gameState()
         elif command == 'list':
             return self.getListQuery(args)
         elif command == 'find':
@@ -274,10 +271,8 @@ class draftGame:
         existingQuery = "select count(*) from futures where type='Auction' and info=?"
         return self.db.send(existingQuery,[playerId])[0][0]==1
 
-#    def userCanBid(self,teamId, playerId):
-#        # TODO:
-#        # allow bid if bid does not push user under arbitrary value (-20 ? )
-#        pass
+    # TODO:
+    # allow bid if bid does not push user under arbitrary value (-20 ? )
     def userCanBid(self,teamId):
         numPlayersQuery = "select count(*) from playerStatus where status=?"
         numPlayers = self.db.send(numPlayersQuery,[teamId])[0][0]
@@ -367,7 +362,7 @@ class draftGame:
     def prepareNewAuction(self,playerName,startingPrice,playerId):
         broadcastMessage= "Auction for: " + playerName + " has started\n"
         broadcastMessage+= "Starting bid: " + startingPrice.__str__() + "\n"
-        auctionCloseTime = dt.now() + timedelta(seconds=self.AUCTION_TIME_SECONDS) 
+        auctionCloseTime = dt.now() + timedelta(seconds=_AUCTION_TIME_SECONDS)
         broadcastMessage+= "Auction closes: " + auctionCloseTime.__str__() + " EST"
         self.tg.broadcast(broadcastMessage)
         futuresQuery = "insert into futures (type,deadline,info) values ('Auction',?,?)"
@@ -405,7 +400,7 @@ class draftGame:
                 tg.broadcast("Auction on player:"+playerName+ " is closed due to forced sale")
                 #close auction immediately (delete from futures)
                 self.closeAuction(id)
-            newValue = int(self.FORCED_SALE_RATIO * value) #todo: move to config file
+            newValue = int(_FORCED_SALE_RATIO * value) #todo: move to config file
             #move player to open market
             sellQuery = "update playerStatus set status='Open', startBid=?,lastModified=?,teamPos=-1 where playerId=?"
             self.db.send(sellQuery,[newValue,dt.now(),id])
@@ -451,7 +446,7 @@ class draftGame:
     def processBan(self,user,args):
         currentUser = self.getUserById(self.order[self.currentPlayer])
         #validate user & stage
-        if self.getCurrentStage() == 'ban' and user == currentUser:
+        if self.getCurrentRound() == 'ban' and user == currentUser:
             #is playerId valid?
             if self.isValidId(args):
                 #cannot ban players not in auction
@@ -459,19 +454,19 @@ class draftGame:
                     self.banId(user,args)
                     self.nextPlayer()
                     self.tg.broadcast("User:" + user + " banned " + self.getPlayerNameById(args))                
-                    self.tg.broadcast(self.gameStage())
+                    self.tg.broadcast(self.gameState())
                     return "Done"
                 else:
                     return args + " is already banned. Please retry"
             else:
                 return "Invalid playerId"
         else:
-            return "You cannot ban anyone at the moment. Check game stage"
+            return "You cannot ban anyone at the moment. Check game state"
     
     def processPick(self,user,args):
         currentUser = self.getUserById(self.order[self.currentPlayer])
         #validate user and stage
-        if self.getCurrentStage() == 'pick' and user == currentUser:
+        if self.getCurrentRound() == 'pick' and user == currentUser:
             #is valid playerId?
             if self.isValidId(args):
                 #can only pick directly from auction
@@ -479,16 +474,16 @@ class draftGame:
                     self.pickId(user,args)
                     self.tg.broadcast("User:" + user + " picked " + self.getPlayerNameById(args))
                     self.nextPlayer()
-                    self.tg.broadcast(self.gameStage())
+                    self.tg.broadcast(self.gameState())
                     return "Done"
                 else: return args + " is banned or owned. Pick someone else."
             else: return "Invalid playerId"
-        else: return "You cannot pick anyone at the moment. Check game stage"
+        else: return "You cannot pick anyone at the moment. Check game state"
 
 
     def getRulesText(self):
-        rulesText = "Game consists of 2 stages: Draft and Live\n"
-        rulesText += "In the draft stage, there will be 2 rounds of bans follwed by 7 rounds of picks.\n"
+        rulesText = "Game consists of 2 phases: Draft and Live\n"
+        rulesText += "In the draft phase, there will be 2 rounds of bans follwed by 7 rounds of picks.\n"
         rulesText += "Manager order for draft is decided randomly\n"
         rulesText += "During picks, order is reversed every round, so last pick for one round gets first pick in the next\n"
         rulesText += "You cannot pick a player who is banned / picked by someone else\n"
@@ -498,21 +493,21 @@ class draftGame:
         rulesText += "These include all players unpicked during draft PLUS banned players from the draft\n"
         rulesText += "The minimum bid for these players is their default value\n"
         rulesText += "Auctions bids are blind, but bid actions will be broadcasted in the group\n"
-        rulesText += "Auctions close in 12 hours. Highest bid will be awarded player\n"
-        rulesText += "At any point, managers may choose to auction a player from their team or force sell him for 70% value\n"
+        rulesText += "Auctions close in "+ str(_AUCTION_TIME_SECONDS/(60*60.0))+ " hours. Highest bid will be awarded player\n"
+        rulesText += "At any point, managers may choose to auction a player from their team or force sell him for "+ str(_FORCED_SALE_RATIO*100) +" % value\n"
         rulesText += "Managers decide the starting bid for the player auction\n"
         rulesText += "==========================\n"
         rulesText += "Scoring will be done using the rules from IPL fantasy\n"
-        rulesText += "Teams are frozen at every match deadline, and top 9 players will score points\n"
+        rulesText += "Teams are frozen at every match deadline, and top " + str(SCORING_PLAYERS) + " players will score points\n"
         rulesText += "Managers will receive NO points for a match unless two conditions are met at every match deadline\n"
         rulesText += "1. Bank value cannot be negative\n"
-        rulesText += "2. Must have atleast 7 players, including 2 bat, 1 wk, 1 bowl, 1 AR\n"
+        rulesText += "2. Must have atleast "+ str(MIN_SQUAD) +  " players, including "+ str(MIN_BAT) + " bat, " + str(MIN_WK) + " wk, " + str(MIN_BOWL) + " bowl, " + str(MIN_AR) + " AR\n"
         rulesText += "==========================\n"
         rulesText += "Changes this year:\n"
-        rulesText += "1. You cannot have more than 10 players in your team (active + bench)\n"
-        rulesText += "2. Unpicked players lose 2% of their value daily\n"
+        rulesText += "1. You cannot have more than " + str(MAX_SQUAD) + " players in your team (active + bench)\n"
+        rulesText += "2. Unpicked players lose "+ str(SPOILAGE)+"% of their value daily\n"
         rulesText += "3. Teams will be given one boost during the tournament:\n"
-        rulesText += "On June 4th: [53 to 47] in their bank, highest going to team in last place\n"
+        rulesText += "On " + BOOST_DETAILS " in their bank, highest going to team in last place\n"
         rulesText += "==========================\n"
         rulesText += "Good luck and have fun!"
         return rulesText
