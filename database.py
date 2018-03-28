@@ -200,9 +200,9 @@ def create_draftpoints(c):
 def init_database():
     conn = sqlite3.connect('draftGame.db')
     c = conn.cursor()
-    create_playerinfo(c)
+#    create_playerinfo(c)
     create_humanplayers(c)
-    create_playerStatus(c)
+#    create_playerStatus(c)
     create_transaction(c)
     create_futures(c)
     create_iplpoints(c)
