@@ -748,7 +748,7 @@ def futureWorker(tg,game):
                     tg.broadcast(message)
                     #start live updater for this game
                     #in agressive mode for 4.5 hours
-                    matchId = future[3]
+                    matchId = future[4]
                     liveupdater = livescorer(db,matchId)
                     liveupdater.setScorerType(scoreType='aggressive',time=9*60*60,interval=4*60)
                     liveupdater.start()
