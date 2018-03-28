@@ -4,3 +4,4 @@ scorecards
 *.log
 *.db
 *~
+*#
