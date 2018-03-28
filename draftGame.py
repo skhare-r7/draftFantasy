@@ -201,7 +201,7 @@ class draftGame:
  
     def processCancelBid(self,user,args):
         if self.isValidId(args):
-            deleteQuery = "delete from transactions where type = 'Bid' and humanId=? and complete=0 and playerId=?"
+            deleteQuery = "delete from transactions where type = 'Bid' and teamId=? and complete=0 and playerId=?"
             self.db.send(deleteQuery,[self.getTeamIdFromUser(user),args])
             #self.db.commit()
             return "Done"
@@ -276,7 +276,7 @@ class draftGame:
     def userCanBid(self,teamId):
         numPlayersQuery = "select count(*) from playerStatus where status=?"
         numPlayers = self.db.send(numPlayersQuery,[teamId])[0][0]
-        activeBidsQuery = "select count(distinct playerId) from transactions where type='Bid' and humanId=? and complete=0"
+        activeBidsQuery = "select count(distinct playerId) from transactions where type='Bid' and teamId=? and complete=0"
         activeBids = self.db.send(activeBidsQuery,[teamId])[0][0]
         return numPlayers + activeBids < 10
     
@@ -564,7 +564,7 @@ class draftGame:
 
 
     def processViewBids(self,user):
-        viewQuery = "select transactions.playerId,transactions.value,playerInfo.playerName from transactions inner join playerInfo on playerInfo.playerId = transactions.playerId where humanId=? and complete=0 and type='Bid'"
+        viewQuery = "select transactions.playerId,transactions.value,playerInfo.playerName from transactions inner join playerInfo on playerInfo.playerId = transactions.playerId where teamId=? and complete=0 and type='Bid'"
         return self.db.sendPretty(viewQuery,[self.getTeamIdFromUser(user)])
 
     def getListQuery(self,args):
@@ -643,7 +643,7 @@ class draftGame:
 def finalizeAuction(future,game):
     futureId = future[0]
     id = future[4]
-    bidsQuery = "select value, humanId from transactions where playerId=? and complete=0 and type='Bid' order by value desc limit 1"
+    bidsQuery = "select value, teamId from transactions where playerId=? and complete=0 and type='Bid' order by value desc limit 1"
     #TODO: process all bids, starting from highest
     # if bidder goes over bench size:
     # throw warning, move to next bid

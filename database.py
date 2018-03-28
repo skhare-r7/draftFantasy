@@ -134,7 +134,7 @@ def create_playerinfo(c):
 
 #example:
 #_______________________________________________________________
-#|type     | playerId | value | humanId | complete | timestamp |
+#|type     | playerId | value | teamId | complete | timestamp |
 #|Ban      | 12       |  0    |    1    |    1     |           |
 #|Pick     | 16       |  0    |    2    |    1     |           |
 #|Auction  | 76       |  7.5  |    5    |    0     |           |  <- playerId 76 is up for bidding, starting bid is 7.5
@@ -143,7 +143,7 @@ def create_playerinfo(c):
 
 def create_transaction(c):
     c.execute('''CREATE TABLE transactions
-              (type text, playerId integer, value int, humanId integer, complete integer, timestamp ts)''')
+              (type text, playerId integer, value int, teamId integer, complete integer, timestamp ts)''')
 
 
 #Create futures table
