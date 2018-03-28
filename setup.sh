@@ -1,4 +1,5 @@
 #!/bin/bash
+apt-add-repository ppa:ondrej/php #used for php7
 apt-get update
 apt-get install python-pip
 apt-get install emacs
