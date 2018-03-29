@@ -506,15 +506,18 @@ class draftGame:
         rulesText += "Scoring will be done using the rules from IPL fantasy\n"
         rulesText += "Teams are frozen at every match deadline, and top " + str(SCORING_PLAYERS) + " players will score points\n"
         rulesText += "Managers will receive NO points for a match unless two conditions are met at every match deadline\n"
+        rulesText += "Unpicked players lose "+ str(SPOILAGE)+"% of their value daily\n"
+
         rulesText += "1. Bank value cannot be negative\n"
         rulesText += "2. Must have atleast "+ str(MIN_SQUAD) +  " players, including "+ str(MIN_BAT) + " bat, " + str(MIN_WK) + " wk, " + str(MIN_BOWL) + " bowl, " + str(MIN_AR) + " AR\n"
-        rulesText += "==========================\n"
-        rulesText += "Changes this year:\n"
-        rulesText += "1. You cannot have more than " + str(MAX_SQUAD) + " players in your team (active + bench)\n"
-        rulesText += "2. Unpicked players lose "+ str(SPOILAGE)+"% of their value daily\n"
-        rulesText += "3. Teams will be given one boost during the tournament:\n"
+        rulesText += "Teams will be given one boost during the tournament:\n"
         rulesText += "On " + BOOST_DETAILS + " in their bank, highest going to team in last place\n"
         rulesText += "==========================\n"
+        rulesText += "Changes this year:\n"
+        rulesText += "1. Play tokens to affect the game! \n"
+        rulesText += " boost - Double any player's points for one day\n"
+        rulesText += " curse - Half any player's points for one day\n"
+        rulesText += " borrow - Borrow any player (from teams or open market) for one day. Original team still gets points\n"
         rulesText += "Good luck and have fun!"
         return rulesText
 
@@ -656,7 +659,7 @@ class draftGame:
             return 'Incorrect token syntax. Try /token <type> <playerId>'
         if not isValidId(playerId): return 'Invalid player Id'
         teamId = self.getTeamIdFromUser(user)
-        tokenValue = self.tokenToTValue(token) # should never be 0
+        tokenValue = tokenToTValue(token) # should never be 0
         if tokenValue == 0:
             return '<type> must be among boost, curse or borrow'
         count = tokensAvailable(teamId, token)
@@ -676,7 +679,7 @@ class draftGame:
 
     def cancelTokens(self, user):
         teamId = self.getTeamIdFromUser(user)
-        transactionQuery = 'select value from transactions where teamId=? and type=? and completed=0'
+        transactionQuery = 'select value from transactions where teamId=? and type=? and complete=0'
         transactions = self.db.send(transactionQuery, [teamId, 'Token'])
         for transaction in transactions:
             token = tValueToToken(transaction[0])
@@ -684,26 +687,8 @@ class draftGame:
             count = self.db.send(tokenQuery, [token, teamId])[0][0]
             returnTokens = 'update tokens set count=? where token=? and teamId=?'
             self.db.send(returnTokens, [count+1, token, teamId])
-        transactionQuery = 'delete from transactions where teamId=? and type=? and completed=0'
+        transactionQuery = 'delete from transactions where teamId=? and type=? and complete=0'
 
-    def tValueToToken(self, value):
-        if value == 1:
-            return 'boost'
-        elif value == 2:
-            return 'curse'
-        elif value == 3:
-            return 'borrow'
-        else:
-            return None
-    def tokenToTValue(self, token):
-        if token == 'boost':
-            return 1
-        elif token == 'curse':
-            return 2
-        elif token == 'borrow':
-            return 3
-        else:
-            return 0
 # Part 1. Create token table in database (token, qty, player name)
 # Part 2a. Create processToken function (can player play a token? if so record transaction and process token?)
 #           Broadcast as 'player X may use token'
@@ -765,8 +750,18 @@ def finalizeAuction(future,game):
     game.db.commit()
     return message
 
+def getBorrowedPlayerIDs(game, teamId):
+    borrowTokenQuery = "select playerId from transactions where teamId=? and value=? and complete=0 and type='Token'"
+    result = game.db.send(borrowTokenQuery, [teamId, tokenToTValue('borrow')])
+    playerIDs = []
+    for r in result:
+        playerIDs.append(result[0])
+    closeBorrowed = "update transactions set complete=1 where teamId=? and value=? and type='Token'"
+    game.db.send(closeBorrowed, [teamId, tokenToTValue('borrow')])
+    return playerIDs
 
 def lockTeams(future,game):
+    toRet = ''
     futureId = future[0]
     futureInfo = future[4]
     teamIdQuery = "select teamId from humanPlayers"
@@ -789,6 +784,12 @@ def lockTeams(future,game):
         #save json file for each player
         getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 9"
         players = game.db.send(getTeams,[teamId])
+        borrowedPlayerIDs = getBorrowedPlayerIDs(teamId)
+        for playerId in borrowedPlayerIDs:
+            toRet += 'User: ' +  game.getUserById(teamId) + ' has borrowed player: ' + playerId + '\n'
+            getBorrowedPlayerQuery = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.playerId=?"
+            borrowedPlayer = game.db.send(getBorrowedPlayerQuery,[playerId])[0]
+            players.append(borrowedPlayer)
         for player in players:
             id = player[0]
             skill = player[1]
@@ -796,14 +797,32 @@ def lockTeams(future,game):
             if overseas: overseasPlayers += 1
             playerInfo[skill].append(id)
         lockInfo['overseasTotal'] = overseasPlayers
-        with open("lockedTeams/match"+futureInfo.__str__() + "_team" + teamId.__str__() + ".json","w") as outfile:
+        with open("lockedTeams/match"+str(futureInfo) + "_team" + str(teamId) + ".json","w") as outfile:
             json.dump(lockInfo, outfile)
     deleteFutureQuery = "delete from futures where id=?"
     game.db.send(deleteFutureQuery,[futureId])
     game.db.commit()
-    return "Teams are locked for match. ID:" + futureInfo.__str__() #todo: get actual match name
+    toRet += saveTokensPlayed(game)
+    toRet +=  "Teams are locked for match. ID:" + futureInfo.__str__() #todo: get actual match name
+    return toRet
 
-
+def saveTokensPlayed(game):
+    toRet = ''
+    tokens = []
+    tokenQuery = "select value, playerId, teamId from transactions where type='Token' and complete=0"
+    tokenTransactions = game.db.send(tokenQuery,[])
+    for tokenT in tokenTransactions:
+        tokenType = tValueToToken(tokenT[0])
+        playerId = tokenT[1]
+        teamId = tokenT[2]
+        token = {'type':tokenType, 'playerId':playerId, 'teamId':teamId}
+        tokens.append(token)
+        toRet += 'Player: ' + game.getUserById(teamId) + ' has used ' + tokenType + ' token on ' + str(playerId)
+    with open("lockedTeams/tokens_match"+matchId+'.json','w') as outfile:
+        json.dump(tokens, outfile)
+    completedQuery = "update transactions set complete=1 where type='Token'"
+    game.db.send(completedQuery,[])
+    return toRet
 
 def futureWorker(tg,game):
     print 'starting future worker'
@@ -832,7 +851,24 @@ def futureWorker(tg,game):
             "..failed, db locked"
         sleep(60) #sleep 60 seconds?
 
-
+def tValueToToken(value):
+    if value == 1:
+        return 'boost'
+    elif value == 2:
+        return 'curse'
+    elif value == 3:
+        return 'borrow'
+    else:
+        return None
+def tokenToTValue(token):
+    if token == 'boost':
+        return 1
+    elif token == 'curse':
+        return 2
+    elif token == 'borrow':
+        return 3
+    else:
+        return 0
 
 if __name__=="__main__":
     game = draftGame()
