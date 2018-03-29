@@ -67,22 +67,22 @@ def create_playerStatus(c):
 
 
 def getSkillFromCategory(value):
-    if value == 16: return "Batsman"
-    elif value == 17: return "Wicketkeeper"
-    elif value == 18: return "Allrounder"
-    elif value == 19: return "Bowler"
+    if value == 1: return "Batsman"
+    elif value == 2: return "Wicketkeeper"
+    elif value == 3: return "Allrounder"
+    elif value == 4: return "Bowler"
     else: return None
 
 
 def getTeamNameFromSideId(value):
-    if value == 23: return "AUS"
-    elif value == 24: return "BAN"
-    elif value == 25: return "ENG"
-    elif value == 26: return "IND"
-    elif value == 27: return "NZ"
-    elif value == 28: return "PAK"
-    elif value == 29: return "RSA"
-    elif value == 30: return "SL"
+    if value == 6: return "RCB"
+    elif value == 1: return "BAN"
+    elif value == 2: return "ENG"
+    elif value == 3: return "IND"
+    elif value == 4: return "NZ"
+    elif value == 5: return "PAK"
+    elif value == 6: return "RSA"
+    elif value == 7: return "SL"
     else: return None
 
 
@@ -102,7 +102,7 @@ def create_playerinfo(c):
 #    f = open("playerListJson.dump","rb") #downloaded offline from ICC
 #    playerList = pickle.load(f)
 #    f.close() 
-    json_data = open('playerList.json')
+    json_data = open('iplPlayerList.json')
     data = json.load(json_data)
     players = data['players']
     c.execute('''CREATE TABLE playerInfo
@@ -236,9 +236,9 @@ def create_tokens(c):
 def init_database():
     conn = sqlite3.connect('draftGame.db')
     c = conn.cursor()
-#    create_playerinfo(c)
+    create_playerinfo(c)
     create_humanplayers(c)
-#    create_playerStatus(c)
+    create_playerStatus(c)
     create_transaction(c)
     create_futures(c)
     create_iplpoints(c)

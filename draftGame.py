@@ -194,7 +194,7 @@ class draftGame:
         elif command == 'fixtures':
             return self.getFixtures()
         elif command == 'viewtokens':
-            return self.viewTokens(user)
+            return self.viewTokens(user, args)
         elif command == 'canceltokens':
             return self.processCancelTokens(user)
         elif command == 'token':
@@ -648,7 +648,7 @@ class draftGame:
         else:
             teamId = self.getTeamIdFromUser(args)
         if teamId is None: return 'Invalid query'
-        tokenQuery = 'select * from tokens where teamId=?'
+        tokenQuery = 'select token,count from tokens where teamId=?'
         return self.db.sendPretty(tokenQuery, [teamId])
 
     def processToken(self, user, args):
@@ -657,27 +657,28 @@ class draftGame:
             playerId = args.split(' ')[1]
         except:
             return 'Incorrect token syntax. Try /token <type> <playerId>'
-        if not isValidId(playerId): return 'Invalid player Id'
+        if not self.isValidId(playerId): return 'Invalid player Id'
         teamId = self.getTeamIdFromUser(user)
         tokenValue = tokenToTValue(token) # should never be 0
         if tokenValue == 0:
             return '<type> must be among boost, curse or borrow'
-        count = tokensAvailable(teamId, token)
+        count = self.tokensAvailable(teamId, token)
         if count > 0:
             transactionQuery = "insert into transactions values (?,?,?,?,?,?)"
             self.db.send(transactionQuery,["Token",playerId,tokenValue,teamId,0,dt.now()])
             tokenUpdateQuery = "update tokens set count=? where teamId=? and token=?"
             self.db.send(tokenUpdateQuery,[count-1, teamId, token])
             toRet = 'Token ' + token + ' will be used on player ' + str(playerId) + ' at next game start\n'
-            toet += 'You have ' + str(count-1) + ' ' + token + ' tokens left'
+            toRet += 'You have ' + str(count-1) + ' ' + token + ' tokens left'
         else:
             return 'You are out of ' + token + ' tokens'
+        return toRet
 
     def tokensAvailable(self, teamId, token):
         query = "select count from tokens where teamId=? and token=?"
         return self.db.send(query, [teamId, token])[0][0]
 
-    def cancelTokens(self, user):
+    def processCancelTokens(self, user):
         teamId = self.getTeamIdFromUser(user)
         transactionQuery = 'select value from transactions where teamId=? and type=? and complete=0'
         transactions = self.db.send(transactionQuery, [teamId, 'Token'])
@@ -688,6 +689,7 @@ class draftGame:
             returnTokens = 'update tokens set count=? where token=? and teamId=?'
             self.db.send(returnTokens, [count+1, token, teamId])
         transactionQuery = 'delete from transactions where teamId=? and type=? and complete=0'
+        return 'All your active tokens have been canceled'
 
 # Part 1. Create token table in database (token, qty, player name)
 # Part 2a. Create processToken function (can player play a token? if so record transaction and process token?)
@@ -755,7 +757,7 @@ def getBorrowedPlayerIDs(game, teamId):
     result = game.db.send(borrowTokenQuery, [teamId, tokenToTValue('borrow')])
     playerIDs = []
     for r in result:
-        playerIDs.append(result[0])
+        playerIDs.append(r[0])
     closeBorrowed = "update transactions set complete=1 where teamId=? and value=? and type='Token'"
     game.db.send(closeBorrowed, [teamId, tokenToTValue('borrow')])
     return playerIDs
@@ -784,9 +786,9 @@ def lockTeams(future,game):
         #save json file for each player
         getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 9"
         players = game.db.send(getTeams,[teamId])
-        borrowedPlayerIDs = getBorrowedPlayerIDs(teamId)
+        borrowedPlayerIDs = getBorrowedPlayerIDs(game, teamId)
         for playerId in borrowedPlayerIDs:
-            toRet += 'User: ' +  game.getUserById(teamId) + ' has borrowed player: ' + playerId + '\n'
+            toRet += 'User: ' +  game.getUserById(teamId) + ' has borrowed player: ' + str(playerId) + '\n'
             getBorrowedPlayerQuery = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.playerId=?"
             borrowedPlayer = game.db.send(getBorrowedPlayerQuery,[playerId])[0]
             players.append(borrowedPlayer)
@@ -802,11 +804,11 @@ def lockTeams(future,game):
     deleteFutureQuery = "delete from futures where id=?"
     game.db.send(deleteFutureQuery,[futureId])
     game.db.commit()
-    toRet += saveTokensPlayed(game)
+    toRet += saveTokensPlayed(game, futureInfo)
     toRet +=  "Teams are locked for match. ID:" + futureInfo.__str__() #todo: get actual match name
     return toRet
 
-def saveTokensPlayed(game):
+def saveTokensPlayed(game, matchId):
     toRet = ''
     tokens = []
     tokenQuery = "select value, playerId, teamId from transactions where type='Token' and complete=0"
@@ -817,15 +819,14 @@ def saveTokensPlayed(game):
         teamId = tokenT[2]
         token = {'type':tokenType, 'playerId':playerId, 'teamId':teamId}
         tokens.append(token)
-        toRet += 'Player: ' + game.getUserById(teamId) + ' has used ' + tokenType + ' token on ' + str(playerId)
-    with open("lockedTeams/tokens_match"+matchId+'.json','w') as outfile:
+        toRet += 'Player: ' + game.getUserById(teamId) + ' has used ' + tokenType + ' token on ' + str(playerId) + '\n'
+    with open("lockedTeams/tokens_match"+str(matchId)+'.json','w') as outfile:
         json.dump(tokens, outfile)
     completedQuery = "update transactions set complete=1 where type='Token'"
     game.db.send(completedQuery,[])
     return toRet
 
 def futureWorker(tg,game):
-    print 'starting future worker'
     db = dbInterface()
     while True:
         print 'monitoring future queue'
@@ -848,7 +849,7 @@ def futureWorker(tg,game):
                 else:
                     pass
         except:
-            "..failed, db locked"
+            print 'Exception in future worker, db locked?'
         sleep(60) #sleep 60 seconds?
 
 def tValueToToken(value):
