@@ -24,7 +24,8 @@ class updater:
 
     def run(self):
         for fileName in os.listdir('lockedTeams'):
-            if fileName.endswith(".json"): 
+            #iterate all games
+            if re.match('.*?team\d+\.json', filename):
                 points = 0
                 teamId = -1
                 matchId = -1

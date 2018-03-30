@@ -820,7 +820,7 @@ def saveTokensPlayed(game, matchId):
         token = {'type':tokenType, 'playerId':playerId, 'teamId':teamId}
         tokens.append(token)
         toRet += 'Player: ' + game.getUserById(teamId) + ' has used ' + tokenType + ' token on ' + str(playerId) + '\n'
-    with open("lockedTeams/tokens_match"+str(matchId)+'.json','w') as outfile:
+    with open("lockedTeams/match"+str(matchId)+'_tokens.json','w') as outfile:
         json.dump(tokens, outfile)
     completedQuery = "update transactions set complete=1 where type='Token'"
     game.db.send(completedQuery,[])

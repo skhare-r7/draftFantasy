@@ -93,13 +93,33 @@ class iplPoints:
                             print difflib.get_close_matches(name,players_dict.keys(),3,0)
                             raise
                         print playerName + "(" + name + ") : " + points.__str__()
-
+                        playerId = players_dict[playerName]
+                        tokenUpdate = applyMatchTokens(matchId, playerId, points)
+                        if tokenUpdate != 0:
+                            points += tokenUpdate
+                            print "Token change: "+ playerName + "(" + name + ") : " + points.__str__()
                         try:
-                            self.db.send(pointSql,[matchId,gameInfo,players_dict[playerName],points])
+                            self.db.send(pointSql,[matchId,gameInfo,playerId,points])
                             #self.db.commit()
                         except:
                             print "cannot update ipl points.., db busy?"
                 scoreFile.close()
+
+    def applyMatchTokens(matchId, playerId, points):
+        tokenUpdate = 0
+        token_filename = 'lockedTeams/match'+matchId+'_tokens.json'
+        # dont throw errors?
+        if not os.path.isfile(token_filename): return tokenUpdate
+        # maybe only load this once?
+        with open(token_fileName) as tokenFile:
+            tokenInfo = json.load(tokenFile)
+            for token in tokenInfo:
+                if token['playerId'] == playerId:
+                    if token['type'] == 'boost':
+                        tokenUpdate += points * 0.5
+                    elif token['type'] == 'curse':
+                        tokenUpdate += points * -0.5
+        return int(round(tokenUpdate))
 
     def close(self):
         self.db.close()
