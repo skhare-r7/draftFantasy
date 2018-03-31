@@ -28,8 +28,8 @@ def create_humanplayers(c):
     humanPlayers[2] = ['NoPakXI', 'Shrikar']
     humanPlayers[3] = ["Kia Kaha",'Ripu']
     humanPlayers[4] = ["Khan Ke Shaitan",'Farhan']
-    humanPlayers[5] = ["Anarkale",'Paritosh']
-    humanPlayers[6] = ["Champions XI", 'Anmol']
+    humanPlayers[5] = ["Boyzrback",'Srikaran']
+
     
     for teamId, info in humanPlayers.items():
         c.execute("INSERT INTO humanPlayers VALUES (?,?,?,?)",[teamId,info[0],info[1],_START_MONEY])
@@ -75,14 +75,14 @@ def getSkillFromCategory(value):
 
 
 def getTeamNameFromSideId(value):
-    if value == 6: return "RCB"
+    if value == 7: return "RCB"
     elif value == 1: return "BAN"
     elif value == 2: return "ENG"
     elif value == 3: return "IND"
     elif value == 4: return "NZ"
     elif value == 5: return "PAK"
     elif value == 6: return "RSA"
-    elif value == 7: return "SL"
+    elif value == 8: return "SRH"
     else: return None
 
 
