@@ -14,7 +14,7 @@ class series:
 #    if matchId in series.finals.keys():
 #      return base_url+finals_url+series.finals[matchId]+'.html'+suffix_url
 
-    seriesPage = "http://www.espncricinfo.com/icc-champions-trophy-2017/content/series/1022345.html?template=fixtures"
+    seriesPage = "http://www.espncricinfo.com/series/_/id/8048/season/2018/indian-premier-league/"
     tree = lxml.html.parse(seriesPage)
     link = tree.xpath('//ul[@class="large-20 columns"]/li['+matchId.__str__()+']//a/@href')[0]
-    return base_url+link+suffix_url
+    return link
