@@ -9,7 +9,7 @@ HERE = tz.tzlocal()
 conn = sqlite3.connect('draftGame.db') 
 c = conn.cursor()
 
-series_url = 'http://www.espncricinfo.com/icc-champions-trophy-2017/content/series/1022345.html?template=fixtures'
+series_url = 'http://www.espncricinfo.com/ci/content/series/1131611.html?template=fixtures'
 
 gameFullSchedule = []
 
@@ -28,9 +28,11 @@ countGame = 0
 for i in range(0,len(dates)):
 	if (i%2==0):
 		date_string = dates[i].strip()+' '+dates[i+1].split(u'\xa0')[0] + '+0530 2017'
-		dt = parser.parse(date_string)
-		c.execute("insert into futures (type,game,deadline,info) values (?,?,?,?)",['Lock',gameFullSchedule[countGame].split('-')[1],dt.astimezone(HERE),(i/2)+1])
-		countGame = countGame + 1
-
+                try:
+		  dt = parser.parse(date_string)
+		  c.execute("insert into futures (type,game,deadline,info) values (?,?,?,?)",['Lock',gameFullSchedule[countGame].split('-')[1],dt.astimezone(HERE),(i/2)+1])
+		  countGame = countGame + 1
+                except:
+                  break
 conn.commit()
 conn.close()
