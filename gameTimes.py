@@ -5,6 +5,7 @@ from dateutil import parser
 from dateutil import tz
 
 HERE = tz.tzlocal()
+_CURRENT_TZ_YEAR = '+0530 2018'
 
 conn = sqlite3.connect('draftGame.db') 
 c = conn.cursor()
@@ -27,7 +28,7 @@ countGame = 0
 
 for i in range(0,len(dates)):
 	if (i%2==0):
-		date_string = dates[i].strip()+' '+dates[i+1].split(u'\xa0')[0] + '+0530 2017'
+		date_string = dates[i].strip()+' '+dates[i+1].split(u'\xa0')[0] + _CURRENT_TZ_YEAR
                 try:
 		  dt = parser.parse(date_string)
 		  c.execute("insert into futures (type,game,deadline,info) values (?,?,?,?)",['Lock',gameFullSchedule[countGame].split('-')[1],dt.astimezone(HERE),(i/2)+1])
