@@ -29,7 +29,8 @@ def create_humanplayers(c):
     humanPlayers[3] = ["Kia Kaha",'Ripu']
     humanPlayers[4] = ["Khan's Super Kings",'Farhan']
     humanPlayers[5] = ["Boyzrback",'Srikaran']
-    humanPlayers[6] = ["Dark Horses",'Yenan']
+    humanPlayers[6] = ["Ball Busters",'Yenan']
+    humanPlayers[7] = ["Random Name",'Anoop']
     
 
     

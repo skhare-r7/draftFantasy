@@ -9,10 +9,11 @@ from livescorer import livescorer
 import json
 
 _START_GAME_PHASE = 'Draft' # We start at Draft, edit to Live once drafting is done
-_AUCTION_TIME_SECONDS = 12 * 60 * 60 # 12 hours
+_AUCTION_TIME_SECONDS = 24 * 60 * 60 # 12 hours
 _FORCED_SALE_RATIO = 0.7
 MIN_SQUAD = 7
 MAX_SQUAD = 9
+MAX_OVERSEAS = 3
 MIN_BAT = 2
 MIN_WK = 1
 MIN_BOWL = 1
@@ -509,12 +510,12 @@ class draftGame:
         rulesText += "Unpicked players lose "+ str(SPOILAGE)+"% of their value daily\n"
 
         rulesText += "1. Bank value cannot be negative\n"
-        rulesText += "2. Must have atleast "+ str(MIN_SQUAD) +  " players, including "+ str(MIN_BAT) + " bat, " + str(MIN_WK) + " wk, " + str(MIN_BOWL) + " bowl, " + str(MIN_AR) + " AR\n"
+        rulesText += "2. Must have atleast "+ str(MIN_SQUAD) +  " players, including "+ str(MIN_BAT) + " bat, " + str(MIN_WK) + " wk, " + str(MIN_BOWL) + " bowl, " + str(MIN_AR) + " AR, "+ str(MAX_OVERSEAS) + " overseas\n" 
         rulesText += "Teams will be given one boost during the tournament:\n"
         rulesText += "On " + BOOST_DETAILS + " in their bank, highest going to team in last place\n"
         rulesText += "==========================\n"
         rulesText += "Changes this year:\n"
-        rulesText += "1. Play tokens to affect the game! \n"
+        rulesText += "Play tokens to affect the game! \n"
         rulesText += " boost - Double any player's points for one day\n"
         rulesText += " curse - Half any player's points for one day\n"
         rulesText += " borrow - Borrow any player (from teams or open market) for one day. Original team still gets points\n"
@@ -533,8 +534,8 @@ class draftGame:
         helpText += "/player <id>: get player info\n"
         helpText += "/ban <id>: ban player from Draft (Draft stage only)\n"
         helpText += "/pick <id>: pick player from Draft (Draft stage only)\n"
-        helpText += "/viewteam [user]: see your team. your top 9 will play\n"
-        helpText += "/swap <pos1> <pos2>: swap players on bench with active 11\n"
+        helpText += "/viewteam [user]: see your team. your top "+str(MAX_SQUAD)+" will play\n"
+        helpText += "/swap <pos1> <pos2>: swap players\n"
         helpText += "/auction <id> [minimum bid]: place player for sale. minimum bid defaults to purchase price\n"
         helpText += "/bid <id> <amount> : place bid on player. bidding is blind auction and ends in 2 days.\n"
         helpText += "/forcesell <id>: immediate sale for 70% price\n"
@@ -784,8 +785,8 @@ def lockTeams(future,game):
         playerInfo['Bowler'] = []
         
         #save json file for each player
-        getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit 9"
-        players = game.db.send(getTeams,[teamId])
+        getTeams = "select playerStatus.playerId, playerInfo.skill1, playerInfo.overseas from playerStatus inner join playerInfo on playerStatus.playerId = playerInfo.playerId where playerStatus.status=? order by playerStatus.teamPos limit ?"
+        players = game.db.send(getTeams,[teamId, MAX_SQUAD])
         borrowedPlayerIDs = getBorrowedPlayerIDs(game, teamId)
         for playerId in borrowedPlayerIDs:
             toRet += 'User: ' +  game.getUserById(teamId) + ' has borrowed player: ' + str(playerId) + '\n'
