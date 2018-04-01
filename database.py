@@ -4,19 +4,18 @@ import datetime
 from prettytable import PrettyTable
 import json
 
-_START_MONEY = 700
+_START_MONEY = 800
 
-_CURSE_TOKENS = 1
-_BOOST_TOKENS = 1
+_CURSE_TOKENS = 2
+_BOOST_TOKENS = 2
 _BORROW_TOKENS = 2
 
 #Create a table that has details of human players
-# game initializes with everyone having equal bank value of 100M?
 
 # example:
 # ______________________________________
 #| teamId | teamName | name     | bank |
-#|    1   |  n_emoo  | Shreyas  | 100M |
+#|    1   |  n_emoo  | Shreyas  | 800  |
 
 #TODO
 def create_humanplayers(c):

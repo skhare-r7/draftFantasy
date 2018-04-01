@@ -10,7 +10,7 @@ import json
 
 _START_GAME_PHASE = 'Draft' # We start at Draft, edit to Live once drafting is done
 _AUCTION_TIME_SECONDS = 24 * 60 * 60 # 12 hours
-_FORCED_SALE_RATIO = 0.7
+_FORCED_SALE_RATIO = 0.75
 MIN_SQUAD = 7
 MAX_SQUAD = 9
 MAX_OVERSEAS = 3
@@ -19,7 +19,7 @@ MIN_WK = 1
 MIN_BOWL = 1
 MIN_AR = 1
 SCORING_PLAYERS = MAX_SQUAD 
-BOOST_DETAILS = "June 4th: [53 to 47]" #todo
+BOOST_DETAILS = "April 26th: [260 to 140]" #todo
 SPOILAGE = 2
 
 class draftGame:
