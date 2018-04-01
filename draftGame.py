@@ -508,7 +508,7 @@ class draftGame:
         rulesText += "Unpicked players lose "+ str(SPOILAGE)+"% of their value daily\n"
 
         rulesText += "1. Bank value cannot be negative\n"
-        rulesText += "2. Must have atleast "+ str(MIN_SQUAD) +  " players, including "+ str(MIN_BAT) + " bat, " + str(MIN_WK) + " wk, " + str(MIN_BOWL) + " bowl, " + str(MIN_AR) + " AR, "+ str(MAX_OVERSEAS) + " overseas\n" 
+        rulesText += "2. Must have atleast "+ str(MIN_SQUAD) +  " players, including "+ str(MIN_BAT) + " bat, " + str(MIN_WK) + " wk, " + str(MIN_BOWL) + " bowl, " + str(MIN_AR) + " AR, max "+ str(MAX_OVERSEAS) + " overseas\n" 
         rulesText += "Teams will be given one boost during the tournament:\n"
         rulesText += "On " + BOOST_DETAILS + " in their bank, highest going to team in last place\n"
         rulesText += "==========================\n"
