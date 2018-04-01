@@ -492,7 +492,7 @@ class draftGame:
         rulesText += "Manager order for draft is decided randomly\n"
         rulesText += "During picks, order is reversed every round, so last pick for one round gets first pick in the next\n"
         rulesText += "You cannot pick a player who is banned / picked by someone else\n"
-        rulesText += "Each manager stars with 700 in the bank. Each pick counts towards that limit\n"
+        rulesText += "Each manager stars with 800 in the bank. Each pick counts towards that limit\n"
         rulesText += "Once 9 rounds are complete, game becomes Live\n"
         rulesText += "In a live game, you can bid on any player in the open market.\n"
         rulesText += "These include all players unpicked during draft PLUS banned players from the draft\n"
