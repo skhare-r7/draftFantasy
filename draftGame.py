@@ -35,8 +35,6 @@ class draftGame:
         self.rounds.append('pick_r')
         self.rounds.append('pick_r')
         self.rounds.append('pick_r')
-        self.rounds.append('pick_r')
-        self.rounds.append('pick_r')
         self.currentPhase = _START_GAME_PHASE #we start at drafting
 
         self.currentRound = 0
@@ -490,7 +488,7 @@ class draftGame:
 
     def getRulesText(self):
         rulesText = "Game consists of 2 phases: Draft and Live\n"
-        rulesText += "In the draft phase, there will be 2 rounds of bans follwed by 7 rounds of picks.\n"
+        rulesText += "In the draft phase, there will be 2 rounds of bans follwed by 5 rounds of picks.\n"
         rulesText += "Manager order for draft is decided randomly\n"
         rulesText += "During picks, order is reversed every round, so last pick for one round gets first pick in the next\n"
         rulesText += "You cannot pick a player who is banned / picked by someone else\n"
