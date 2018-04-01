@@ -23,12 +23,14 @@ def create_humanplayers(c):
     c.execute('''CREATE TABLE humanPlayers
               (teamId integer, teamName text, name text, bank int)''')
     humanPlayers = {}
-    humanPlayers[0] = ['Unique Losers', 'Shreyas']
+    humanPlayers[0] = ['Cursed XI', 'Shreyas']
     humanPlayers[1] = ['Champion x2', 'Sri']
     humanPlayers[2] = ['NoPakXI', 'Shrikar']
     humanPlayers[3] = ["Kia Kaha",'Ripu']
-    humanPlayers[4] = ["Khan Ke Shaitan",'Farhan']
+    humanPlayers[4] = ["Khan's Super Kings",'Farhan']
     humanPlayers[5] = ["Boyzrback",'Srikaran']
+    humanPlayers[6] = ["Dark Horses",'Yenan']
+    
 
     
     for teamId, info in humanPlayers.items():
@@ -68,21 +70,21 @@ def create_playerStatus(c):
 
 def getSkillFromCategory(value):
     if value == 1: return "Batsman"
-    elif value == 2: return "Wicketkeeper"
+    elif value == 4: return "Wicketkeeper"
     elif value == 3: return "Allrounder"
-    elif value == 4: return "Bowler"
+    elif value == 2: return "Bowler"
     else: return None
 
 
 def getTeamNameFromSideId(value):
-    if value == 7: return "RCB"
-    elif value == 1: return "BAN"
-    elif value == 2: return "ENG"
-    elif value == 3: return "IND"
-    elif value == 4: return "NZ"
-    elif value == 5: return "PAK"
-    elif value == 6: return "RSA"
-    elif value == 8: return "SRH"
+    if value == 'CHN': return "CSK"
+    elif value == 'HYD': return "SRH"
+    elif value == 'PNJ': return "KXIP"
+    elif value == 'KOL': return "KKR"
+    elif value == 'DEL': return "DD"
+    elif value == 'BNG': return "RCB"
+    elif value == 'RJS': return "RR"
+    elif value == 'MUM': return "MI"
     else: return None
 
 
@@ -102,9 +104,9 @@ def create_playerinfo(c):
 #    f = open("playerListJson.dump","rb") #downloaded offline from ICC
 #    playerList = pickle.load(f)
 #    f.close() 
-    json_data = open('iplPlayerList.json')
+    json_data = open('ipl2018PlayerList.json')
     data = json.load(json_data)
-    players = data['players']
+    players = data['d']['Result']['lstAvPlayers']
     c.execute('''CREATE TABLE playerInfo
               (playerId integer, team text, playerName text, price int, skill1 text, overseas integer)''')
     for player in players:
@@ -115,11 +117,11 @@ def create_playerinfo(c):
         skill1 = None
         overseas = 0
         for key,value in  player.items():
-            if key == 'code': playerId = value
-            elif key == 'info1' : name = value
-            elif key == 'sideId' : teamName = getTeamNameFromSideId(value)
-            elif key == 'value' : price = value*10
-            elif key == 'categoryId' : skill1 = getSkillFromCategory(value)
+            if key == 'PlayerId': playerId = value
+            elif key == 'PlayerName' : name = value
+            elif key == 'RealTeamName' : teamName = getTeamNameFromSideId(value)
+            elif key == 'Price' : price = value*10
+            elif key == 'PlayerTypeId' : skill1 = getSkillFromCategory(value)
 #            elif key == 'OPlayerId' and value: overseas = 1
             else: pass
         if (playerId and name and teamName and price):
